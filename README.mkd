@@ -1,0 +1,9 @@
+# Dime - TimetrackerBundle
+A timetracker api based on Symfony2.
+
+## General Proposal
+
+## Requirements
+
+## Initialization
+
