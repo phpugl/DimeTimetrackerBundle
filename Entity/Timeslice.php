@@ -11,6 +11,7 @@ use JMS\SerializerBundle\Annotation\SerializedName;
  *
  * @ORM\Table(name="timeslices")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\TimesliceRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Timeslice
 {
