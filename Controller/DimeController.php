@@ -32,20 +32,23 @@ class DimeController extends Controller
             
             $em = $this->getDoctrine()->getEntityManager();
 
+            $entity = $form->getData();
+
             /** @todo: set user */
             $user = $em->getRepository('DimeTimetrackerBundle:User')->findOneByEmail('johndoe@example.com');
 
-            if (is_object($form->getData()) && method_exists($form->getData(), 'setUser')) {
-                $form->getData()->setUser($user);
+            if (is_object($entity) && method_exists($entity, 'setUser')) {
+                $entity->setUser($user);
             }
 
             // save change to database
-            $em->persist($form->getData());
-            $em->flush();  
+            $em->persist($entity);
+            $em->flush();
+            $em->refresh($entity);
 
             // push back the new object
             $view = View::create()->setStatusCode(200);
-            $view->setData($form->getData());
+            $view->setData($entity);
         } else {
             // return error string from form
             $view = View::create()->setStatusCode(400);
