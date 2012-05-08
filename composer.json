@@ -3,20 +3,22 @@
   "type": "library",
   "description": "Timetracker entities and REST API",
   "keywords": ["timetracker", "rest", "api"],
-  "homepage": "https://github.com/phpugl/CWE2011",
+  "homepage": "https://github.com/phpugl/DimeTimetrackerBundle",
   "license": "MIT",
-  "version": "1.0"
+  "version": "1.0",
   "authors": [
       {
+          "name": "PHPUGL"
+          "email": "info@phpugl.de"
       }
   ],
   "require": {
       "php": ">=5.3.3"
   },
   "suggest": {
-      "phpugl/dime-timetracker-frontend-bundle": "1.0",
-      "phpugl/dime-invoice-bundle": "master-dev",
-      "phpugl/dime-import-bundle": "master-dev"
+      "phpugl/dime-timetracker-frontend-bundle": "dev-master",
+      "phpugl/dime-invoice-bundle": "dev-master",
+      "phpugl/dime-import-bundle": "dev-master"
   },
   "autoload": {
       "psr-0": {"Predis": "lib/"}
