@@ -1,11 +1,10 @@
 {
   "name": "phpugl/dime-timetracker-bundle",
-  "type": "library",
+  "type": "symfony-bundle",
   "description": "Timetracker entities and REST API",
   "keywords": ["timetracker", "rest", "api"],
   "homepage": "https://github.com/phpugl/DimeTimetrackerBundle",
   "license": "MIT",
-  "version": "1.0",
   "authors": [
       {
           "name": "PHPUGL",
@@ -13,7 +12,8 @@
       }
   ],
   "require": {
-      "php": ">=5.3.3"
+      "php": ">=5.3.3",
+      "symfony/symfony": ">=2.0"
   },
   "suggest": {
       "phpugl/dime-timetracker-frontend-bundle": "dev-master",
@@ -21,6 +21,7 @@
       "phpugl/dime-import-bundle": "dev-master"
   },
   "autoload": {
-      "psr-0": {"Predis": "lib/"}
-  }
+      "psr-0": { "Dime\\TimetrackerBundle": "" }
+  },
+  "target-dir": "Dime/TimetrackerBundle"
 }
