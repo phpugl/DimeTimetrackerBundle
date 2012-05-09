@@ -28,9 +28,7 @@ class ActivitiesController extends DimeController
     public function getActivitiesAction()
     {
         $activities = $this->getActivityRepository();
-        $view = View::create()->setData($activities->findAll());
-
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $this->createView($activities->findAll());
     }
 
     /**
@@ -49,13 +47,12 @@ class ActivitiesController extends DimeController
         // check if it exists
         if ($activity) {
             // send array
-            $view = View::create()->setData($activity);
+            $view = $this->createView($activity);
         } else {
             // activity does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Activity does not exist.");
+            $view = $this->createView("Activity does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
@@ -76,7 +73,7 @@ class ActivitiesController extends DimeController
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
 
-        return $this->get('fos_rest.view_handler')->handle($this->saveForm($form, $data));
+        return $this->saveForm($form, $data);
     }
 
     /**
@@ -101,10 +98,9 @@ class ActivitiesController extends DimeController
             );
         } else {
             // activity does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Activity does not exist.");
+            $view = $this->createView("Activity does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
@@ -127,12 +123,11 @@ class ActivitiesController extends DimeController
             $em->flush();
 
             // send status message
-            $view = View::create()->setData("Activity has been removed.");
+            $view = $this->createView("Activity has been removed.");
         } else {
             // activity does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Activity does not exists.");
+            $view = $this->createView("Activity does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 }

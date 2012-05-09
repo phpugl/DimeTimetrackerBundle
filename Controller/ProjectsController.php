@@ -28,9 +28,7 @@ class ProjectsController extends DimeController
     public function getProjectsAction()
     {
         $projects = $this->getProjectRepository();
-        $view = View::create()->setData($projects->findAll());
-
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $this->createView($projects->findAll());
     }
 
     /**
@@ -48,13 +46,12 @@ class ProjectsController extends DimeController
         // check if exists
         if ($project) {
             // send array
-            $view = View::create()->setData($project);
+            $view = $this->createView($project);
         } else {
             // project does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Project does not exist.");
+            $view = $this->createView("Project does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
@@ -75,7 +72,7 @@ class ProjectsController extends DimeController
         $data = json_decode($this->getRequest()->getContent(), true);
         
         // save form and send response
-        return $this->get('fos_rest.view_handler')->handle($this->saveForm($form, $data));
+        return $this->saveForm($form, $data);
     }
 
     /**
@@ -100,11 +97,9 @@ class ProjectsController extends DimeController
             
         } else {
             // project does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Project does not exist.");
-
+            $view = $this->createView("Project does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
@@ -127,12 +122,11 @@ class ProjectsController extends DimeController
             $em->flush();
 
             // send status message
-            $view = View::create()->setData("Project has been removed.");
+            $view = $this->createView("Project has been removed.");
         } else {
             // project does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Project does not exists.");
+            $view = $this->createView("Project does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 }

@@ -28,9 +28,7 @@ class TimeslicesController extends DimeController
     public function getTimeslicesAction()
     {
         $timeslices = $this->getTimesliceRepository();
-        $view = View::create()->setData($timeslices->findAll());
-
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $this->createView($timeslices->findAll());
     }
 
     /**
@@ -49,11 +47,10 @@ class TimeslicesController extends DimeController
         // check if it exists
         if ($timeslice) {
             // send array
-            $view = View::create()->setData($timeslice);
+            $view = $this->createVie($timeslice);
         } else {
             // activity TimeSlice does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Timeslice does not exist.");
+            $view = $this->createView("Timeslice does not exist.", 404);
         }
         return $this->get('fos_rest.view_handler')->handle($view);
     }
@@ -76,7 +73,7 @@ class TimeslicesController extends DimeController
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
 
-        return $this->get('fos_rest.view_handler')->handle($this->saveForm($form, $data));
+        return $this->saveForm($form, $data);
     }
 
     /**
@@ -101,10 +98,9 @@ class TimeslicesController extends DimeController
             );
         } else {
             // activity does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Timeslice does not exist.");
+            $view = $this->createView("Timeslice does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
@@ -127,12 +123,11 @@ class TimeslicesController extends DimeController
             $em->flush();
 
             // send status message
-            $view = View::create()->setData("Timeslice has been removed.");
+            $view = $this->createView("Timeslice has been removed.");
         } else {
             // activity does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Timeslice does not exists.");
+            $view = $this->createView("Timeslice does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 }
