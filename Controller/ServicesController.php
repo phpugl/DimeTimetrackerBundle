@@ -2,9 +2,8 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use FOS\RestBundle\View\View;
-use Dime\TimetrackerBundle\Entity\Service;
-use Dime\TimetrackerBundle\Form\ServiceType;
+use Dime\TimetrackerBundle\Entity\Service,
+    Dime\TimetrackerBundle\Form\ServiceType;
 
 class ServicesController extends DimeController
 {
@@ -28,9 +27,7 @@ class ServicesController extends DimeController
     public function getServicesAction()
     {
         $services = $this->getServiceRepository();
-        $view = View::create()->setData($services->findAll());
-
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $this->createView($services->findAll());
     }
 
     /**
@@ -48,13 +45,12 @@ class ServicesController extends DimeController
         // check if it exists
         if ($service) {
             // send array
-            $view = View::create()->setData($service);
+            $view = $this->createView($service);
         } else {
             // service does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Service does not exist.");
+            $view = $this->createView("Service does not exists.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
@@ -74,7 +70,7 @@ class ServicesController extends DimeController
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
 
-        return $this->get('fos_rest.view_handler')->handle($this->saveForm($form, $data));
+        return $this->saveForm($form, $data);
     }
 
     /**
@@ -98,10 +94,9 @@ class ServicesController extends DimeController
             );
         } else {
             // service does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Service does not exists.");
+            $view = $this->createView("Service does not exists.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
@@ -124,12 +119,11 @@ class ServicesController extends DimeController
             $em->flush();
             
             // send status message
-            $view = View::create()->setData("Service has been removed.");
+            $view = $this->createView("Service has been removed.");
         } else {
             // service does not exists send 404
-            $view = View::create()->setStatusCode(404);
-            $view->setData("Service does not exists.");
+            $view = $this->createView("Service does not exists", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 }
