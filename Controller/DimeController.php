@@ -2,12 +2,21 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\View\View;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use FOS\RestBundle\View\View AS FOSView;
 
 class DimeController extends Controller
 {
+
+    protected function createView($data = null, $statuscode = null)
+    {
+        $view = new FOSView($data, $statuscode);
+
+        return $view;
+    }
+
     /**
      * save form
      *
@@ -47,12 +56,10 @@ class DimeController extends Controller
             $em->refresh($entity);
 
             // push back the new object
-            $view = View::create()->setStatusCode(200);
-            $view->setData($entity);
+            $view = $this->createView($entity, 200);
         } else {
             // return error string from form
-            $view = View::create()->setStatusCode(400);
-            $view->setData(array('error'=>$form->getErrorsAsString()));
+            $view = $this->createView(array('error' => $form->getErrorsAsString()), 400);
         }
         
         return $view;
