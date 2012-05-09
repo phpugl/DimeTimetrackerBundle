@@ -164,8 +164,8 @@ class Timeslice
     /**
      * Autogenerate duration if empty
      *
-     * @ORM\prePersist
-     * @ORM\preUpdate
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      * @return Activity
      */
     public function updateDurationOnEmpty()
