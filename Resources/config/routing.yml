@@ -6,6 +6,10 @@ customers:
     type:     rest
     resource: Dime\TimetrackerBundle\Controller\CustomersController
 
+parser:
+    type:     rest
+    resource: Dime\TimetrackerBundle\Controller\ParsersController
+
 projects:
     type:     rest
     resource: Dime\TimetrackerBundle\Controller\ProjectsController
