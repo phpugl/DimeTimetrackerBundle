@@ -27,7 +27,7 @@ class Timeslice
     /**
      * @var \Dime\TimetrackerBundle\Entity\Activity $activity
      *
-     * @ORM\ManyToOne(targetEntity="Activity", inversedBy="timeslices")
+     * @ORM\ManyToOne(targetEntity="Activity", inversedBy="timeslices", cascade="persist")
      * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      */
     protected $activity;
