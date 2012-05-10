@@ -9,12 +9,21 @@ use FOS\RestBundle\View\View AS FOSView;
 
 class DimeController extends Controller
 {
+    protected $currentUser = null;
 
     protected function createView($data = null, $statuscode = null)
     {
         $view = new FOSView($data, $statuscode);
 
         return $view;
+    }
+
+    protected function getCurrentUser() {
+        if (!$this->currentUser) {
+            $this->currentUser = $this->getDoctrine()->getRepository('DimeTimetrackerBundle:User')->findOneByEmail('johndoe@example.com');
+        }
+
+        return $this->currentUser;
     }
 
     /**
