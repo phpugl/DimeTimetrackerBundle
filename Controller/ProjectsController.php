@@ -2,9 +2,8 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use FOS\RestBundle\View\View;
-use Dime\TimetrackerBundle\Entity\Project;
-use Dime\TimetrackerBundle\Form\ProjectType;
+use Dime\TimetrackerBundle\Entity\Project,
+    Dime\TimetrackerBundle\Form\ProjectType;
 
 class ProjectsController extends DimeController
 {

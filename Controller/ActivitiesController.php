@@ -2,9 +2,8 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use FOS\RestBundle\View\View;
-use Dime\TimetrackerBundle\Entity\Activity;
-use Dime\TimetrackerBundle\Form\ActivityType;
+use Dime\TimetrackerBundle\Entity\Activity,
+    Dime\TimetrackerBundle\Form\ActivityType;
 
 class ActivitiesController extends DimeController
 {

@@ -2,9 +2,8 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use FOS\RestBundle\View\View;
-use Dime\TimetrackerBundle\Entity\Timeslice;
-use Dime\TimetrackerBundle\Form\TimesliceType;
+use Dime\TimetrackerBundle\Entity\Timeslice,
+    Dime\TimetrackerBundle\Form\TimesliceType;
 
 class TimeslicesController extends DimeController
 {
