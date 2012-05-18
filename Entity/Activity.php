@@ -36,7 +36,7 @@ class Activity {
      * @var \Dime\TimetrackerBundle\Entity\Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="activities")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true)
      */
     protected $customer;
 
@@ -44,7 +44,7 @@ class Activity {
      * @var \Dime\TimetrackerBundle\Entity\Project $project
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="activities")
-     * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=true)
      */
     protected $project;
 
@@ -52,7 +52,7 @@ class Activity {
      * @var \Dime\TimetrackerBundle\Entity\Service $service
      *
      * @ORM\ManyToOne(targetEntity="Service", inversedBy="activities")
-     * @ORM\JoinColumn(name="service_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="service_id", referencedColumnName="id", nullable=true)
      */
     protected $service;
 
