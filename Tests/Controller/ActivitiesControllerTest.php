@@ -107,6 +107,18 @@ class ActivitiesControllerTest extends DimeTestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
+    public function testPostActivityParsingAction() {
+        $response = $this->request('POST', '/api/activities', '{"parse": "10:00-12:00 @cc/CWE2011:testing new magic oneline input"}');
+        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertEquals($content['description'], 'new magic oneline input');
+        $this->assertEquals($content['customer']['alias'], 'CC');
+        $this->assertEquals($content['project']['name'], 'CWE2011');
+        $this->assertEquals($content['service']['name'], 'testing');
+        $this->assertEquals($content['timeslices'][0]['duration'], 7200);
+    }
+
     public function tearDown()
     {
         parent::tearDown();
