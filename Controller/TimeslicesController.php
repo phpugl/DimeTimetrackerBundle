@@ -18,9 +18,9 @@ class TimeslicesController extends DimeController
     }
 
     /**
-     * get a list of all activitiy TimeSlices
+     * get a list of all timeslices
      *
-     * [GET] /activities/timeslices
+     * [GET] /timeslices
      *
      * @return FOS\RestBundle\View\View
      */
@@ -31,9 +31,9 @@ class TimeslicesController extends DimeController
     }
 
     /**
-     * get an activity timeslice by its id
+     * get an timeslice by its id
      *
-     * [GET] /activities/timeslices/{id}
+     * [GET] /timeslices/{id}
      *
      * @param int $id
      * @return FOS\RestBundle\View\View
@@ -46,18 +46,18 @@ class TimeslicesController extends DimeController
         // check if it exists
         if ($timeslice) {
             // send array
-            $view = $this->createVie($timeslice);
+            $view = $this->createView($timeslice);
         } else {
             // activity TimeSlice does not exists send 404
             $view = $this->createView("Timeslice does not exist.", 404);
         }
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $view;
     }
 
     /**
-     * create a new activity timeslice
+     * create a new timeslice
      *
-     * [POST] /activities/timeslices
+     * [POST] /timeslices
      *
      * @return FOS\RestBundle\View\View
      */
@@ -76,9 +76,9 @@ class TimeslicesController extends DimeController
     }
 
     /**
-     * modify an activity timeslice by its id
+     * modify a timeslice by its id
      *
-     * [PUT] /activities/timeslices/{id}
+     * [PUT] /timeslices/{id}
      *
      * @param string $id
      * @return FOS\RestBundle\View\View
@@ -103,8 +103,8 @@ class TimeslicesController extends DimeController
     }
 
     /**
-     * delete an activity timeslice by its id
-     * [DELETE] /activities/timeslices/{id}
+     * delete a timeslice by its id
+     * [DELETE] /timeslices/{id}
      *
      * @param int $id
      * @return FOS\RestBundle\View\View
