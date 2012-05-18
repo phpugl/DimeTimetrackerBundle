@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DimeTestCase extends WebTestCase
 {
+    protected $client;
+
     public function setUp()
     {
         $this->client = static::createClient();
@@ -16,11 +18,12 @@ class DimeTestCase extends WebTestCase
      */
     protected function request(
         $method,
-        $url,
+        $uri,
         $content = null,
-        $parameters = array(), 
-        $files = array(),
-        $server = null
+        array $parameters = array(),
+        array $files = array(),
+        array $server = null,
+        $changeHistory = true
     ) {
         if (is_null($server)) {
             $server = array('PHP_AUTH_USER' => 'admin', 'PHP_AUTH_PW' => 'kitten');
@@ -28,7 +31,7 @@ class DimeTestCase extends WebTestCase
         $this->client->restart();
 
         // make get request with authentifaction 
-        $this->client->request($method, $url, $parameters, $files, $server, $content);
+        $this->client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
         return $this->client->getResponse();
     }
 }
