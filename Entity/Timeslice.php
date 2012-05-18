@@ -35,7 +35,7 @@ class Timeslice
     /**
      * @var integer $duration (in seconds)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=false)
      */
     protected $duration;
 
@@ -58,7 +58,7 @@ class Timeslice
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
