@@ -4,11 +4,6 @@ namespace Dime\TimetrackerBundle\Tests\Controller;
 
 class ActivitiesControllerTest extends DimeTestCase
 {
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
-
     public function testAuthentification()
     {
         $this->assertEquals(401, $this->request('GET', '/api/activities', null, array(), array(), array())->getStatusCode());
