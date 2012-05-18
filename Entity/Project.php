@@ -46,6 +46,13 @@ class Project {
     protected $name;
 
     /**
+     * @var string $alias
+     *
+     * @ORM\Column(type="string", unique=true, length=10)
+     */
+    protected $alias;
+
+    /**
      * @var Date $startedAt
      *
      * @SerializedName("startetAt")
@@ -136,6 +143,28 @@ class Project {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     * @return Project
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**

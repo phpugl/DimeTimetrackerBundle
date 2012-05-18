@@ -14,13 +14,13 @@ class Customer {
 
     /**
      * @var integer $id
-     * 
+     *
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @var integer $user
      *
@@ -28,46 +28,24 @@ class Customer {
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected $user;
-    
+
     /**
      * @var string $name
      *
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
-    
+
     /**
      * @var string $alias
      *
      * @ORM\Column(type="string", unique=true, length=10)
      */
-    protected $alias;              
+    protected $alias;
 
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Customer
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -85,11 +63,33 @@ class Customer {
     /**
      * Get user
      *
-     * @return Dime\TimetrackerBundle\Entity\User 
+     * @return Dime\TimetrackerBundle\Entity\User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Customer
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -107,7 +107,7 @@ class Customer {
     /**
      * Get alias
      *
-     * @return string 
+     * @return string
      */
     public function getAlias()
     {

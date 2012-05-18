@@ -37,6 +37,13 @@ class Service {
     protected $name;
 
     /**
+     * @var string $alias
+     *
+     * @ORM\Column(type="string", unique=true, length=10)
+     */
+    protected $alias;
+
+    /**
      * @var string $description
      *
      * @ORM\Column(type="text", nullable=true)
@@ -48,7 +55,7 @@ class Service {
      *
      * @ORM\Column(type="decimal", scale=2, precision=10, nullable=true)
      */
-    protected $rate;              
+    protected $rate;
 
     /**
      * Get id
@@ -58,28 +65,6 @@ class Service {
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set description
-     *
-     * @param text $description
-     * @return Service
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return text
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**
@@ -127,6 +112,50 @@ class Service {
     }
 
     /**
+     * Set alias
+     *
+     * @param string $alias
+     * @return Service
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
+     * Set description
+     *
+     * @param text $description
+     * @return Service
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return text
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Set rate
      *
      * @param decimal $rate
@@ -141,13 +170,13 @@ class Service {
     /**
      * Get rate
      *
-     * @return decimal 
+     * @return decimal
      */
     public function getRate()
     {
         return $this->rate;
     }
-    
+
     /**
      * get service as string
      *

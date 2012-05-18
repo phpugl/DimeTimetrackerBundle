@@ -17,6 +17,7 @@ class LoadProjects extends AbstractFixture implements OrderedFixtureInterface
     {
         $phpugl = new Project();
         $phpugl->setName('CWE2011');
+        $phpugl->setAlias('CWE2011');
         $phpugl->setDescription('PHPUGL Coding Weekend 2011');
         $phpugl->setUser($manager->merge($this->getReference('default-user')));
         $phpugl->setCustomer($manager->merge($this->getReference('default-customer')));
