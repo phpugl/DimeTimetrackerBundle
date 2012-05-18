@@ -11,7 +11,7 @@ class DimeController extends Controller
 {
     protected $currentUser = null;
 
-    protected function createView($data = null, $statuscode = null)
+    protected function createView($data = null, $statuscode = 200)
     {
         $view = new FOSView($data, $statuscode);
 
