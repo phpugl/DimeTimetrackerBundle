@@ -1,3 +1,6 @@
+framework:
+    csrf_protection: false
+
 sensio_framework_extra:
     view: { annotations: false }
     router: { annotations: true }

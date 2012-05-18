@@ -4,11 +4,6 @@ namespace Dime\TimetrackerBundle\Tests\Controller;
 
 class TimeslicesControllerTest extends DimeTestCase
 {
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
-
     public function testAuthentification()
     {
         $this->assertEquals(401, $this->request('GET', '/api/timeslices', null, array(), array(), array())->getStatusCode());
@@ -76,15 +71,15 @@ class TimeslicesControllerTest extends DimeTestCase
             'stoppedAt'   => '2012-02-10 19:30:00',
             'duration'    => '7200'
         )));
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
 
-        $response = $this->request('PUT', '/api/timeslices/' . $id+1, json_encode(array(
+        $response = $this->request('PUT', '/api/timeslices/' . $id+2, json_encode(array(
             'activity'    => '1',
             'startedAt'   => '2012-02-10 19:00:00',
             'stoppedAt'   => '2012-02-10 19:30:00',
             'duration'    => ''
         )));
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode(), $response->getContent());
         
         // check created activity
         $response = $this->request('GET', '/api/timeslices/' . $id);
@@ -97,11 +92,11 @@ class TimeslicesControllerTest extends DimeTestCase
 
         // delete activity
         $response = $this->request('DELETE', '/api/timeslices/' . $id);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
 
         // check if activity still exists*/
         $response = $this->request('GET', '/api/timeslices/' . $id);
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode(), $response->getContent());
     }
 
     public function tearDown()
