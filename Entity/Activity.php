@@ -60,7 +60,7 @@ class Activity {
      * @var \Dime\TimetrackerBundle\Entity\Timeslice $timeSlices
      *
      * @SerializedName("timeslices")
-     * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="persist")
+     * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="all")
      */
     protected $timeslices;
 
