@@ -34,7 +34,7 @@ class Project {
      * @var \Dime\TimetrackerBundle\Entity\Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="projects")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true)
      */
     protected $customer;
 
@@ -48,7 +48,7 @@ class Project {
     /**
      * @var string $alias
      *
-     * @ORM\Column(type="string", unique=true, length=10)
+     * @ORM\Column(type="string", unique=true, length=30)
      */
     protected $alias;
 

@@ -39,7 +39,7 @@ class Customer {
     /**
      * @var string $alias
      *
-     * @ORM\Column(type="string", unique=true, length=10)
+     * @ORM\Column(type="string", unique=true, length=30)
      */
     protected $alias;
 
