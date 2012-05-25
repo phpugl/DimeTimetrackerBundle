@@ -9,8 +9,10 @@ class ActivityRelation extends Parser
 
   public function clean($input)
   {
-    foreach ($this->matches[0] as $token) {
-      $input = trim(str_replace($token, '', $input));
+    if (!empty($this->matches)) {
+      foreach ($this->matches[0] as $token) {
+        $input = trim(str_replace($token, '', $input));
+      }
     }
     return $input;
   }

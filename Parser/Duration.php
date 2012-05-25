@@ -18,7 +18,11 @@ class Duration extends Parser
 
   public function clean($input)
   {
-    return trim(str_replace($this->matches[0], '', $input));
+    if (isset($this->matches[0])) {
+      $input = trim(str_replace($this->matches[0], '', $input));
+    }
+
+    return $input;
   }
 
   public function run($input)

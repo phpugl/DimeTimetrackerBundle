@@ -9,7 +9,7 @@ class ActivityDescription extends Parser
 
   public function clean($input)
   {
-    return trim(str_replace($input, '', $input));
+    return '';
   }
 
   public function run($input)
