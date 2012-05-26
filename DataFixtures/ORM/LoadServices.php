@@ -16,7 +16,7 @@ class LoadServices extends AbstractFixture implements OrderedFixtureInterface
     function load(ObjectManager $manager)
     {
         $consulting = new Service();
-        $consulting->setName('consulting');
+        $consulting->setName('Consulting');
         $consulting->setAlias('consulting');
         $consulting->setRate(80);
         $consulting->setUser($manager->merge($this->getReference('default-user')));
@@ -24,7 +24,7 @@ class LoadServices extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('consulting', $consulting);
 
         $requirements = new Service();
-        $requirements->setName('requirements');
+        $requirements->setName('Requirements');
         $requirements->setAlias('requirements');
         $requirements->setRate(50);
         $requirements ->setUser($manager->merge($this->getReference('default-user')));
@@ -32,7 +32,7 @@ class LoadServices extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('requirements', $requirements);
 
         $development = new Service();
-        $development->setName('development');
+        $development->setName('Development');
         $development->setAlias('development');
         $development->setRate(50);
         $development ->setUser($manager->merge($this->getReference('default-user')));
@@ -40,7 +40,7 @@ class LoadServices extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('development', $development);
 
         $testing = new Service();
-        $testing->setName('testing');
+        $testing->setName('Testing');
         $testing->setAlias('testing');
         $testing->setRate(30);
         $testing ->setUser($manager->merge($this->getReference('default-user')));
@@ -48,7 +48,7 @@ class LoadServices extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('testing', $testing);
 
         $documentation = new Service();
-        $documentation->setName('documentation');
+        $documentation->setName('Documentation');
         $documentation->setAlias('documentation');
         $documentation->setRate(70);
         $documentation ->setUser($manager->merge($this->getReference('default-user')));
@@ -56,31 +56,31 @@ class LoadServices extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('documentation', $documentation);
 
         $projectManagement = new Service();
-        $projectManagement->setName('project management');
-        $projectManagement->setAlias('project_management');
+        $projectManagement->setName('Project management');
+        $projectManagement->setAlias('project-management');
         $projectManagement->setRate(60);
         $projectManagement ->setUser($manager->merge($this->getReference('default-user')));
         $manager->persist($projectManagement);
         $this->addReference('projectManagement', $projectManagement);
 
         $qualityAssurance = new Service();
-        $qualityAssurance->setName('quality assurance');
-        $qualityAssurance->setAlias('quality_assurance');
+        $qualityAssurance->setName('Quality assurance');
+        $qualityAssurance->setAlias('quality-assurance');
         $qualityAssurance->setRate(50);
         $qualityAssurance ->setUser($manager->merge($this->getReference('default-user')));
         $manager->persist($qualityAssurance);
         $this->addReference('qualityAssurance', $qualityAssurance);
 
         $systemAnalysis = new Service();
-        $systemAnalysis->setName('system analysis');
-        $systemAnalysis->setAlias('system_analysis');
+        $systemAnalysis->setName('System analysis');
+        $systemAnalysis->setAlias('system-analysis');
         $systemAnalysis->setRate(80);
         $systemAnalysis ->setUser($manager->merge($this->getReference('default-user')));
         $manager->persist($systemAnalysis);
         $this->addReference('systemAnalysis', $systemAnalysis);
 
         $support = new Service();
-        $support->setName('support');
+        $support->setName('Support');
         $support->setAlias('support');
         $support->setRate(60);
         $support ->setUser($manager->merge($this->getReference('default-user')));
@@ -88,7 +88,7 @@ class LoadServices extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('support', $support);
 
         $infrastructure = new Service();
-        $infrastructure->setName('infrastructure');
+        $infrastructure->setName('Infrastructure');
         $infrastructure->setAlias('infrastructure');
         $infrastructure->setRate(50);
         $infrastructure ->setUser($manager->merge($this->getReference('default-user')));

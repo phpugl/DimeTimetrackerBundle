@@ -128,12 +128,12 @@ class ActivitiesController extends DimeController
             }
 
             if (isset($results['project'])) {
-                $project = $this->getProjectRepository()->findOneByName($results['project']);
+                $project = $this->getProjectRepository()->findOneByAlias($results['project']);
                 $activity->setProject($project);
             }
 
             if (isset($results['service'])) {
-                $service = $this->getServiceRepository()->findOneByName($results['service']);
+                $service = $this->getServiceRepository()->findOneByAlias($results['service']);
                 $activity->setService($service);
             }
 
