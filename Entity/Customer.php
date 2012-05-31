@@ -3,10 +3,13 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
+ * @UniqueEntity("alias")
  * @ORM\Table(name="customers")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\CustomerRepository")
  */
@@ -32,6 +35,7 @@ class Customer {
     /**
      * @var string $name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
@@ -39,6 +43,7 @@ class Customer {
     /**
      * @var string $alias
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", unique=true, length=30)
      */
     protected $alias;

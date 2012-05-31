@@ -3,11 +3,14 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
+ * @UniqueEntity("alias");
  * @ORM\Table(name="projects")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ProjectRepository")
  */

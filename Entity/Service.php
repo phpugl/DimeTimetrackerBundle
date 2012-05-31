@@ -3,10 +3,13 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Dime\TimetrackerBundle\Entity\Service
  *
+ * @UniqueEntity("alias")
  * @ORM\Table(name="services")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ServiceRepository")
  */
@@ -22,16 +25,18 @@ class Service {
     protected $id;
 
     /**
-     * @var integer $user
+     * @var \Dime\TimetrackerBundle\Entity\User $user
      *
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="User", inversedBy="Services")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected $user;
 
     /**
-     * @var string $description
+     * @var string $name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=true)
      */
     protected $name;
@@ -39,6 +44,7 @@ class Service {
     /**
      * @var string $alias
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", unique=true, length=30)
      */
     protected $alias;
@@ -46,6 +52,7 @@ class Service {
     /**
      * @var string $description
      *
+     * @Type("string")
      * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
@@ -53,6 +60,7 @@ class Service {
     /**
      * @var float $rate
      *
+     * @Type("double")
      * @ORM\Column(type="decimal", scale=2, precision=10, nullable=true)
      */
     protected $rate;
