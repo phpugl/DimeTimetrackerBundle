@@ -4,6 +4,7 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use \DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
@@ -27,6 +28,7 @@ class Timeslice
     /**
      * @var \Dime\TimetrackerBundle\Entity\Activity $activity
      *
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Activity", inversedBy="timeslices", cascade="persist")
      * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      */
@@ -40,16 +42,18 @@ class Timeslice
     protected $duration;
 
     /**
-     * @var datetime $started_at
+     * @var datetime $startedAt
      *
+     * @Assert\DateTime()
      * @SerializedName("startedAt")
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     private $startedAt;
 
     /**
-     * @var datetime $stopped_at
+     * @var datetime $stoppedAt
      *
+     * @Assert\DateTime()
      * @SerializedName("stoppedAt")
      * @ORM\Column(name="stopped_at", type="datetime", nullable=true)
      */

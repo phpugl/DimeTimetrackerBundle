@@ -42,9 +42,9 @@ class Project {
     protected $customer;
 
     /**
-     * @var string $duration
+     * @var string $name
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
@@ -52,7 +52,7 @@ class Project {
     /**
      * @var string $alias
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", unique=true, length=30)
      */
     protected $alias;
@@ -60,6 +60,7 @@ class Project {
     /**
      * @var Date $startedAt
      *
+     * @Assert\Date()
      * @SerializedName("startetAt")
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
@@ -68,14 +69,16 @@ class Project {
     /**
      * @var Date $stoppedAt
      *
+     * @Assert\Date()
      * @SerializedName("stoppedAt")
      * @ORM\Column(name="stopped_at", type="datetime", nullable=true)
      */
     protected $stoppedAt;
 
     /**
-     * @var Date $stoppedAt
+     * @var Date $deadline
      *
+     * @Assert\Date()
      * @ORM\Column(name="deadline", type="datetime", nullable=true)
      */
     protected $deadline;
