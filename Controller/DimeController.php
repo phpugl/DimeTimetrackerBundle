@@ -81,7 +81,7 @@ class DimeController extends Controller
               }
             }
             // return error string from form
-            $view = $this->createView(array('error' => $errors), 400);
+            $view = $this->createView(array('errors' => $errors), 400);
         }
         
         return $view;
