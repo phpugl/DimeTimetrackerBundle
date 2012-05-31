@@ -34,7 +34,7 @@ class DimeController extends Controller
      *
      * @return FOS\RestBundle\View\View
      */
-    protected function saveForm($form, $data)
+    protected function saveForm(\Symfony\Component\Form\Form $form, $data)
     {
         // clean array from non existing keys to avoid extra data 
         foreach ($data as $key => $value) {
@@ -67,8 +67,21 @@ class DimeController extends Controller
             // push back the new object
             $view = $this->createView($entity, 200);
         } else {
+            $errors = array();
+
+            foreach ($form as $child) {
+              if ($child->hasErrors()) {
+                $text = '';
+                foreach ($child->getErrors() as $error) {
+                  if (!empty($text)) $text .= "\n";
+                  $text .= $error->getMessage();
+                }
+
+                $errors[$child->getName()] = $text;
+              }
+            }
             // return error string from form
-            $view = $this->createView(array('error' => $form->getErrorsAsString()), 400);
+            $view = $this->createView(array('error' => $errors), 400);
         }
         
         return $view;
