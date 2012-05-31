@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\SerializerBundle\Annotation\Type;
 
 /**
  * Dime\TimetrackerBundle\Entity\Service
