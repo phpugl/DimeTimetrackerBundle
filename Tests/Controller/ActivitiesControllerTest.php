@@ -115,7 +115,7 @@ class ActivitiesControllerTest extends DimeTestCase
         $this->assertEquals($content['description'], 'new magic oneline input');
         $this->assertEquals($content['customer']['alias'], 'CC');
         $this->assertEquals($content['project']['name'], 'CWE2011');
-        $this->assertEquals($content['service']['name'], 'testing');
+        $this->assertEquals($content['service']['name'], 'Testing');
         $this->assertEquals($content['timeslices'][0]['duration'], 7200);
     }
 

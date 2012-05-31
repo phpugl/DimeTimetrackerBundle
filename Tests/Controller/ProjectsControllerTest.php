@@ -43,6 +43,7 @@ class ProjectsControllerTest extends DimeTestCase
         /* create new project */
         $response = $this->request('POST', '/api/projects', json_encode(array(
             'name'          => 'Test',
+            'alias'         => 'test',
             'description'   => 'Project test description',
             'rate'          => 555,
             'customer'      => 1,
@@ -69,6 +70,7 @@ class ProjectsControllerTest extends DimeTestCase
         /* modify project */
         $response = $this->request('PUT', '/api/projects/' . $id, json_encode(array(
             'name'          => 'Modified Test',
+            'alias'         => 'test',
             'description'   => 'Project test description update',
             'rate'          => 111,
             'customer'      => 1,
@@ -78,6 +80,7 @@ class ProjectsControllerTest extends DimeTestCase
 
         $response = $this->request('PUT', '/api/projects/' . ($id+1), json_encode(array(
             'name'          => 'Modified Test',
+            'alias'         => 'test',
             'description'   => 'Project test description update',
             'rate'          => 111,
             'customer'      => 1,

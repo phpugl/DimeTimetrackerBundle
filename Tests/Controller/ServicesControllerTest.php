@@ -19,7 +19,7 @@ class ServicesControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find services');
-        $this->assertEquals($data[0]['name'], 'consulting', 'expected to find "consulting" first');
+        $this->assertEquals($data[0]['name'], 'Consulting', 'expected to find "consulting" first');
     }
 
     public function testGetServiceAction()
@@ -35,13 +35,13 @@ class ServicesControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find services');
-        $this->assertEquals($data['name'], 'consulting', 'expected to find "consulting"');
+        $this->assertEquals($data['name'], 'Consulting', 'expected to find "consulting"');
     }
 
     public function testPostPutDeleteServiceActions()
     {
         /* create new service */
-        $response = $this->request('POST', '/api/services', '{"name": "Test", "rate": 555, "foo": "bar"}');
+        $response = $this->request('POST', '/api/services', '{"name": "Test", "alias": "test", "rate": 555}');
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
 
         // convert json to array
@@ -60,10 +60,10 @@ class ServicesControllerTest extends DimeTestCase
         $this->assertEquals($data['rate'], 555, 'expected to find rate "555"');
 
         /* modify service */
-        $response = $this->request('PUT', '/api/services/' . $id, '{"name": "Modified Test", "rate": 111, "foo": "bar"}');
+        $response = $this->request('PUT', '/api/services/' . $id, '{"name": "Modified Test", "alias": "test", "rate": 111, "foo": "bar"}');
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
 
-        $response = $this->request('PUT', '/api/services/' . ($id+1), '{"name": "Modified Test", "rate": 111, "foo": "bar"}');
+        $response = $this->request('PUT', '/api/services/' . ($id+1), '{"name": "Modified Test", "alias": "test", "rate": 111, "foo": "bar"}');
         $this->assertEquals(404, $response->getStatusCode());
 
         /* check created service */

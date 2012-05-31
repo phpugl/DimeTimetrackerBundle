@@ -69,6 +69,16 @@ class DimeController extends Controller
         } else {
             $errors = array();
 
+            $text = '';
+            foreach ($form->getErrors() as $error) {
+              if (!empty($text)) $text .= "\n";
+              $text .= $error->getMessage();
+            }
+
+            if (!empty($text)) {
+              $errors['global'] = $text;
+            }
+
             foreach ($form as $child) {
               if ($child->hasErrors()) {
                 $text = '';

@@ -5,7 +5,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\SerializerBundle\Annotation\Type;
 
 /**
  * Dime\TimetrackerBundle\Entity\Service
@@ -28,7 +27,6 @@ class Service {
     /**
      * @var \Dime\TimetrackerBundle\Entity\User $user
      *
-     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="User", inversedBy="Services")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
@@ -53,7 +51,6 @@ class Service {
     /**
      * @var string $description
      *
-     * @Type("string")
      * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
@@ -61,7 +58,6 @@ class Service {
     /**
      * @var float $rate
      *
-     * @Type("double")
      * @ORM\Column(type="decimal", scale=2, precision=10, nullable=true)
      */
     protected $rate;
