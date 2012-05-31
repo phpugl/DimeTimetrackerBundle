@@ -102,51 +102,37 @@ class ActivitiesController extends DimeController
 
         if (isset($data['parse'])) {
             // Run parser
-            $content = $data['parse'];
-            $results = array();
-            $parsers = array(
-                '\Dime\TimetrackerBundle\Parser\TimeRange',
-                '\Dime\TimetrackerBundle\Parser\Duration',
-                '\Dime\TimetrackerBundle\Parser\ActivityRelation',
-                '\Dime\TimetrackerBundle\Parser\ActivityDescription'
-            );
-
-            foreach ($parsers as $parser) {
-              $p = new $parser();
-              $results = $p->setResult($results)->run($content);
-              $content = $p->clean($content);
-              unset($p);
-            }
+            $result = $this->parse($data['parse']);            
 
             // create new activity and timeslice entity
             $activity = new Activity();
             $activity->setUser($this->getCurrentUser());
 
-            if (isset($results['customer'])) {
-                $customer = $this->getCustomerRepository()->findOneByAlias($results['customer']);
+            if (isset($result['customer'])) {
+                $customer = $this->getCustomerRepository()->findOneByAlias($result['customer']);
                 $activity->setCustomer($customer);
             }
 
-            if (isset($results['project'])) {
-                $project = $this->getProjectRepository()->findOneByAlias($results['project']);
+            if (isset($result['project'])) {
+                $project = $this->getProjectRepository()->findOneByAlias($result['project']);
                 $activity->setProject($project);
             }
 
-            if (isset($results['service'])) {
-                $service = $this->getServiceRepository()->findOneByAlias($results['service']);
+            if (isset($result['service'])) {
+                $service = $this->getServiceRepository()->findOneByAlias($result['service']);
                 $activity->setService($service);
             }
 
-            if (isset($results['description'])) {
-                $activity->setDescription($results['description']);
+            if (isset($result['description'])) {
+                $activity->setDescription($result['description']);
             }
 
             // create timeslice
-            if (isset($results['range']) || isset($results['duration'])) {
+            if (isset($result['range']) || isset($result['duration'])) {
                 $timeslice = new Timeslice();
 
-                if (isset($results['range'])) {
-                    $range = $results['range'];
+                if (isset($result['range'])) {
+                    $range = $result['range'];
                     if (empty($range['stop'])) {
                         $timeslice->setStartedAt(new \DateTime($range['start']));
                         $timeslice->setStoppedAt(new \DateTime('now'));
@@ -159,13 +145,13 @@ class ActivitiesController extends DimeController
                     }
                 }
 
-                if (empty($results['duration']['sign'])) {
-                    $timeslice->setDuration($results['duration']['number']);
+                if (empty($result['duration']['sign'])) {
+                    $timeslice->setDuration($result['duration']['number']);
                 } else {
-                    if ($results['duration']['sign'] == '-') {
-                        $timeslice->setDuration($timeslice->getCurrentDuration() - $results['duration']['number']);
+                    if ($result['duration']['sign'] == '-') {
+                        $timeslice->setDuration($timeslice->getCurrentDuration() - $result['duration']['number']);
                     } else {
-                        $timeslice->setDuration($timeslice->getCurrentDuration() + $results['duration']['number']);
+                        $timeslice->setDuration($timeslice->getCurrentDuration() + $result['duration']['number']);
                     }
                 }
 
@@ -242,5 +228,29 @@ class ActivitiesController extends DimeController
             $view = $this->createView("Activity does not exist.", 404);
         }
         return $view;
+    }
+
+    /**
+     * Parse data and create an array output
+     * @param string $data
+     * @return array
+     */
+    protected function parse($data) {
+      $result = array();
+      $parsers = array(
+          '\Dime\TimetrackerBundle\Parser\TimeRange',
+          '\Dime\TimetrackerBundle\Parser\Duration',
+          '\Dime\TimetrackerBundle\Parser\ActivityRelation',
+          '\Dime\TimetrackerBundle\Parser\ActivityDescription'
+      );
+
+      foreach ($parsers as $parser) {
+        $p = new $parser();
+        $result = $p->setResult($result)->run($data);
+        $data = $p->clean($data);
+        unset($p);
+      }
+
+      return $result;
     }
 }
