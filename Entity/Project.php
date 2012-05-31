@@ -44,6 +44,7 @@ class Project {
     /**
      * @var string $duration
      *
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
@@ -51,6 +52,7 @@ class Project {
     /**
      * @var string $alias
      *
+     * @Assert\NotBlank
      * @ORM\Column(type="string", unique=true, length=30)
      */
     protected $alias;
