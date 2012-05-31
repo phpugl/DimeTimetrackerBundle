@@ -72,6 +72,9 @@ class TimeslicesController extends DimeController
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
 
+        // parse duration
+        $data = $this->process($data);
+
         return $this->saveForm($form, $data);
     }
 
@@ -90,10 +93,15 @@ class TimeslicesController extends DimeController
 
         // check if it exists
         if ($timeslice) {
+            // convert json to assoc array from request content
+            $data = json_decode($this->getRequest()->getContent(), true);
+
+            // parse duration
+            $data = $this->process($data);
+
             // create form, decode request and save it if valid
             $view = $this->saveForm(
-                $this->createForm(new TimesliceType(), $timeslice),
-                json_decode($this->getRequest()->getContent(), true)
+                $this->createForm(new TimesliceType(), $timeslice), $data
             );
         } else {
             // activity does not exists send 404
@@ -128,5 +136,27 @@ class TimeslicesController extends DimeController
             $view = $this->createView("Timeslice does not exist.", 404);
         }
         return $view;
+    }
+
+    protected function process(array $data) {
+      if (isset($data['formatDuration'])) {
+        $parser = new \Dime\TimetrackerBundle\Parser\Duration();
+
+        $result = $parser->run($data['formatDuration']);
+
+        if (!empty($result)) {
+          $data['duration'] = $result['duration']['number'];
+        }
+      }
+
+      if (isset($data['startedAt-date'])) {
+
+      }
+
+      if (isset($data['stoppedAt-date'])) {
+
+      }
+
+      return $data;
     }
 }
