@@ -39,7 +39,7 @@ class Timeslice
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    protected $duration;
+    protected $duration = 0;
 
     /**
      * @var datetime $startedAt

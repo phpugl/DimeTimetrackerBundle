@@ -128,9 +128,11 @@ class ActivitiesController extends DimeController
             }
 
             // create timeslice
+            $timeslice = new Timeslice();
+            $timeslice->setActivity($activity);
+            $activity->addTimeslice($timeslice);
             if (isset($result['range']) || isset($result['duration'])) {
-                $timeslice = new Timeslice();
-
+                // process time range
                 if (isset($result['range'])) {
                     $range = $result['range'];
                     if (empty($range['stop'])) {
@@ -145,18 +147,21 @@ class ActivitiesController extends DimeController
                     }
                 }
 
-                if (empty($result['duration']['sign'])) {
-                    $timeslice->setDuration($result['duration']['number']);
-                } else {
-                    if ($result['duration']['sign'] == '-') {
-                        $timeslice->setDuration($timeslice->getCurrentDuration() - $result['duration']['number']);
-                    } else {
-                        $timeslice->setDuration($timeslice->getCurrentDuration() + $result['duration']['number']);
-                    }
+                // process duration
+                if (isset($result['duration'])) {
+                  if (empty($result['duration']['sign'])) {
+                      $timeslice->setDuration($result['duration']['number']);
+                  } else {
+                      if ($result['duration']['sign'] == '-') {
+                          $timeslice->setDuration($timeslice->getCurrentDuration() - $result['duration']['number']);
+                      } else {
+                          $timeslice->setDuration($timeslice->getCurrentDuration() + $result['duration']['number']);
+                      }
+                  }
                 }
-
-                $timeslice->setActivity($activity);
-                $activity->addTimeslice($timeslice);
+            } else {
+                // start a new timeslice with date 'now'
+                $timeslice->setStartedAt(new \DateTime('now'));
             }
 
             // save change to database
