@@ -73,6 +73,12 @@ class ActivityRelationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('service', $result['service']);
         $this->assertArrayHasKey('customer', $result);
         $this->assertEquals('customer', $result['customer']);
+
+        // Empty
+        $parser->setResult(array());
+        $result = $parser->run('');
+        $this->assertEmpty($result);
+
     }
 
     public function testClean() {

@@ -47,6 +47,11 @@ class TimeRangeTest extends \PHPUnit_Framework_TestCase
         $result = $parser->run('-12');
         $this->assertEquals('', $result['range']['start']);
         $this->assertEquals('12:00', $result['range']['stop']);
+
+        // Empty
+        $parser->setResult(array());
+        $result = $parser->run('');
+        $this->assertEmpty($result);
     }
 
     public function testClean() {

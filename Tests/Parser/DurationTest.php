@@ -45,6 +45,11 @@ class DurationTest extends \PHPUnit_Framework_TestCase
         $result = $parser->run('-30m');
         $this->assertEquals('-', $result['duration']['sign']);
         $this->assertEquals(7200, $result['duration']['number']);
+
+        // Empty
+        $parser->setResult(array());
+        $result = $parser->run('');
+        $this->assertEmpty($result);
     }
 
     public function testClean() {
