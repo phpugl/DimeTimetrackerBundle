@@ -132,6 +132,51 @@ class Project {
     }
 
     /**
+     * Set user
+     *
+     * @param Dime\TimetrackerBundle\Entity\User $user
+     * @return Project
+     */
+    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return Dime\TimetrackerBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param integer $customer
+     * @return Project
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return Dime\TimetrackerBundle\Entity\Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+
+    /**
      * Set name
      *
      * @param string $name
@@ -350,74 +395,6 @@ class Project {
     {
         return $this->rate;
     }
-
-    /**
-     * Set user
-     *
-     * @param Dime\TimetrackerBundle\Entity\User $user
-     * @return Project
-     */
-    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return Dime\TimetrackerBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set customer
-     *
-     * @param integer $customer
-     * @return Project
-     */
-    public function setCustomer($customer)
-    {
-        $this->customer = $customer;
-        return $this;
-    }
-
-    /**
-     * Get customer
-     *
-     * @return Dime\TimetrackerBundle\Entity\Customer
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    /**
-     * Export project to array
-     *
-     * @todo should be generated automatically
-     * @return array
-     */
-    public function toArray()
-    {
-        return array(
-            'id'          => $this->getId(),
-            'name'        => $this->getName(),
-            'description' => $this->getDescription(),
-            'rate'        => $this->getRate(),
-            'startedAt'   => $this->getStartedAt(),
-            'stoppedAt'   => $this->getStoppedAt(),
-            'deadline'    => $this->getDeadline(),
-            'budgetPrice' => $this->getBudgetPrice(),
-            'fixedPrice'  => $this->getFixedPrice(),
-            'budgetTime'  => $this->getBudgetTime(),
-            'customer'    => $this->getCustomer()
-        );
-    }
-
     /**
      * get project as string
      *
