@@ -2,7 +2,6 @@
 namespace Dime\TimetrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
@@ -10,8 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\UserRepository")
  */
-class User {
-
+class User
+{
     /**
      * @var integer $id
      *
@@ -44,28 +43,6 @@ class User {
     protected $email;
 
     /**
-     * get user as string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        $user = trim($this->getFirstname() . ' ' . $this->getLastname());
-        if ($this->hasEmail())
-        {
-            $user .= empty($user) ? $this->getEmail() : ' (' . $this->getEmail() . ')';
-        }
-
-        if (empty($user))
-        {
-            $user = $this->getId();
-        }
-
-        return $user;
-    }
-              
-
-    /**
      * Get id
      *
      * @return integer
@@ -78,12 +55,13 @@ class User {
     /**
      * Set firstname
      *
-     * @param string $firstname
+     * @param  string $firstname
      * @return User
      */
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
+
         return $this;
     }
 
@@ -100,12 +78,13 @@ class User {
     /**
      * Set lastname
      *
-     * @param string $lastname
+     * @param  string $lastname
      * @return User
      */
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
+
         return $this;
     }
 
@@ -122,12 +101,13 @@ class User {
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string $email
      * @return User
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -145,10 +125,29 @@ class User {
     /**
      * Get email
      *
-     * @return email
+     * @return string
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * get user as string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $user = trim($this->getFirstname() . ' ' . $this->getLastname());
+        if ($this->hasEmail()) {
+            $user .= empty($user) ? $this->getEmail() : ' (' . $this->getEmail() . ')';
+        }
+
+        if (empty($user)) {
+            $user = $this->getId();
+        }
+
+        return $user;
     }
 }

@@ -2,7 +2,8 @@
 
 namespace Dime\TimetrackerBundle\Entity;
 
-use \DateTime;
+use DateTime;
+use Dime\TimetrackerBundle\Entity\Activity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
@@ -26,7 +27,7 @@ class Timeslice
     private $id;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\Activity $activity
+     * @var Activity $activity
      *
      * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Activity", inversedBy="timeslices", cascade="persist")
@@ -72,19 +73,20 @@ class Timeslice
     /**
      * Set activity
      *
-     * @param Dime\TimetrackerBundle\Entity\Activity $activity
-     * @return Activity
+     * @param  Activity  $activity
+     * @return Timeslice
      */
-    public function setActivity($activity)
+    public function setActivity(Activity $activity)
     {
         $this->activity = $activity;
+
         return $this;
     }
 
     /**
      * Get activity
      *
-     * @return Dime\TimetrackerBundle\Entity\Activity
+     * @return Activity
      */
     public function getActivity()
     {
@@ -94,12 +96,13 @@ class Timeslice
     /**
      * Set duration
      *
-     * @param integer $duration
-     * @return Activity
+     * @param  integer   $duration
+     * @return Timeslice
      */
     public function setDuration($duration)
     {
         $this->duration = $duration;
+
         return $this;
     }
 
@@ -116,23 +119,23 @@ class Timeslice
     /**
      * Set started_at
      *
-     * @param datetime $startedAt
+     * @param  DateTime  $startedAt
      * @return Timeslice
      */
     public function setStartedAt($startedAt)
     {
-        if (!$startedAt instanceof DateTime && !empty($startedAt))
-        {
+        if (!$startedAt instanceof DateTime && !empty($startedAt)) {
             $startedAt = new DateTime($startedAt);
         }
         $this->startedAt = $startedAt;
+
         return $this;
     }
 
     /**
      * Get started_at
      *
-     * @return datetime
+     * @return DateTime
      */
     public function getStartedAt()
     {
@@ -142,23 +145,23 @@ class Timeslice
     /**
      * Set stopped_at
      *
-     * @param datetime $stoppedAt
+     * @param  DateTime  $stoppedAt
      * @return Timeslice
      */
     public function setStoppedAt($stoppedAt)
     {
-        if (!$stoppedAt instanceof DateTime && !empty($stoppedAt))
-        {
+        if (!$stoppedAt instanceof DateTime && !empty($stoppedAt)) {
             $stoppedAt = new DateTime($stoppedAt);
         }
         $this->stoppedAt = $stoppedAt;
+
         return $this;
     }
 
     /**
      * Get stopped_at
      *
-     * @return datetime
+     * @return DateTime
      */
     public function getStoppedAt()
     {
@@ -166,17 +169,18 @@ class Timeslice
     }
 
     /**
-     * Autogenerate duration if empty
+     * Auto generate duration if empty
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
-     * @return Activity
+     * @return Timeslice
      */
     public function updateDurationOnEmpty()
     {
         if (empty($this->duration) && !empty($this->startedAt) && !empty($this->stoppedAt)) {
             $this->duration = abs($this->stoppedAt->getTimestamp() - $this->startedAt->getTimestamp());
         }
+
         return $this;
     }
 
@@ -199,6 +203,7 @@ class Timeslice
             }
 
             $duration = $this->getStartedAt()->diff($end);
+
             return $duration->format('%a') * 24 * 60 * 60
                 + $duration->format('%h') * 60 * 60
                 + $duration->format('%i') * 60;

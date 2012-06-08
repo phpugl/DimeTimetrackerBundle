@@ -1,8 +1,8 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
+use Dime\TimetrackerBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="customers")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\CustomerRepository")
  */
-class Customer {
-
+class Customer
+{
     /**
      * @var integer $id
      *
@@ -25,7 +25,7 @@ class Customer {
     protected $id;
 
     /**
-     * @var integer $user
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="customers")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -56,19 +56,20 @@ class Customer {
     /**
      * Set user
      *
-     * @param Dime\TimetrackerBundle\Entity\User $user
+     * @param  User     $user
      * @return Customer
      */
-    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Dime\TimetrackerBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -78,12 +79,13 @@ class Customer {
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string   $name
      * @return Customer
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -100,12 +102,13 @@ class Customer {
     /**
      * Set alias
      *
-     * @param string $alias
+     * @param  string   $alias
      * @return Customer
      */
     public function setAlias($alias)
     {
         $this->alias = $alias;
+
         return $this;
     }
 
@@ -127,8 +130,7 @@ class Customer {
     public function __toString()
     {
         $customer = $this->getName();
-        if (empty($customer))
-        {
+        if (empty($customer)) {
             $customer = $this->getId();
         }
 

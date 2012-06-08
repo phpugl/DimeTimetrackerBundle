@@ -2,15 +2,17 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use Dime\TimetrackerBundle\Entity\Project,
-    Dime\TimetrackerBundle\Form\ProjectType;
+use Dime\TimetrackerBundle\Entity\Project;
+use Dime\TimetrackerBundle\Entity\ProjectRepository;
+use Dime\TimetrackerBundle\Form\ProjectType;
+use FOS\RestBundle\View\View;
 
 class ProjectsController extends DimeController
 {
     /**
      * get project repository
      *
-     * @return Dime\TimetrackerBundle\Entity\ProjectRepository
+     * @return ProjectRepository
      */
     protected function getProjectRepository()
     {
@@ -22,11 +24,12 @@ class ProjectsController extends DimeController
      *
      * [GET] /projects
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function getProjectsAction()
     {
         $projects = $this->getProjectRepository();
+
         return $this->createView($projects->findAll());
     }
 
@@ -34,14 +37,14 @@ class ProjectsController extends DimeController
      * get a project
      * [GET] /projects/{id}
      *
-     * @param int id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function getProjectAction($id)
     {
         // find project
         $project = $this->getProjectRepository()->find($id);
-        
+
         // check if exists
         if ($project) {
             // send array
@@ -50,6 +53,7 @@ class ProjectsController extends DimeController
             // project does not exists send 404
             $view = $this->createView("Project does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -57,7 +61,7 @@ class ProjectsController extends DimeController
      * create a new project
      * [POST] /projects
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function postProjectsAction()
     {
@@ -69,7 +73,7 @@ class ProjectsController extends DimeController
 
         // decode json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
-        
+
         // save form and send response
         return $this->saveForm($form, $data);
     }
@@ -78,14 +82,14 @@ class ProjectsController extends DimeController
      * modify project
      * [PUT] /projects/{id}
      *
-     * @param string $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function putProjectsAction($id)
     {
         // find project
         $project = $this->getProjectRepository()->find($id);
-        
+
         // check if exists
         if ($project) {
             // create form, decode request and save it if valid
@@ -93,11 +97,12 @@ class ProjectsController extends DimeController
                 $this->createForm(new ProjectType(), $project),
                 json_decode($this->getRequest()->getContent(), true)
             );
-            
+
         } else {
             // project does not exists send 404
             $view = $this->createView("Project does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -105,14 +110,14 @@ class ProjectsController extends DimeController
      * delete project
      * [DELETE] /projects/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function deleteProjectsAction($id)
     {
         // find project
         $project = $this->getProjectRepository()->find($id);
-        
+
         // check if exists
         if ($project) {
             // remove project
@@ -126,6 +131,7 @@ class ProjectsController extends DimeController
             // project does not exists send 404
             $view = $this->createView("Project does not exist.", 404);
         }
+
         return $view;
     }
 }

@@ -1,7 +1,11 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
-use DateTime;
+use Dime\TimetrackerBundle\Entity\User;
+use Dime\TimetrackerBundle\Entity\Customer;
+use Dime\TimetrackerBundle\Entity\Project;
+use Dime\TimetrackerBundle\Entity\Service;
+use Dime\TimetrackerBundle\Entity\Timeslice;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\SerializerBundle\Annotation\SerializedName;
@@ -13,8 +17,8 @@ use JMS\SerializerBundle\Annotation\SerializedName;
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ActivityRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Activity {
-
+class Activity
+{
     /**
      * @var integer $id
      *
@@ -25,7 +29,7 @@ class Activity {
     protected $id;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\User $user
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="activities")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -33,7 +37,7 @@ class Activity {
     protected $user;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\Customer $customer
+     * @var Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="activities")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true)
@@ -41,7 +45,7 @@ class Activity {
     protected $customer;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\Project $project
+     * @var Project $project
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="activities")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=true)
@@ -49,7 +53,7 @@ class Activity {
     protected $project;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\Service $service
+     * @var Service $service
      *
      * @ORM\ManyToOne(targetEntity="Service", inversedBy="activities")
      * @ORM\JoinColumn(name="service_id", referencedColumnName="id", nullable=true)
@@ -57,7 +61,7 @@ class Activity {
     protected $service;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\Timeslice $timeSlices
+     * @var Timeslice $timeslices
      *
      * @SerializedName("timeslices")
      * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="all")
@@ -89,9 +93,10 @@ class Activity {
     /**
      * Entity constructor
      */
-    public function __construct() {
-	    $this->timeSlices = new ArrayCollection();
-	}
+    public function __construct()
+    {
+        $this->timeslices = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -106,19 +111,20 @@ class Activity {
     /**
      * Set description
      *
-     * @param text $description
+     * @param  string   $description
      * @return Activity
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return text
+     * @return string
      */
     public function getDescription()
     {
@@ -128,12 +134,13 @@ class Activity {
     /**
      * Set rate
      *
-     * @param float $rate
+     * @param  float    $rate
      * @return Activity
      */
     public function setRate($rate)
     {
         $this->rate = $rate;
+
         return $this;
     }
 
@@ -150,12 +157,13 @@ class Activity {
     /**
      * Set rateReference
      *
-     * @param string $rateReference
+     * @param  string   $rateReference
      * @return Activity
      */
     public function setRateReference($rateReference)
     {
         $this->rateReference = $rateReference;
+
         return $this;
     }
 
@@ -172,19 +180,20 @@ class Activity {
     /**
      * Set user
      *
-     * @param Dime\TimetrackerBundle\Entity\User $user
+     * @param  User     $user
      * @return Activity
      */
-    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Dime\TimetrackerBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -194,19 +203,20 @@ class Activity {
     /**
      * Set customer
      *
-     * @param Dime\TimetrackerBundle\Entity\Customer $customer
+     * @param  Customer $customer
      * @return Activity
      */
     public function setCustomer($customer)
     {
         $this->customer = $customer;
+
         return $this;
     }
 
     /**
      * Get customer
      *
-     * @return Dime\TimetrackerBundle\Entity\Customer
+     * @return Customer
      */
     public function getCustomer()
     {
@@ -216,19 +226,20 @@ class Activity {
     /**
      * Set project
      *
-     * @param Dime\TimetrackerBundle\Entity\Project $project
+     * @param  Project  $project
      * @return Activity
      */
     public function setProject($project)
     {
         $this->project = $project;
+
         return $this;
     }
 
     /**
      * Get project
      *
-     * @return Dime\TimetrackerBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
@@ -238,19 +249,20 @@ class Activity {
     /**
      * Set service
      *
-     * @param Dime\TimetrackerBundle\Entity\Service $service
+     * @param  Service  $service
      * @return Activity
      */
     public function setService($service)
     {
         $this->service = $service;
+
         return $this;
     }
 
     /**
      * Get service
      *
-     * @return Dime\TimetrackerBundle\Entity\Service
+     * @return Service
      */
     public function getService()
     {
@@ -260,19 +272,20 @@ class Activity {
     /**
      * Add time slice
      *
-     * @param Dime\TimetrackerBundle\Entity\Timeslice $timeslice
+     * @param  Timeslice $timeslice
      * @return Activity
      */
-    public function addTimeslice(\Dime\TimetrackerBundle\Entity\Timeslice $timeslice)
+    public function addTimeslice(Timeslice $timeslice)
     {
         $this->timeslices[] = $timeslice;
+
         return $this;
     }
 
     /**
      * Get time slices
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTimeslices()
     {

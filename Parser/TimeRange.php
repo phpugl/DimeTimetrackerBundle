@@ -16,10 +16,12 @@ class TimeRange extends Parser
   protected $regex = '/((?P<start>\d+(:\d+)?)?(\s+)?-(\s+)?(?P<stop>\d+(:\d+)?)?)/';
   protected $matches = array();
 
-  protected function appendMissingZeros($input) {
+  protected function appendMissingZeros($input)
+  {
     if (strlen($input) > 0 && strstr($input, ':') === false) {
       $input .= ':00';
     }
+
     return $input;
   }
 
@@ -43,6 +45,7 @@ class TimeRange extends Parser
         'stop' => $this->appendMissingZeros($stop)
       );
     }
+
     return $this->result;
   }
 }

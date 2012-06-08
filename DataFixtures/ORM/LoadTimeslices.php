@@ -4,7 +4,6 @@ namespace Dime\TimetrackerBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Dime\TimetrackerBundle\Entity\Activity;
 use Dime\TimetrackerBundle\Entity\Timeslice;
 
 class LoadTimeslices extends AbstractFixture implements OrderedFixtureInterface
@@ -36,15 +35,14 @@ class LoadTimeslices extends AbstractFixture implements OrderedFixtureInterface
     /**
      * loads fixtures to database
      *
-     * @param Doctrine\Common\Persistence\ObjectManager $manager
+     * @param  Doctrine\Common\Persistence\ObjectManager $manager
      * @return LoadActivities
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $baseSlice = new Timeslice();
 
-        foreach ($this->data as $key => $data)
-        {
+        foreach ($this->data as $key => $data) {
             $slice = clone $baseSlice;
             $slice->setActivity($manager->merge($this->getReference($key)))
                   ->setDuration($data['duration'])

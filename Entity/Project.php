@@ -1,8 +1,10 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
+use DateTime;
+use Dime\TimetrackerBundle\Entity\User;
+use Dime\TimetrackerBundle\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
@@ -14,8 +16,8 @@ use JMS\SerializerBundle\Annotation\SerializedName;
  * @ORM\Table(name="projects")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ProjectRepository")
  */
-class Project {
-
+class Project
+{
     /**
      * @var integer $id
      *
@@ -26,7 +28,7 @@ class Project {
     protected $id;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\User $user
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -34,7 +36,7 @@ class Project {
     protected $user;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\Customer $customer
+     * @var Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="projects")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true)
@@ -58,7 +60,7 @@ class Project {
     protected $alias;
 
     /**
-     * @var Date $startedAt
+     * @var DateTime $startedAt
      *
      * @Assert\Date()
      * @SerializedName("startetAt")
@@ -67,7 +69,7 @@ class Project {
     protected $startedAt;
 
     /**
-     * @var Date $stoppedAt
+     * @var DateTime $stoppedAt
      *
      * @Assert\Date()
      * @SerializedName("stoppedAt")
@@ -76,7 +78,7 @@ class Project {
     protected $stoppedAt;
 
     /**
-     * @var Date $deadline
+     * @var DateTime $deadline
      *
      * @Assert\Date()
      * @ORM\Column(name="deadline", type="datetime", nullable=true)
@@ -134,19 +136,20 @@ class Project {
     /**
      * Set user
      *
-     * @param Dime\TimetrackerBundle\Entity\User $user
+     * @param  User    $user
      * @return Project
      */
-    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Dime\TimetrackerBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -156,35 +159,36 @@ class Project {
     /**
      * Set customer
      *
-     * @param integer $customer
+     * @param  Customer $customer
      * @return Project
      */
-    public function setCustomer($customer)
+    public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+
         return $this;
     }
 
     /**
      * Get customer
      *
-     * @return Dime\TimetrackerBundle\Entity\Customer
+     * @return Customer
      */
     public function getCustomer()
     {
         return $this->customer;
     }
 
-
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string  $name
      * @return Project
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -201,12 +205,13 @@ class Project {
     /**
      * Set alias
      *
-     * @param string $alias
+     * @param  string  $alias
      * @return Project
      */
     public function setAlias($alias)
     {
         $this->alias = $alias;
+
         return $this;
     }
 
@@ -223,12 +228,13 @@ class Project {
     /**
      * Set startedAt
      *
-     * @param datetime $startedAt
+     * @param  DateTime $startedAt
      * @return Project
      */
     public function setStartedAt($startedAt)
     {
         $this->startedAt = $startedAt;
+
         return $this;
     }
 
@@ -245,12 +251,13 @@ class Project {
     /**
      * Set stoppedAt
      *
-     * @param datetime $stoppedAt
+     * @param  datetime $stoppedAt
      * @return Project
      */
     public function setStoppedAt($stoppedAt)
     {
         $this->stoppedAt = $stoppedAt;
+
         return $this;
     }
 
@@ -267,12 +274,13 @@ class Project {
     /**
      * Set deadline
      *
-     * @param datetime $deadline
+     * @param  datetime $deadline
      * @return Project
      */
     public function setDeadline($deadline)
     {
         $this->deadline = $deadline;
+
         return $this;
     }
 
@@ -289,19 +297,20 @@ class Project {
     /**
      * Set description
      *
-     * @param text $description
+     * @param  string  $description
      * @return Project
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return text
+     * @return string
      */
     public function getDescription()
     {
@@ -311,12 +320,13 @@ class Project {
     /**
      * Set budgetPrice
      *
-     * @param integer $budgetPrice
+     * @param  integer $budgetPrice
      * @return Project
      */
     public function setBudgetPrice($budgetPrice)
     {
         $this->budgetPrice = $budgetPrice;
+
         return $this;
     }
 
@@ -333,12 +343,13 @@ class Project {
     /**
      * Set fixedPrice
      *
-     * @param integer $fixedPrice
+     * @param  integer $fixedPrice
      * @return Project
      */
     public function setFixedPrice($fixedPrice)
     {
         $this->fixedPrice = $fixedPrice;
+
         return $this;
     }
 
@@ -355,12 +366,13 @@ class Project {
     /**
      * Set budgetTime
      *
-     * @param integer $budgetTime
+     * @param  integer $budgetTime
      * @return Project
      */
     public function setBudgetTime($budgetTime)
     {
         $this->budgetTime = $budgetTime;
+
         return $this;
     }
 
@@ -377,19 +389,20 @@ class Project {
     /**
      * Set rate
      *
-     * @param decimal $rate
+     * @param  float   $rate
      * @return Project
      */
     public function setRate($rate)
     {
         $this->rate = $rate;
+
         return $this;
     }
 
     /**
      * Get rate
      *
-     * @return decimal
+     * @return float
      */
     public function getRate()
     {

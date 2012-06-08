@@ -13,10 +13,10 @@ class TimeslicesControllerTest extends DimeTestCase
     public function testGetActivitiesTimeSlicesAction()
     {
         $response = $this->request('GET', '/api/timeslices');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find activities timeslices');
         $this->assertEquals($data[0]['duration'], '7200', 'expected to find duration "7200"');
@@ -29,10 +29,10 @@ class TimeslicesControllerTest extends DimeTestCase
 
         // check existing activity timeslice
         $response = $this->request('GET', '/api/timeslices/1');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find activities');
         $this->assertEquals($data['duration'], '7200', 'expected to find duration "7200"');
@@ -48,18 +48,18 @@ class TimeslicesControllerTest extends DimeTestCase
             'duration'    => ''
         )));
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
 
         $id = $data['id'];
-        
+
         // check created activity
         $response = $this->request('GET', '/api/timeslices/' . $id);
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertEquals($data['startedAt'], '2012-02-10 19:00:00', 'expected to find "2012-02-10 19:00:00"');
         $this->assertEquals($data['stoppedAt'], '2012-02-10 19:30:00', 'expected to find rate "2012-02-10 19:30:00"');
@@ -80,13 +80,13 @@ class TimeslicesControllerTest extends DimeTestCase
             'duration'    => ''
         )));
         $this->assertEquals(404, $response->getStatusCode(), $response->getContent());
-        
+
         // check created activity
         $response = $this->request('GET', '/api/timeslices/' . $id);
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertEquals($data['duration'], '7200', 'expected to find "7200"');
 

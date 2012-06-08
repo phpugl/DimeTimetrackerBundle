@@ -78,6 +78,7 @@ class Duration extends Parser
         );
       }
     }
+
     return $this->result;
   }
 }

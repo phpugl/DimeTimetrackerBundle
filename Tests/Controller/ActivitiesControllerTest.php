@@ -13,10 +13,10 @@ class ActivitiesControllerTest extends DimeTestCase
     public function testGetActivitiesAction()
     {
         $response = $this->request('GET', '/api/activities');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find activities');
         $this->assertEquals($data[0]['description'], 'cwe: initial requirements meeting with customer', 'expected to find "cwe: initial project setup (Symfony2, bundles etc.)');
@@ -29,10 +29,10 @@ class ActivitiesControllerTest extends DimeTestCase
 
         // check existing activity
         $response = $this->request('GET', '/api/activities/1');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find activities');
         $this->assertEquals($data['description'], 'cwe: initial requirements meeting with customer', 'expected to find "consulting"');
@@ -51,18 +51,18 @@ class ActivitiesControllerTest extends DimeTestCase
             'user'          => 1
         )));
         $this->assertEquals(200, $response->getStatusCode());
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
 
         $id = $data['id'];
-        
+
         // check created activity
         $response = $this->request('GET', '/api/activities/' . $id);
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertEquals($data['description'], 'Test', 'expected to find "Test"');
         $this->assertEquals($data['rate'], 65.13, 'expected to find rate "65.13"');
@@ -87,13 +87,13 @@ class ActivitiesControllerTest extends DimeTestCase
             'user'          => 1
         )));
         $this->assertEquals(404, $response->getStatusCode());
-        
+
         // check created activity
         $response = $this->request('GET', '/api/activities/' . $id);
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertEquals($data['description'], 'Modified Test', 'expected to find "Modified Test"');
         $this->assertEquals($data['rate'], 111, 'expected to find rate "111"');
@@ -107,7 +107,8 @@ class ActivitiesControllerTest extends DimeTestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
-    public function testPostActivityParsingAction() {
+    public function testPostActivityParsingAction()
+    {
         $response = $this->request('POST', '/api/activities', '{"parse": "10:00-12:00 @cc/CWE2011:testing new magic oneline input"}');
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -135,7 +136,6 @@ class ActivitiesControllerTest extends DimeTestCase
         // delete activity
         $response = $this->request('DELETE', '/api/activities/' . $content['id']);
         $this->assertEquals(200, $response->getStatusCode());
-
 
     }
 

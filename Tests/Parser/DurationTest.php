@@ -6,7 +6,8 @@ use Dime\TimetrackerBundle\Parser\Duration;
 
 class DurationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRun() {
+    public function testRun()
+    {
         $parser = new Duration();
 
         // 02:30:00
@@ -52,7 +53,8 @@ class DurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($result);
     }
 
-    public function testClean() {
+    public function testClean()
+    {
         $parser = new Duration();
         $input = '02:30:00';
 

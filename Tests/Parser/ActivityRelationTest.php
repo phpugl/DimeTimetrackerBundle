@@ -6,7 +6,8 @@ use Dime\TimetrackerBundle\Parser\ActivityRelation;
 
 class ActivityRelationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRun() {
+    public function testRun()
+    {
         $parser = new ActivityRelation();
 
         // Customer
@@ -81,7 +82,8 @@ class ActivityRelationTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testClean() {
+    public function testClean()
+    {
         $parser = new ActivityRelation();
         $input = '@customer do something';
 

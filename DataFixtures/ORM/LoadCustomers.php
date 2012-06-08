@@ -13,7 +13,7 @@ class LoadCustomers extends AbstractFixture implements OrderedFixtureInterface
      *
      * @param Doctrine\Common\Persistence\ObjectManager $manager
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $customer = new Customer();
         $customer->setName('CWE Customer');

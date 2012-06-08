@@ -15,6 +15,7 @@ class ActivityDescription extends Parser
   public function run($input)
   {
     $this->result['description'] = $input;
+
     return $this->result;
   }
 

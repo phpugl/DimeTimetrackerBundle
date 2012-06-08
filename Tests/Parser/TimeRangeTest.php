@@ -6,7 +6,8 @@ use Dime\TimetrackerBundle\Parser\TimeRange;
 
 class TimeRangeTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRun() {
+    public function testRun()
+    {
         $parser = new TimeRange();
 
         // 10:00-12:00
@@ -54,7 +55,8 @@ class TimeRangeTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($result);
     }
 
-    public function testClean() {
+    public function testClean()
+    {
         $parser = new TimeRange();
         $input = '10:00-12:00';
 

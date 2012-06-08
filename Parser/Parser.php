@@ -15,6 +15,7 @@ abstract class Parser
   public function setResult(array $result)
   {
     $this->result = $result;
+
     return $this;
   }
 

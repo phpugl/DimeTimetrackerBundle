@@ -2,10 +2,9 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
-use FOS\RestBundle\View\View AS FOSView;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use FOS\RestBundle\View\View;
 
 class DimeController extends Controller
 {
@@ -13,12 +12,13 @@ class DimeController extends Controller
 
     protected function createView($data = null, $statuscode = 200)
     {
-        $view = new FOSView($data, $statuscode);
+        $view = new View($data, $statuscode);
 
         return $view;
     }
 
-    protected function getCurrentUser() {
+    protected function getCurrentUser()
+    {
         if (!$this->currentUser) {
             $this->currentUser = $this->getDoctrine()->getRepository('DimeTimetrackerBundle:User')->findOneByEmail('johndoe@example.com');
         }
@@ -32,11 +32,11 @@ class DimeController extends Controller
      * @param Form  $form
      * @param array $data
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
-    protected function saveForm(\Symfony\Component\Form\Form $form, $data)
+    protected function saveForm(Form $form, $data)
     {
-        // clean array from non existing keys to avoid extra data 
+        // clean array from non existing keys to avoid extra data
         foreach ($data as $key => $value) {
             if (!$form->has($key)) {
                 unset($data[$key]);
@@ -45,9 +45,9 @@ class DimeController extends Controller
 
         // bind data to form
         $form->bind($data);
-        
+
         if ($form->isValid()) {
-            
+
             $em = $this->getDoctrine()->getEntityManager();
 
             $entity = $form->getData();
@@ -93,7 +93,7 @@ class DimeController extends Controller
             // return error string from form
             $view = $this->createView(array('errors' => $errors), 400);
         }
-        
+
         return $view;
     }
 }

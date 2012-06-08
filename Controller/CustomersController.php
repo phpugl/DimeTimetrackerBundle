@@ -2,15 +2,17 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use Dime\TimetrackerBundle\Entity\Customer,
-    Dime\TimetrackerBundle\Form\CustomerType;
+use Dime\TimetrackerBundle\Entity\Customer;
+use Dime\TimetrackerBundle\Entity\CustomerRepository;
+use Dime\TimetrackerBundle\Form\CustomerType;
+use FOS\RestBundle\View\View;
 
 class CustomersController extends DimeController
 {
     /**
      * get customer repository
      *
-     * @return Dime\TimetrackerBundle\Entity\CustomerRepository
+     * @return CustomerRepository
      */
     public function getCustomerRepository()
     {
@@ -22,11 +24,12 @@ class CustomersController extends DimeController
      *
      * [GET] /customers
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function getCustomersAction()
     {
         $customers = $this->getCustomerRepository();
+
         return $this->createView($customers->findAll());
     }
 
@@ -35,8 +38,8 @@ class CustomersController extends DimeController
      *
      * [GET] /customers/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function getCustomerAction($id)
     {
@@ -51,6 +54,7 @@ class CustomersController extends DimeController
             // customer does not exists send 404
             $view = $this->createView("Customer does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -58,7 +62,7 @@ class CustomersController extends DimeController
      * create a new customer
      * [POST] /customers
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function postCustomersAction()
     {
@@ -78,8 +82,8 @@ class CustomersController extends DimeController
      * modify a customer by its id
      * [PUT] /customers/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function putCustomersAction($id)
     {
@@ -97,6 +101,7 @@ class CustomersController extends DimeController
             // customer does not exists send 404
              $view = $this->createView("Customer does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -104,8 +109,8 @@ class CustomersController extends DimeController
      * delete customer by its id
      * [DELETE] /customerd/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function deleteCustomersAction($id)
     {
@@ -125,6 +130,7 @@ class CustomersController extends DimeController
             // customer does not exists send 404
             $view = $this->createView("Customer does not exist.", 404);
         }
+
         return $view;
     }
 }

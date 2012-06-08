@@ -2,16 +2,20 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use Dime\TimetrackerBundle\Entity\Activity,
-    Dime\TimetrackerBundle\Entity\Timeslice,
-    Dime\TimetrackerBundle\Form\ActivityType;
+use Dime\TimetrackerBundle\Entity\Activity;
+use Dime\TimetrackerBundle\Entity\ActivityRepository;
+use Dime\TimetrackerBundle\Entity\Timeslice;
+use Dime\TimetrackerBundle\Entity\ProjectRepository;
+use Dime\TimetrackerBundle\Entity\ServiceRepository;
+use Dime\TimetrackerBundle\Form\ActivityType;
+use FOS\RestBundle\View\View;
 
 class ActivitiesController extends DimeController
 {
     /**
      * get activity repository
      *
-     * @return Dime\TimetrackerBundle\Entity\ActivityRepository
+     * @return ActivityRepository
      */
     protected function getActivityRepository()
     {
@@ -21,7 +25,7 @@ class ActivitiesController extends DimeController
     /**
      * get activity repository
      *
-     * @return Dime\TimetrackerBundle\Entity\CustomerRepository
+     * @return
      */
     protected function getCustomerRepository()
     {
@@ -31,7 +35,7 @@ class ActivitiesController extends DimeController
     /**
      * get activity repository
      *
-     * @return Dime\TimetrackerBundle\Entity\ProjectRepository
+     * @return ProjectRepository
      */
     protected function getProjectRepository()
     {
@@ -41,7 +45,7 @@ class ActivitiesController extends DimeController
     /**
      * get activity repository
      *
-     * @return Dime\TimetrackerBundle\Entity\ServiceRepository
+     * @return ServiceRepository
      */
     protected function getServiceRepository()
     {
@@ -53,11 +57,12 @@ class ActivitiesController extends DimeController
      *
      * [GET] /activities
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function getActivitiesAction()
     {
         $activities = $this->getActivityRepository();
+
         return $this->createView($activities->findAll());
     }
 
@@ -66,8 +71,8 @@ class ActivitiesController extends DimeController
      *
      * [GET] /activities/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function getActivityAction($id)
     {
@@ -82,6 +87,7 @@ class ActivitiesController extends DimeController
             // activity does not exists send 404
             $view = $this->createView("Activity does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -90,7 +96,7 @@ class ActivitiesController extends DimeController
      *
      * [POST] /activities
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function postActivitiesAction()
     {
@@ -102,7 +108,7 @@ class ActivitiesController extends DimeController
 
         if (isset($data['parse'])) {
             // Run parser
-            $result = $this->parse($data['parse']);            
+            $result = $this->parse($data['parse']);
 
             // create new activity and timeslice entity
             $activity = new Activity();
@@ -138,10 +144,10 @@ class ActivitiesController extends DimeController
                     if (empty($range['stop'])) {
                         $timeslice->setStartedAt(new \DateTime($range['start']));
                         $timeslice->setStoppedAt(new \DateTime('now'));
-                    } else if (empty($range['start'])) {
+                    } elseif (empty($range['start'])) {
                         $timeslice->setStartedAt(new \DateTime('now'));
                         $timeslice->setStoppedAt(new \DateTime($range['stop']));
-                    } else if (!empty($range['start']) && !empty($range['stop'])) {
+                    } elseif (!empty($range['start']) && !empty($range['stop'])) {
                         $timeslice->setStartedAt(new \DateTime($range['start']));
                         $timeslice->setStoppedAt(new \DateTime($range['stop']));
                     }
@@ -176,7 +182,7 @@ class ActivitiesController extends DimeController
             $form = $this->createForm(new ActivityType(), $activity);
             $view = $this->saveForm($form, $data);
         }
-        
+
         return $view;
     }
 
@@ -185,8 +191,8 @@ class ActivitiesController extends DimeController
      *
      * [PUT] /activities/{id}
      *
-     * @param string $id
-     * @return FOS\RestBundle\View\View
+     * @param  string $id
+     * @return View
      */
     public function putActivityAction($id)
     {
@@ -204,6 +210,7 @@ class ActivitiesController extends DimeController
             // activity does not exists send 404
             $view = $this->createView("Activity does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -211,8 +218,8 @@ class ActivitiesController extends DimeController
      * delete an activity by its id
      * [DELETE] /activities/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function deleteActivityAction($id)
     {
@@ -232,15 +239,17 @@ class ActivitiesController extends DimeController
             // activity does not exists send 404
             $view = $this->createView("Activity does not exist.", 404);
         }
+
         return $view;
     }
 
     /**
      * Parse data and create an array output
-     * @param string $data
+     * @param  string $data
      * @return array
      */
-    protected function parse($data) {
+    protected function parse($data)
+    {
       $result = array();
       $parsers = array(
           '\Dime\TimetrackerBundle\Parser\TimeRange',
