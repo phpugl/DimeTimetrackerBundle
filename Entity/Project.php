@@ -4,6 +4,7 @@ namespace Dime\TimetrackerBundle\Entity;
 use DateTime;
 use Dime\TimetrackerBundle\Entity\User;
 use Dime\TimetrackerBundle\Entity\Customer;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,6 +48,7 @@ class Project
      * @var string $name
      *
      * @Assert\NotBlank()
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
@@ -122,6 +124,24 @@ class Project
      * @ORM\Column(type="decimal", scale=2, precision=10, nullable=true)
      */
     protected $rate;
+
+    /**
+     * @var datetime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @SerializedName("createdAt")
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var datetime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @SerializedName("updatedAt")
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
 
     /**
      * Get id
@@ -408,6 +428,27 @@ class Project
     {
         return $this->rate;
     }
+
+    /**
+     * Get created at datetime
+     *
+     * @return datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get updated at datetime
+     *
+     * @return datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
     /**
      * get project as string
      *

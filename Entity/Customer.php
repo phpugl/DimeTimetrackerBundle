@@ -2,9 +2,11 @@
 namespace Dime\TimetrackerBundle\Entity;
 
 use Dime\TimetrackerBundle\Entity\User;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
@@ -44,9 +46,28 @@ class Customer
      * @var string $alias
      *
      * @Assert\NotBlank()
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", unique=true, length=30)
      */
     protected $alias;
+
+    /**
+     * @var datetime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @SerializedName("createdAt")
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var datetime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @SerializedName("updatedAt")
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
 
     public function getId()
     {
@@ -120,6 +141,26 @@ class Customer
     public function getAlias()
     {
         return $this->alias;
+    }
+
+    /**
+     * Get created at datetime
+     *
+     * @return datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get updated at datetime
+     *
+     * @return datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**

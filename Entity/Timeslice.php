@@ -4,6 +4,7 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use DateTime;
 use Dime\TimetrackerBundle\Entity\Activity;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
@@ -59,6 +60,24 @@ class Timeslice
      * @ORM\Column(name="stopped_at", type="datetime", nullable=true)
      */
     private $stoppedAt;
+
+    /**
+     * @var datetime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @SerializedName("createdAt")
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var datetime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @SerializedName("updatedAt")
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
 
     /**
      * Get id
@@ -166,6 +185,26 @@ class Timeslice
     public function getStoppedAt()
     {
         return $this->stoppedAt;
+    }
+
+    /**
+     * Get created at datetime
+     *
+     * @return datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get updated at datetime
+     *
+     * @return datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**

@@ -1,3 +1,12 @@
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+          timestampable: true
+          sluggable: true
+          translatable: false
+          loggable: false
+
 framework:
     csrf_protection: false
 
