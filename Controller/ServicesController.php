@@ -30,7 +30,7 @@ class ServicesController extends DimeController
     {
         $services = $this->getServiceRepository();
 
-        return $this->createView($services->findAll());
+        return $this->createView($services->findBy(array(), null, 30, 0));
     }
 
     /**

@@ -30,7 +30,7 @@ class TimeslicesController extends DimeController
     {
         $timeslices = $this->getTimesliceRepository();
 
-        return $this->createView($timeslices->findAll());
+        return $this->createView($timeslices->findBy(array(), null, 30, 0));
     }
 
     /**

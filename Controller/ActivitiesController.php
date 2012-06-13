@@ -25,7 +25,7 @@ class ActivitiesController extends DimeController
     /**
      * get activity repository
      *
-     * @return
+     * @return CustomerRepository
      */
     protected function getCustomerRepository()
     {
@@ -63,7 +63,7 @@ class ActivitiesController extends DimeController
     {
         $activities = $this->getActivityRepository();
 
-        return $this->createView($activities->findAll());
+        return $this->createView($activities->findBy(array(), null, 30, 0));
     }
 
     /**

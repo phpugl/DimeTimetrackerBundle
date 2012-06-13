@@ -30,7 +30,7 @@ class CustomersController extends DimeController
     {
         $customers = $this->getCustomerRepository();
 
-        return $this->createView($customers->findAll());
+        return $this->createView($customers->findBy(array(), null, 30, 0));
     }
 
     /**

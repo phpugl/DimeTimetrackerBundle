@@ -30,7 +30,7 @@ class UsersController extends DimeController
     {
         $users = $this->getUserRepository();
 
-        return $this->createView($users->findAll());
+        return $this->createView($users->findBy(array(), null, 30, 0));
     }
 
     /**

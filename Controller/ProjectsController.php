@@ -30,7 +30,7 @@ class ProjectsController extends DimeController
     {
         $projects = $this->getProjectRepository();
 
-        return $this->createView($projects->findAll());
+        return $this->createView($projects->findBy(array(), null, 30, 0));
     }
 
     /**
