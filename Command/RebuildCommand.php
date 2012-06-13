@@ -3,6 +3,7 @@ namespace Dime\TimetrackerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -19,6 +20,7 @@ class RebuildCommand extends ContainerAwareCommand
         $this
             ->setName('dime:rebuild')
             ->setDescription('Rebuild database')
+            ->addOption('without-data', null, InputOption::VALUE_NONE, 'Rebuild database without load fixtures');
         ;
     }
 
@@ -26,7 +28,10 @@ class RebuildCommand extends ContainerAwareCommand
     {
         $returnCode = $this->runExternalCommand('doctrine:schema:drop', $output, array('--force' => true));
         $returnCode = $this->runExternalCommand('doctrine:schema:create', $output);
-        $returnCode = $this->runExternalCommand('doctrine:fixtures:load', $output);
+
+        if (!$input->getOption("without-data")) {
+            $returnCode = $this->runExternalCommand('doctrine:fixtures:load', $output);
+        }
     }
 
     protected function runExternalCommand($name, $output, array $input = array())
