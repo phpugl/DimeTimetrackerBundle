@@ -12,7 +12,7 @@ use JMS\SerializerBundle\Annotation\SerializedName;
  *
  * @ORM\Table(
  *   name="services",
- *   uniqueConstraints={ @ORM\UniqueConstraint(name="unique_alias_user", columns={"alias", "user_id"}) }
+ *   uniqueConstraints={ @ORM\UniqueConstraint(name="unique_service_alias_user", columns={"alias", "user_id"}) }
  * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ServiceRepository")
  */

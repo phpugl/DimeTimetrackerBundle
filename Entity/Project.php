@@ -16,7 +16,7 @@ use JMS\SerializerBundle\Annotation\SerializedName;
  * @UniqueEntity(fields={"alias", "user"})
  * @ORM\Table(
  *   name="projects",
- *   uniqueConstraints={ @ORM\UniqueConstraint(name="unique_alias_user", columns={"alias", "user_id"}) }
+ *   uniqueConstraints={ @ORM\UniqueConstraint(name="unique_project_alias_user", columns={"alias", "user_id"}) }
  * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ProjectRepository")
  */
