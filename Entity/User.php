@@ -3,11 +3,14 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
+ * @UniqueEntity(fields={"email"})
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\UserRepository")
  */
@@ -23,24 +26,26 @@ class User
     protected $id;
 
     /**
-     * @var string $duration
+     * @var string $firstname
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     protected $firstname;
 
     /**
-     * @var string $duration
+     * @var string $lastname
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     protected $lastname;
 
     /**
-     * email
+     * @var string email
      *
-     * @var string
-     * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
+     * @ORM\Column(type="string", unique=true, length=255)
      */
     protected $email;
 

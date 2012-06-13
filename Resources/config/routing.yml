@@ -17,3 +17,7 @@ services:
 timeslices:
     type:     rest
     resource: Dime\TimetrackerBundle\Controller\TimeslicesController
+
+users:
+    type:     rest
+    resource: Dime\TimetrackerBundle\Controller\UsersController
