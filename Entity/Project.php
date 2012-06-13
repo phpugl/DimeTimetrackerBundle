@@ -13,8 +13,11 @@ use JMS\SerializerBundle\Annotation\SerializedName;
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
- * @UniqueEntity("alias");
- * @ORM\Table(name="projects")
+ * @UniqueEntity(fields={"alias", "user"})
+ * @ORM\Table(
+ *   name="projects",
+ *   uniqueConstraints={ @ORM\UniqueConstraint(columns={"alias", "user_id"}) }
+ * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ProjectRepository")
  */
 class Project
@@ -57,7 +60,7 @@ class Project
      * @var string $alias
      *
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", unique=true, length=30)
+     * @ORM\Column(type="string", length=30)
      */
     protected $alias;
 

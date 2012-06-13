@@ -11,8 +11,11 @@ use JMS\SerializerBundle\Annotation\SerializedName;
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
- * @UniqueEntity("alias")
- * @ORM\Table(name="customers")
+ * @UniqueEntity(fields={"alias", "user"})
+ * @ORM\Table(
+ *   name="customers",
+ *   uniqueConstraints={ @ORM\UniqueConstraint(columns={"alias", "user_id"}) }
+ * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\CustomerRepository")
  */
 class Customer
@@ -47,7 +50,7 @@ class Customer
      *
      * @Assert\NotBlank()
      * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(type="string", unique=true, length=30)
+     * @ORM\Column(type="string", length=30)
      */
     protected $alias;
 
