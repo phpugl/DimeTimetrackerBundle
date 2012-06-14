@@ -7,6 +7,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CustomerType extends AbstractType
 {
+    public function getDefaultOptions()
+    {
+        return array(
+            'csrf_protection' => false
+        );
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

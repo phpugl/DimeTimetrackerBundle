@@ -7,6 +7,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TimesliceType extends AbstractType
 {
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'data_class'      => 'Dime\Timetracker\Entity\Activity',
+            'csrf_protection' => false
+        );
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
