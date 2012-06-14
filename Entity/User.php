@@ -3,6 +3,7 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Entity\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
@@ -14,7 +15,7 @@ use JMS\SerializerBundle\Annotation\SerializedName;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var integer $id
@@ -28,7 +29,6 @@ class User
     /**
      * @var string $firstname
      *
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     protected $firstname;
@@ -36,18 +36,9 @@ class User
     /**
      * @var string $lastname
      *
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     protected $lastname;
-
-    /**
-     * @var string email
-     *
-     * @Assert\Email()
-     * @ORM\Column(type="string", unique=true, length=255)
-     */
-    protected $email;
 
     /**
      * @var datetime $createdAt
@@ -121,40 +112,6 @@ class User
     public function getLastname()
     {
         return $this->lastname;
-    }
-
-    /**
-     * Set email
-     *
-     * @param  string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * whether user has any value set as email
-     *
-     * @access public
-     * @return boolean
-     */
-    public function hasEmail()
-    {
-        return 0 < strlen($this->getEmail());
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**

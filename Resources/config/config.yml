@@ -4,15 +4,15 @@ stof_doctrine_extensions:
         default:
           timestampable: true
           sluggable: true
-          translatable: false
-          loggable: false
-
-framework:
-    csrf_protection: false
 
 sensio_framework_extra:
     view: { annotations: false }
     router: { annotations: true }
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Dime\TimetrackerBundle\Entity\User
 
 # JMSSerializerBundle (required by FosRestBundle)
 jms_serializer:

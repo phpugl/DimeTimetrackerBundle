@@ -20,8 +20,7 @@
       "doctrine/doctrine-fixtures-bundle": "dev-master",
       "stof/doctrine-extensions-bundle": "dev-master",
       "friendsofsymfony/rest-bundle": "dev-master",
-      "friendsofsymfony/user-bundle": "dev-master",
-      "friendsofsymfony/oauth-server-bundle": "dev-master"
+      "friendsofsymfony/user-bundle": "dev-master"
   },
   "suggest": {
       "phpugl/dime-timetracker-frontend-bundle": "dev-master",
