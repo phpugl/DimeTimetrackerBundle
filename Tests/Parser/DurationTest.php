@@ -25,6 +25,18 @@ class DurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('-', $result['duration']['sign']);
         $this->assertEquals(9000, $result['duration']['number']);
 
+        // 02:30h
+        $parser->setResult(array());
+        $result = $parser->run('02:30h');
+        $this->assertEquals('', $result['duration']['sign']);
+        $this->assertEquals(9000, $result['duration']['number']);
+
+        // 02:30m
+        $parser->setResult(array());
+        $result = $parser->run('02:30m');
+        $this->assertEquals('', $result['duration']['sign']);
+        $this->assertEquals(150, $result['duration']['number']);
+
         // 2h 30m
         $parser->setResult(array());
         $result = $parser->run('2h 30m');
@@ -43,6 +55,7 @@ class DurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $result['duration']['sign']);
         $this->assertEquals(9000, $result['duration']['number']);
 
+        // substract 30 minutes
         $result = $parser->run('-30m');
         $this->assertEquals('-', $result['duration']['sign']);
         $this->assertEquals(7200, $result['duration']['number']);
