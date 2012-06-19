@@ -78,8 +78,6 @@ class ActivitiesController extends DimeController
             }
         }
 
-        $qb->addOrderBy('a.id', 'DESC');
-
         return $this->createView($qb->getQuery()->getResult());
     }
 
