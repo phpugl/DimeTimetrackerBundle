@@ -63,7 +63,24 @@ class ActivitiesController extends DimeController
     {
         $activities = $this->getActivityRepository();
 
-        return $this->createView($activities->findBy(array(), null, 30, 0));
+        $qb = $activities->createQueryBuilder('a');
+
+        // Filter
+        $filter = $this->getRequest()->get('filter');
+        if ($filter) {
+//            // TODO Filter by date - no datetime functions at the moment
+//            if (isset($filter['date'])) {
+//               $qb =$activities->scopeByDate($filter['date'], $qb);
+//            }
+
+            if (isset($filter['customer'])) {
+               $qb = $activities->scopeByCustomer($filter['customer'], $qb);
+            }
+        }
+
+        $qb->addOrderBy('a.id', 'DESC');
+
+        return $this->createView($qb->getQuery()->getResult());
     }
 
     /**
