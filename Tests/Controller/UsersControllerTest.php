@@ -2,7 +2,7 @@
 
 namespace Dime\TimetrackerBundle\Tests\Controller;
 
-class USersControllerTest extends DimeTestCase
+class UsersControllerTest extends DimeTestCase
 {
     public function testAuthentification()
     {
@@ -41,7 +41,7 @@ class USersControllerTest extends DimeTestCase
     public function testPostPutDeleteUserActions()
     {
         /* create new service */
-        $response = $this->request('POST', '/api/users', '{"firstname": "Test", "lastname": "User", "email": "test@user.com"}');
+        $response = $this->request('POST', '/api/users', '{"username": "test-user", "password": "test", "firstname": "Test", "lastname": "User", "email": "test@user.com"}');
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
 
         // convert json to array
