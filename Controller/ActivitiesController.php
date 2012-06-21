@@ -68,14 +68,16 @@ class ActivitiesController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-//            // TODO Filter by date - no datetime functions at the moment
-//            if (isset($filter['date'])) {
-//               $qb =$activities->scopeByDate($filter['date'], $qb);
-//            }
+            // TODO Filter by date - no datetime functions at the moment
+            if (isset($filter['date'])) {
+               $qb = $activities->scopeByDate($filter['date'], $qb);
+            }
 
             if (isset($filter['customer'])) {
                $qb = $activities->scopeByCustomer($filter['customer'], $qb);
             }
+        } else {
+            $qb = $activities->scopeByDate(date('Y-m-d'), $qb);
         }
 
         return $this->createView($qb->getQuery()->getResult());
@@ -124,6 +126,11 @@ class ActivitiesController extends DimeController
         if (isset($data['parse'])) {
             // Run parser
             $result = $this->parse($data['parse']);
+            if (isset($data['date'])) {
+                $date = new \DateTime($data['date']);
+            } else {
+                $date = new \DateTime();
+            }
 
             // create new activity and timeslice entity
             $activity = new Activity();
@@ -156,16 +163,27 @@ class ActivitiesController extends DimeController
                 // process time range
                 if (isset($result['range'])) {
                     $range = $result['range'];
+
                     if (empty($range['stop'])) {
-                        $timeslice->setStartedAt(new \DateTime($range['start']));
-                        $timeslice->setStoppedAt(new \DateTime('now'));
+                        $start = new \DateTime($range['start']);
+                        $stop = new \DateTime('now');
                     } elseif (empty($range['start'])) {
-                        $timeslice->setStartedAt(new \DateTime('now'));
-                        $timeslice->setStoppedAt(new \DateTime($range['stop']));
+                        $start = new \DateTime('now');
+                        $stop = new \DateTime($range['stop']);
                     } elseif (!empty($range['start']) && !empty($range['stop'])) {
-                        $timeslice->setStartedAt(new \DateTime($range['start']));
-                        $timeslice->setStoppedAt(new \DateTime($range['stop']));
+                        $start = new \DateTime($range['start']);
+                        $stop = new \DateTime($range['stop']);
                     }
+                    $start->setDate($date->format('Y'), $date->format('m'), $date->format('d'));
+                    $stop->setDate($date->format('Y'), $date->format('m'), $date->format('d'));
+
+                    $timeslice->setStartedAt($start);
+                    $timeslice->setStoppedAt($stop);
+                } else {
+                    // track date for duration
+                    $date->setTime(0,0,0);
+                    $timeslice->setStartedAt($date);
+                    $timeslice->setStoppedAt($date);
                 }
 
                 // process duration
