@@ -57,7 +57,7 @@ class CustomersControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertEquals($data['name'], 'Test', 'expected to find "Test"');
-        $this->assertEquals($data['alias'], 'Test', 'expected to find alias "Test"');
+        $this->assertEquals($data['alias'], 'test', 'expected to find alias "Test"');
 
         /* modify service */
         $response = $this->request('PUT', '/api/customers/' . $id . '', '{"name": "Modified Test", "alias": "Modified"}');
@@ -74,7 +74,7 @@ class CustomersControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertEquals($data['name'], 'Modified Test', 'expected to find "Modified Test"');
-        $this->assertEquals($data['alias'], 'Modified', 'expected to find alias "Modified"');
+        $this->assertEquals($data['alias'], 'modified', 'expected to find alias "Modified"');
 
         /* delete service */
         $response = $this->request('DELETE', '/api/customers/' . $id . '');
