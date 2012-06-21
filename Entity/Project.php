@@ -51,7 +51,6 @@ class Project
      * @var string $name
      *
      * @Assert\NotBlank()
-     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
@@ -60,6 +59,7 @@ class Project
      * @var string $alias
      *
      * @Assert\NotBlank()
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", length=30)
      */
     protected $alias;
@@ -68,7 +68,7 @@ class Project
      * @var DateTime $startedAt
      *
      * @Assert\Date()
-     * @SerializedName("startetAt")
+     * @SerializedName("startedAt")
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     protected $startedAt;
