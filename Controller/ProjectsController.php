@@ -30,7 +30,17 @@ class ProjectsController extends DimeController
     {
         $projects = $this->getProjectRepository();
 
-        return $this->createView($projects->findBy(array(), null, 30, 0));
+        $qb = $projects->createQueryBuilder('p');
+
+        // Filter
+        $filter = $this->getRequest()->get('filter');
+        if ($filter) {
+            if (isset($filter['customer'])) {
+                $qb = $projects->scopeByCustomer($filter['customer'], $qb);
+            }
+        }
+
+        return $this->createView($qb->getQuery()->getResult());
     }
 
     /**
