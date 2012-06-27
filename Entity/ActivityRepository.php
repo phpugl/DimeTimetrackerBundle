@@ -23,11 +23,11 @@ class ActivityRepository extends EntityRepository
 
         $qb->leftJoin('a.timeslices', 't');
         if (is_array($date)) {
-            $qb->andWhere($qb->expr()->between('t.startedAt', ':from', ':to'));
+            $qb->andWhere($qb->expr()->orX($qb->expr()->between('a.updatedAt', ':from', ':to'), $qb->expr()->between('t.startedAt', ':from', ':to')));
             $qb->setParameter(':from', $date[0]);
             $qb->setParameter(':to', $date[1]);
         } else {
-            $qb->andWhere($qb->expr()->like('t.startedAt', ':date'));
+            $qb->andWhere($qb->expr()->orX($qb->expr()->like('a.updatedAt', ':date'), $qb->expr()->like('t.startedAt', ':date')));
             $qb->setParameter('date', $date . '%');
         }
 
