@@ -34,7 +34,7 @@ class ActivityRepository extends EntityRepository
         return $qb;
     }
 
-    public function scopeByCustomer($id, QueryBuilder $qb = null, $alias = 'a')
+    public function scopeByField($field, $value, QueryBuilder $qb = null, $alias = 'a')
     {
         if ($qb == null) {
             $qb = $this->createQueryBuilder($alias);
@@ -43,9 +43,24 @@ class ActivityRepository extends EntityRepository
             $alias = array_shift($alias);
         }
 
-        $qb->andWhere($alias . '.customer = :customer');
-        $qb->setParameter('customer', $id);
+        $qb->andWhere($alias . '.' . $field . ' = :value');
+        $qb->setParameter('value', $value);
 
         return $qb;
+    }
+
+    public function scopeByCustomer($id, QueryBuilder $qb = null, $alias = 'a')
+    {
+        return $this->scopeByField('customer', $id, $qb, $alias);
+    }
+
+    public function scopeByProject($id, QueryBuilder $qb = null, $alias = 'a')
+    {
+        return $this->scopeByField('project', $id, $qb, $alias);
+    }
+
+    public function scopeByService($id, QueryBuilder $qb = null, $alias = 'a')
+    {
+        return $this->scopeByField('service', $id, $qb, $alias);
     }
 }
