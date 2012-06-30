@@ -76,6 +76,10 @@ class ActivitiesController extends DimeController
             if (isset($filter['customer'])) {
                $qb = $activities->scopeByCustomer($filter['customer'], $qb);
             }
+
+            if (isset($filter['project'])) {
+                $qb = $activities->scopeByProject($filter['project'], $qb);
+            }
         } else {
             $qb = $activities->scopeByDate(date('Y-m-d'), $qb);
         }

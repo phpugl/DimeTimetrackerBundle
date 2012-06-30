@@ -5,7 +5,7 @@ namespace Dime\TimetrackerBundle\Filter;
 use Doctrine\ORM\Mapping\ClassMetaData,
     Doctrine\ORM\Query\Filter\SQLFilter;
 
-class ActivityFilter extends SQLFilter
+class ActivityByDateFilter extends SQLFilter
 {
   /**
    * List with possible Fields
