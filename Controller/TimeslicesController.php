@@ -2,15 +2,17 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
-use Dime\TimetrackerBundle\Entity\Timeslice,
-    Dime\TimetrackerBundle\Form\TimesliceType;
+use Dime\TimetrackerBundle\Entity\Timeslice;
+use Dime\TimetrackerBundle\Entity\TimesliceRepository;
+use Dime\TimetrackerBundle\Form\TimesliceType;
+use FOS\RestBundle\View\View;
 
 class TimeslicesController extends DimeController
 {
     /**
      * get activity timeslice repository
      *
-     * @return Dime\TimetrackerBundle\Entity\TimesliceRepository
+     * @return TimesliceRepository
      */
     protected function getTimesliceRepository()
     {
@@ -22,12 +24,13 @@ class TimeslicesController extends DimeController
      *
      * [GET] /timeslices
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function getTimeslicesAction()
     {
         $timeslices = $this->getTimesliceRepository();
-        return $this->createView($timeslices->findAll());
+
+        return $this->createView($timeslices->findBy(array(), null, 30, 0));
     }
 
     /**
@@ -35,8 +38,8 @@ class TimeslicesController extends DimeController
      *
      * [GET] /timeslices/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function getTimesliceAction($id)
     {
@@ -51,6 +54,7 @@ class TimeslicesController extends DimeController
             // activity TimeSlice does not exists send 404
             $view = $this->createView("Timeslice does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -59,7 +63,7 @@ class TimeslicesController extends DimeController
      *
      * [POST] /timeslices
      *
-     * @return FOS\RestBundle\View\View
+     * @return View
      */
     public function postTimeslicesAction()
     {
@@ -83,8 +87,8 @@ class TimeslicesController extends DimeController
      *
      * [PUT] /timeslices/{id}
      *
-     * @param string $id
-     * @return FOS\RestBundle\View\View
+     * @param  string $id
+     * @return View
      */
     public function putTimesliceAction($id)
     {
@@ -107,6 +111,7 @@ class TimeslicesController extends DimeController
             // activity does not exists send 404
             $view = $this->createView("Timeslice does not exist.", 404);
         }
+
         return $view;
     }
 
@@ -114,8 +119,8 @@ class TimeslicesController extends DimeController
      * delete a timeslice by its id
      * [DELETE] /timeslices/{id}
      *
-     * @param int $id
-     * @return FOS\RestBundle\View\View
+     * @param  int  $id
+     * @return View
      */
     public function deleteTimesliceAction($id)
     {
@@ -135,10 +140,12 @@ class TimeslicesController extends DimeController
             // activity does not exists send 404
             $view = $this->createView("Timeslice does not exist.", 404);
         }
+
         return $view;
     }
 
-    protected function process(array $data) {
+    protected function process(array $data)
+    {
       if (isset($data['formatDuration'])) {
         $parser = new \Dime\TimetrackerBundle\Parser\Duration();
 

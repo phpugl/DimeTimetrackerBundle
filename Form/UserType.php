@@ -5,7 +5,7 @@ namespace Dime\TimetrackerBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ServiceType extends AbstractType
+class UserType extends AbstractType
 {
     public function getDefaultOptions()
     {
@@ -17,15 +17,16 @@ class ServiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('alias')
-            ->add('description')
-            ->add('rate')
+            ->add('username')
+            ->add('password')
+            ->add('firstname')
+            ->add('lastname')
+            ->add('email')
         ;
     }
 
     public function getName()
     {
-        return 'dime_timetrackerbundle_servicetype';
+        return 'dime_timetrackerbundle_usertype';
     }
 }

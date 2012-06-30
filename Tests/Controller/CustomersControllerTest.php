@@ -13,10 +13,10 @@ class CustomersControllerTest extends DimeTestCase
     public function testGetCustomersAction()
     {
         $response = $this->request('GET', '/api/customers');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find customers');
         $this->assertEquals($data[0]['name'], 'CWE Customer', 'expected to find "CWE Customer" first');
@@ -29,10 +29,10 @@ class CustomersControllerTest extends DimeTestCase
 
         /* check existing service */
         $response = $this->request('GET', '/api/customers/1');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find customers');
         $this->assertEquals($data['name'], 'CWE Customer', 'expected to find "CWE Customer"');
@@ -43,21 +43,21 @@ class CustomersControllerTest extends DimeTestCase
         /* create new service */
         $response = $this->request('POST', '/api/customers', '{"name": "Test", "alias": "Test"}');
         $this->assertEquals(200, $response->getStatusCode());
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
 
         $id = $data['id'];
-        
+
         /* check created service */
         $response = $this->request('GET', '/api/customers/' . $id . '');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertEquals($data['name'], 'Test', 'expected to find "Test"');
-        $this->assertEquals($data['alias'], 'Test', 'expected to find alias "Test"');
+        $this->assertEquals($data['alias'], 'test', 'expected to find alias "Test"');
 
         /* modify service */
         $response = $this->request('PUT', '/api/customers/' . $id . '', '{"name": "Modified Test", "alias": "Modified"}');
@@ -65,16 +65,16 @@ class CustomersControllerTest extends DimeTestCase
 
         $response = $this->request('PUT', '/api/customers/' . ($id+1) . '', '{"name": "Modified Test", "alias": "Modified"}');
        $this->assertEquals(404, $response->getStatusCode());
-        
+
         /* check created service */
         $response = $this->request('GET', '/api/customers/' . $id . '');
-        
+
         // convert json to array
         $data = json_decode($response->getContent(), true);
-        
+
         // assert that data has content
         $this->assertEquals($data['name'], 'Modified Test', 'expected to find "Modified Test"');
-        $this->assertEquals($data['alias'], 'Modified', 'expected to find alias "Modified"');
+        $this->assertEquals($data['alias'], 'modified', 'expected to find alias "Modified"');
 
         /* delete service */
         $response = $this->request('DELETE', '/api/customers/' . $id . '');

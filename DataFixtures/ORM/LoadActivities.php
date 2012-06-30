@@ -66,10 +66,10 @@ class LoadActivities extends AbstractFixture implements OrderedFixtureInterface
     /**
      * loads fixtures to database
      *
-     * @param Doctrine\Common\Persistence\ObjectManager $manager
+     * @param  Doctrine\Common\Persistence\ObjectManager $manager
      * @return LoadActivities
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $baseActivity = new Activity();
         $baseActivity->setUser($manager->merge($this->getReference('default-user')))
@@ -77,8 +77,7 @@ class LoadActivities extends AbstractFixture implements OrderedFixtureInterface
                      ->setProject($manager->merge($this->getReference('default-project')))
                      ;
 
-        foreach ($this->data as $key => $data)
-        {
+        foreach ($this->data as $key => $data) {
             $activity = clone $baseActivity;
             $activity->setService($manager->merge($this->getReference($data['service'])))
                      ->setDescription($data['description'])

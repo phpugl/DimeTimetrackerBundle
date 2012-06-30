@@ -4,7 +4,6 @@ namespace Dime\TimetrackerBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Dime\TimetrackerBundle\Entity\Activity;
 use Dime\TimetrackerBundle\Entity\Timeslice;
 
 class LoadTimeslices extends AbstractFixture implements OrderedFixtureInterface
@@ -14,12 +13,12 @@ class LoadTimeslices extends AbstractFixture implements OrderedFixtureInterface
         'requirements-initial' => array(
             'duration'      => 7200, // 60 * 120
             'startedAt'     => '2011-11-13 10:02:34',
-            'stoppedAt'     => null,
+            'stoppedAt'     => '2011-11-13 12:02:34',
         ),
         'requirements-documentation' => array(
             'duration'      => 5400, // 60 * 90
             'startedAt'     => '2011-11-13 13:19:01',
-            'stoppedAt'     => null,
+            'stoppedAt'     => '2011-11-13 14:49:01',
         ),
         'environment-setup' => array(
             'duration'      => 2520, // 60 * 42
@@ -29,23 +28,30 @@ class LoadTimeslices extends AbstractFixture implements OrderedFixtureInterface
         'project-setup' => array(
             'duration'      => 4980, // 60 * 83
             'startedAt'     => '2011-11-14 08:24:09',
-            'stoppedAt'     => null,
+            'stoppedAt'     => '2011-11-14 09:47:09',
         ),
     );
 
     /**
      * loads fixtures to database
      *
-     * @param Doctrine\Common\Persistence\ObjectManager $manager
+     * @param  Doctrine\Common\Persistence\ObjectManager $manager
      * @return LoadActivities
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $baseSlice = new Timeslice();
 
-        foreach ($this->data as $key => $data)
-        {
+        foreach ($this->data as $key => $data) {
             $slice = clone $baseSlice;
+
+            if ($data['startedAt'] == null && $data['stoppedAt'] == null) {
+                $date = new \DateTime();
+                $date->setTime(0,0,0);
+                $data['startedAt'] = $date;
+                $data['stoppedAt'] = $date;
+            }
+
             $slice->setActivity($manager->merge($this->getReference($key)))
                   ->setDuration($data['duration'])
                   ->setStartedAt($data['startedAt'])

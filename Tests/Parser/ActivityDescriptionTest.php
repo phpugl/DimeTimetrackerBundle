@@ -6,7 +6,8 @@ use Dime\TimetrackerBundle\Parser\ActivityDescription;
 
 class ActivityDescriptionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRun() {
+    public function testRun()
+    {
         $parser = new ActivityDescription();
 
         $result = $parser->run('do something');
@@ -14,7 +15,8 @@ class ActivityDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('do something', $result['description']);
     }
 
-    public function testClean() {
+    public function testClean()
+    {
         $parser = new ActivityDescription();
         $input = 'do something';
 

@@ -1,20 +1,25 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
+use Dime\TimetrackerBundle\Entity\User;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
- * @UniqueEntity("alias")
- * @ORM\Table(name="customers")
+ * @UniqueEntity(fields={"alias", "user"})
+ * @ORM\Table(
+ *   name="customers",
+ *   uniqueConstraints={ @ORM\UniqueConstraint(name="unique_customer_alias_user", columns={"alias", "user_id"}) }
+ * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\CustomerRepository")
  */
-class Customer {
-
+class Customer
+{
     /**
      * @var integer $id
      *
@@ -25,7 +30,7 @@ class Customer {
     protected $id;
 
     /**
-     * @var integer $user
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="customers")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -44,9 +49,28 @@ class Customer {
      * @var string $alias
      *
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", unique=true, length=30)
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=30)
      */
     protected $alias;
+
+    /**
+     * @var datetime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @SerializedName("createdAt")
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var datetime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @SerializedName("updatedAt")
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
 
     public function getId()
     {
@@ -56,19 +80,20 @@ class Customer {
     /**
      * Set user
      *
-     * @param Dime\TimetrackerBundle\Entity\User $user
+     * @param  User     $user
      * @return Customer
      */
-    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Dime\TimetrackerBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -78,12 +103,13 @@ class Customer {
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string   $name
      * @return Customer
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -100,12 +126,13 @@ class Customer {
     /**
      * Set alias
      *
-     * @param string $alias
+     * @param  string   $alias
      * @return Customer
      */
     public function setAlias($alias)
     {
         $this->alias = $alias;
+
         return $this;
     }
 
@@ -120,6 +147,26 @@ class Customer {
     }
 
     /**
+     * Get created at datetime
+     *
+     * @return datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get updated at datetime
+     *
+     * @return datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
      * get customer as string
      *
      * @return string
@@ -127,8 +174,7 @@ class Customer {
     public function __toString()
     {
         $customer = $this->getName();
-        if (empty($customer))
-        {
+        if (empty($customer)) {
             $customer = $this->getId();
         }
 

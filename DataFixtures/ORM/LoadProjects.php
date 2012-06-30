@@ -13,19 +13,27 @@ class LoadProjects extends AbstractFixture implements OrderedFixtureInterface
      *
      * @param Doctrine\Common\Persistence\ObjectManager $manager
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $phpugl = new Project();
         $phpugl->setName('CWE2011');
-        $phpugl->setAlias('CWE2011');
+        $phpugl->setAlias('cwe2011');
         $phpugl->setDescription('PHPUGL Coding Weekend 2011');
         $phpugl->setUser($manager->merge($this->getReference('default-user')));
         $phpugl->setCustomer($manager->merge($this->getReference('default-customer')));
 
         $manager->persist($phpugl);
-        $manager->flush();
-
         $this->addReference('default-project', $phpugl);
+
+        $phpugl = new Project();
+        $phpugl->setName('CWE2012');
+        $phpugl->setAlias('cwe2012');
+        $phpugl->setDescription('PHPUGL Coding Weekend 2012');
+        $phpugl->setUser($manager->merge($this->getReference('default-user')));
+        $phpugl->setCustomer($manager->merge($this->getReference('another-customer')));
+
+        $manager->persist($phpugl);
+        $manager->flush();
     }
 
     /**

@@ -1,20 +1,23 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
+use Dime\TimetrackerBundle\Entity\User;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Dime\TimetrackerBundle\Entity\Service
  *
- * @UniqueEntity("alias")
- * @ORM\Table(name="services")
+ * @ORM\Table(
+ *   name="services",
+ *   uniqueConstraints={ @ORM\UniqueConstraint(name="unique_service_alias_user", columns={"alias", "user_id"}) }
+ * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ServiceRepository")
  */
-class Service {
-
+class Service
+{
     /**
      * @var integer $id
      *
@@ -25,7 +28,7 @@ class Service {
     protected $id;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\User $user
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="Services")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -44,7 +47,8 @@ class Service {
      * @var string $alias
      *
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", unique=true, length=30)
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=30)
      */
     protected $alias;
 
@@ -63,6 +67,24 @@ class Service {
     protected $rate;
 
     /**
+     * @var datetime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @SerializedName("createdAt")
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var datetime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @SerializedName("updatedAt")
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
+
+    /**
      * Get id
      *
      * @return integer
@@ -75,19 +97,20 @@ class Service {
     /**
      * Set user
      *
-     * @param Dime\TimetrackerBundle\Entity\User $user
+     * @param  User    $user
      * @return Service
      */
-    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return Dime\TimetrackerBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -97,12 +120,13 @@ class Service {
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string  $name
      * @return Service
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -119,12 +143,13 @@ class Service {
     /**
      * Set alias
      *
-     * @param string $alias
+     * @param  string  $alias
      * @return Service
      */
     public function setAlias($alias)
     {
         $this->alias = $alias;
+
         return $this;
     }
 
@@ -141,19 +166,20 @@ class Service {
     /**
      * Set description
      *
-     * @param text $description
+     * @param  string  $description
      * @return Service
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return text
+     * @return string
      */
     public function getDescription()
     {
@@ -163,23 +189,44 @@ class Service {
     /**
      * Set rate
      *
-     * @param decimal $rate
+     * @param  float   $rate
      * @return Service
      */
     public function setRate($rate)
     {
         $this->rate = $rate;
+
         return $this;
     }
 
     /**
      * Get rate
      *
-     * @return decimal
+     * @return float
      */
     public function getRate()
     {
         return $this->rate;
+    }
+
+    /**
+     * Get created at datetime
+     *
+     * @return datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get updated at datetime
+     *
+     * @return datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**
@@ -190,8 +237,7 @@ class Service {
     public function __toString()
     {
         $service = $this->getName();
-        if (empty($service))
-        {
+        if (empty($service)) {
             $service = $this->getId();
         }
 

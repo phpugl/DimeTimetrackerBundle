@@ -1,17 +1,22 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Entity\User as BaseUser;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
+ * @UniqueEntity(fields={"email"})
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\UserRepository")
  */
-class User {
-
+class User extends BaseUser
+{
     /**
      * @var integer $id
      *
@@ -22,48 +27,36 @@ class User {
     protected $id;
 
     /**
-     * @var string $duration
+     * @var string $firstname
      *
      * @ORM\Column(type="string", length=255)
      */
     protected $firstname;
 
     /**
-     * @var string $duration
+     * @var string $lastname
      *
      * @ORM\Column(type="string", length=255)
      */
     protected $lastname;
 
     /**
-     * email
+     * @var datetime $createdAt
      *
-     * @var string
-     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Timestampable(on="create")
+     * @SerializedName("createdAt")
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    protected $email;
+    private $createdAt;
 
     /**
-     * get user as string
+     * @var datetime $updatedAt
      *
-     * @return string
+     * @Gedmo\Timestampable(on="update")
+     * @SerializedName("updatedAt")
+     * @ORM\Column(name="updated_at", type="datetime")
      */
-    public function __toString()
-    {
-        $user = trim($this->getFirstname() . ' ' . $this->getLastname());
-        if ($this->hasEmail())
-        {
-            $user .= empty($user) ? $this->getEmail() : ' (' . $this->getEmail() . ')';
-        }
-
-        if (empty($user))
-        {
-            $user = $this->getId();
-        }
-
-        return $user;
-    }
-              
+    private $updatedAt;
 
     /**
      * Get id
@@ -78,12 +71,13 @@ class User {
     /**
      * Set firstname
      *
-     * @param string $firstname
+     * @param  string $firstname
      * @return User
      */
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
+
         return $this;
     }
 
@@ -100,12 +94,13 @@ class User {
     /**
      * Set lastname
      *
-     * @param string $lastname
+     * @param  string $lastname
      * @return User
      */
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
+
         return $this;
     }
 
@@ -120,35 +115,41 @@ class User {
     }
 
     /**
-     * Set email
+     * Get created at datetime
      *
-     * @param string $email
-     * @return User
+     * @return datetime
      */
-    public function setEmail($email)
+    public function getCreatedAt()
     {
-        $this->email = $email;
-        return $this;
+        return $this->createdAt;
     }
 
     /**
-     * whether user has any value set as email
+     * Get updated at datetime
      *
-     * @access public
-     * @return boolean
+     * @return datetime
      */
-    public function hasEmail()
+    public function getUpdatedAt()
     {
-        return 0 < strlen($this->getEmail());
+        return $this->updatedAt;
     }
 
     /**
-     * Get email
+     * get user as string
      *
-     * @return email
+     * @return string
      */
-    public function getEmail()
+    public function __toString()
     {
-        return $this->email;
+        $user = trim($this->getFirstname() . ' ' . $this->getLastname());
+        if ($this->hasEmail()) {
+            $user .= empty($user) ? $this->getEmail() : ' (' . $this->getEmail() . ')';
+        }
+
+        if (empty($user)) {
+            $user = $this->getId();
+        }
+
+        return $user;
     }
 }

@@ -14,7 +14,7 @@ class DimeTestCase extends WebTestCase
     }
 
     /**
-     * do a request using HTTP authentification 
+     * do a request using HTTP authentification
      */
     protected function request(
         $method,
@@ -30,8 +30,9 @@ class DimeTestCase extends WebTestCase
         }
         $this->client->restart();
 
-        // make get request with authentifaction 
+        // make get request with authentifaction
         $this->client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
+
         return $this->client->getResponse();
     }
 }

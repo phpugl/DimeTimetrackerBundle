@@ -1,8 +1,11 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
+use DateTime;
+use Dime\TimetrackerBundle\Entity\User;
+use Dime\TimetrackerBundle\Entity\Customer;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
@@ -10,12 +13,15 @@ use JMS\SerializerBundle\Annotation\SerializedName;
 /**
  * Dime\TimetrackerBundle\Entity\Project
  *
- * @UniqueEntity("alias");
- * @ORM\Table(name="projects")
+ * @UniqueEntity(fields={"alias", "user"})
+ * @ORM\Table(
+ *   name="projects",
+ *   uniqueConstraints={ @ORM\UniqueConstraint(name="unique_project_alias_user", columns={"alias", "user_id"}) }
+ * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ProjectRepository")
  */
-class Project {
-
+class Project
+{
     /**
      * @var integer $id
      *
@@ -26,7 +32,7 @@ class Project {
     protected $id;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\User $user
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
@@ -34,7 +40,7 @@ class Project {
     protected $user;
 
     /**
-     * @var \Dime\TimetrackerBundle\Entity\Customer $customer
+     * @var Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="projects")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true)
@@ -53,21 +59,22 @@ class Project {
      * @var string $alias
      *
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", unique=true, length=30)
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=30)
      */
     protected $alias;
 
     /**
-     * @var Date $startedAt
+     * @var DateTime $startedAt
      *
      * @Assert\Date()
-     * @SerializedName("startetAt")
+     * @SerializedName("startedAt")
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     protected $startedAt;
 
     /**
-     * @var Date $stoppedAt
+     * @var DateTime $stoppedAt
      *
      * @Assert\Date()
      * @SerializedName("stoppedAt")
@@ -76,7 +83,7 @@ class Project {
     protected $stoppedAt;
 
     /**
-     * @var Date $deadline
+     * @var DateTime $deadline
      *
      * @Assert\Date()
      * @ORM\Column(name="deadline", type="datetime", nullable=true)
@@ -122,6 +129,24 @@ class Project {
     protected $rate;
 
     /**
+     * @var datetime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @SerializedName("createdAt")
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var datetime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @SerializedName("updatedAt")
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
+
+    /**
      * Get id
      *
      * @return integer
@@ -132,14 +157,61 @@ class Project {
     }
 
     /**
+     * Set user
+     *
+     * @param  User    $user
+     * @return Project
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param  Customer $customer
+     * @return Project
+     */
+    public function setCustomer(Customer $customer)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
      * Set name
      *
-     * @param string $name
+     * @param  string  $name
      * @return Project
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -156,12 +228,13 @@ class Project {
     /**
      * Set alias
      *
-     * @param string $alias
+     * @param  string  $alias
      * @return Project
      */
     public function setAlias($alias)
     {
         $this->alias = $alias;
+
         return $this;
     }
 
@@ -178,12 +251,13 @@ class Project {
     /**
      * Set startedAt
      *
-     * @param datetime $startedAt
+     * @param  DateTime $startedAt
      * @return Project
      */
     public function setStartedAt($startedAt)
     {
         $this->startedAt = $startedAt;
+
         return $this;
     }
 
@@ -200,12 +274,13 @@ class Project {
     /**
      * Set stoppedAt
      *
-     * @param datetime $stoppedAt
+     * @param  datetime $stoppedAt
      * @return Project
      */
     public function setStoppedAt($stoppedAt)
     {
         $this->stoppedAt = $stoppedAt;
+
         return $this;
     }
 
@@ -222,12 +297,13 @@ class Project {
     /**
      * Set deadline
      *
-     * @param datetime $deadline
+     * @param  datetime $deadline
      * @return Project
      */
     public function setDeadline($deadline)
     {
         $this->deadline = $deadline;
+
         return $this;
     }
 
@@ -244,19 +320,20 @@ class Project {
     /**
      * Set description
      *
-     * @param text $description
+     * @param  string  $description
      * @return Project
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return text
+     * @return string
      */
     public function getDescription()
     {
@@ -266,12 +343,13 @@ class Project {
     /**
      * Set budgetPrice
      *
-     * @param integer $budgetPrice
+     * @param  integer $budgetPrice
      * @return Project
      */
     public function setBudgetPrice($budgetPrice)
     {
         $this->budgetPrice = $budgetPrice;
+
         return $this;
     }
 
@@ -288,12 +366,13 @@ class Project {
     /**
      * Set fixedPrice
      *
-     * @param integer $fixedPrice
+     * @param  integer $fixedPrice
      * @return Project
      */
     public function setFixedPrice($fixedPrice)
     {
         $this->fixedPrice = $fixedPrice;
+
         return $this;
     }
 
@@ -310,12 +389,13 @@ class Project {
     /**
      * Set budgetTime
      *
-     * @param integer $budgetTime
+     * @param  integer $budgetTime
      * @return Project
      */
     public function setBudgetTime($budgetTime)
     {
         $this->budgetTime = $budgetTime;
+
         return $this;
     }
 
@@ -332,19 +412,20 @@ class Project {
     /**
      * Set rate
      *
-     * @param decimal $rate
+     * @param  float   $rate
      * @return Project
      */
     public function setRate($rate)
     {
         $this->rate = $rate;
+
         return $this;
     }
 
     /**
      * Get rate
      *
-     * @return decimal
+     * @return float
      */
     public function getRate()
     {
@@ -352,70 +433,23 @@ class Project {
     }
 
     /**
-     * Set user
+     * Get created at datetime
      *
-     * @param Dime\TimetrackerBundle\Entity\User $user
-     * @return Project
+     * @return datetime
      */
-    public function setUser(\Dime\TimetrackerBundle\Entity\User $user)
+    public function getCreatedAt()
     {
-        $this->user = $user;
-        return $this;
+        return $this->createdAt;
     }
 
     /**
-     * Get user
+     * Get updated at datetime
      *
-     * @return Dime\TimetrackerBundle\Entity\User
+     * @return datetime
      */
-    public function getUser()
+    public function getUpdatedAt()
     {
-        return $this->user;
-    }
-
-    /**
-     * Set customer
-     *
-     * @param integer $customer
-     * @return Project
-     */
-    public function setCustomer($customer)
-    {
-        $this->customer = $customer;
-        return $this;
-    }
-
-    /**
-     * Get customer
-     *
-     * @return Dime\TimetrackerBundle\Entity\Customer
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    /**
-     * Export project to array
-     *
-     * @todo should be generated automatically
-     * @return array
-     */
-    public function toArray()
-    {
-        return array(
-            'id'          => $this->getId(),
-            'name'        => $this->getName(),
-            'description' => $this->getDescription(),
-            'rate'        => $this->getRate(),
-            'startedAt'   => $this->getStartedAt(),
-            'stoppedAt'   => $this->getStoppedAt(),
-            'deadline'    => $this->getDeadline(),
-            'budgetPrice' => $this->getBudgetPrice(),
-            'fixedPrice'  => $this->getFixedPrice(),
-            'budgetTime'  => $this->getBudgetTime(),
-            'customer'    => $this->getCustomer()
-        );
+        return $this->updatedAt;
     }
 
     /**

@@ -14,6 +14,7 @@ class ActivityRelation extends Parser
         $input = trim(str_replace($token, '', $input));
       }
     }
+
     return $input;
   }
 

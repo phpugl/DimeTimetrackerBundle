@@ -6,13 +6,15 @@ use Dime\TimetrackerBundle\Entity\Timeslice;
 
 class TimesliceTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetCurrentDurationWithGivenDuration() {
+    public function testGetCurrentDurationWithGivenDuration()
+    {
         $Timeslice = new Timeslice();
         $Timeslice->setDuration(200);
         $this->assertEquals(200, $Timeslice->getCurrentDuration());
     }
 
-    public function testGetCurrentDurationWithGivenStart() {
+    public function testGetCurrentDurationWithGivenStart()
+    {
         $start = new \DateTime('now');
         $start->add(new \DateInterval('PT10H'));
 
@@ -21,7 +23,8 @@ class TimesliceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(36000, $Timeslice->getCurrentDuration());
     }
 
-    public function testGetCurrentDurationWithGivenEnd() {
+    public function testGetCurrentDurationWithGivenEnd()
+    {
         $start = new \DateTime('now');
 
         $end = new \DateTime('now');

@@ -13,9 +13,14 @@ class LoadUsers extends AbstractFixture implements OrderedFixtureInterface
      *
      * @param Doctrine\Common\Persistence\ObjectManager $manager
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $defaultUser = new User();
+        $defaultUser->setUsername('admin');
+        $defaultUser->setPlainPassword('kitten');
+        $defaultUser->setEnabled(true);
+        $defaultUser->addRole(User::ROLE_SUPER_ADMIN);
+
         $defaultUser->setFirstname('Default');
         $defaultUser->setLastname('User');
         $defaultUser->setEmail('johndoe@example.com');
