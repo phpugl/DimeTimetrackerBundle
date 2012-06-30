@@ -69,16 +69,13 @@ class ActivitiesController extends DimeController
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
             // TODO Filter by date - no datetime functions at the moment
-            if (isset($filter['date'])) {
-               $qb = $activities->scopeByDate($filter['date'], $qb);
-            }
 
-            if (isset($filter['customer'])) {
-               $qb = $activities->scopeByCustomer($filter['customer'], $qb);
-            }
-
-            if (isset($filter['project'])) {
-                $qb = $activities->scopeByProject($filter['project'], $qb);
+            foreach ($filter as $key => $value) {
+                if ($key == 'date') {
+                    $qb = $activities->scopeByDate($filter['date'], $qb);
+                } else {
+                    $qb = $activities->scopeByField($key, $value, $qb);
+                }
             }
         } else {
             $qb = $activities->scopeByDate(date('Y-m-d'), $qb);

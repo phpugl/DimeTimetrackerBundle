@@ -43,8 +43,8 @@ class ActivityRepository extends EntityRepository
             $alias = array_shift($alias);
         }
 
-        $qb->andWhere($alias . '.' . $field . ' = :value');
-        $qb->setParameter('value', $value);
+        $qb->andWhere($alias . '.' . $field . ' = :' . $field);
+        $qb->setParameter($field, $value);
 
         return $qb;
     }
