@@ -9,6 +9,8 @@ use Dime\TimetrackerBundle\Entity\ProjectRepository;
 use Dime\TimetrackerBundle\Entity\ServiceRepository;
 use Dime\TimetrackerBundle\Form\ActivityType;
 use FOS\RestBundle\View\View;
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ActivitiesController extends DimeController
 {
@@ -81,7 +83,31 @@ class ActivitiesController extends DimeController
             $qb = $activities->scopeByDate(date('Y-m-d'), $qb);
         }
 
-        return $this->createView($qb->getQuery()->getResult());
+        $limit = $this->getRequest()->get('limit');
+        if (!$limit) {
+            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
+        }
+
+        $limit = $this->getRequest()->get('limit');
+        if (!$limit) {
+            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
+        }
+
+        $offset = $this->getRequest()->get('offset');
+        if (!$offset) {
+            $offset = $this->container->getParameter('dime_timetracker.pagination.offset');
+        }
+
+        $qb->setFirstResult($offset)
+           ->setMaxResults($limit);
+
+        $paginator = new Paginator($qb, $fetchJoinCollection = true);
+
+//        $view = $this->createView($qb->getQuery()->getResult());
+        $view = $this->createView($paginator);
+        $view->setHeader('X-Pagination-Total-Results', count($paginator));
+
+        return $view;
     }
 
     /**

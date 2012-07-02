@@ -24,5 +24,19 @@ class DimeTimetrackerExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        // set pagination offset
+        // default: 0
+        $container->setParameter('dime_timetracker.pagination.offset',
+            (isset($config['parameters']['pagination']['offset'])) ? $config['parameters']['pagination']['offset'] : 0
+        );
+
+        // set pagination limit
+        // default: 10
+        $container->setParameter('dime_timetracker.pagination.limit',
+            (isset($config['parameters']['pagination']['limit'])) ? $config['parameters']['pagination']['limit'] : 10
+        );
+
+
     }
 }

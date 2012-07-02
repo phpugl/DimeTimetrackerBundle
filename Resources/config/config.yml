@@ -83,3 +83,9 @@ fos_rest:
         default_priorities: [html, */*]
         prefer_extension:     true
         fallback_format:      html
+
+parameters:
+    # overwrite default pagination parameters
+    pagination:
+      offset: 0
+      limit:  10
