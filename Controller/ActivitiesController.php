@@ -88,11 +88,6 @@ class ActivitiesController extends DimeController
             $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
         }
 
-        $limit = $this->getRequest()->get('limit');
-        if (!$limit) {
-            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
-        }
-
         $offset = $this->getRequest()->get('offset');
         if (!$offset) {
             $offset = $this->container->getParameter('dime_timetracker.pagination.offset');
