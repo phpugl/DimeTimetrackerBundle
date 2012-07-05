@@ -42,7 +42,7 @@ class ActivityRepository extends EntityRepository
             $qb->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->between($alias . '.updatedAt', ':from', ':to'),
-                    $qb->expr()->between('ts.startedAt', ':from', ':to')
+                    $qb->expr()->between('t.startedAt', ':from', ':to')
                 )
             );
             $qb->setParameter('from', $date[0]);
@@ -51,7 +51,7 @@ class ActivityRepository extends EntityRepository
             $qb->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->like($alias . '.updatedAt', ':date'),
-                    $qb->expr()->like('ts.startedAt', ':date')
+                    $qb->expr()->like('t.startedAt', ':date')
                 )
             );
             $qb->setParameter('date', $date . '%');

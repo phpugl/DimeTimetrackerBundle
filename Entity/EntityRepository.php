@@ -33,11 +33,12 @@ abstract class EntityRepository extends Base
     abstract public function scopeByDate($date, QueryBuilder $qb);
 
     /**
+     * Scope by any field with value
+     *
      * @param string            $field
      * @param string            $value
-     * @param QueryBuilder|null $qb
-     * @param string            $alias
-     *
+     * @param QueryBuilder      $qb
+     * @throws \Exception
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function scopeByField($field, $value, QueryBuilder $qb)

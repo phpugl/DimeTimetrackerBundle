@@ -73,7 +73,7 @@ class ActivitiesController extends DimeController
         }
 
         // Default date filter for today, if nothing is set
-        if (!$filter || !in_array('date', $filter)) {
+        if ($filter == null || !isset($filter['date'])) {
             $qb = $activities->scopeByDate(date('Y-m-d'), $qb);
         }
 
