@@ -62,7 +62,7 @@ class Activity
     protected $service;
 
     /**
-     * @var Timeslice $timeslices
+     * @var ArrayCollection $timeslices
      *
      * @SerializedName("timeslices")
      * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="all")

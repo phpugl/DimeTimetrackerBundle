@@ -18,7 +18,8 @@ class ActivityRepository extends EntityRepository
             throw \Exception("QueryBuilder must be set");
         }
 
-        $alias = array_shift($qb->getRootAliases());
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
 
         $qb->andWhere($qb->expr()->like($alias . '.description', ':text'));
         $qb->setParameter('text', '%'  . $text . '%');
@@ -32,33 +33,45 @@ class ActivityRepository extends EntityRepository
             throw \Exception("QueryBuilder must be set");
         }
 
-        $alias = array_shift($qb->getRootAliases());
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
 
         $qb->leftJoin($alias . '.timeslices', 't');
+
         if (is_array($date)) {
-            $qb->andWhere($qb->expr()->orX($qb->expr()->between($alias . '.updatedAt', ':from', ':to'), $qb->expr()->between('t.startedAt', ':from', ':to')));
-            $qb->setParameter(':from', $date[0]);
-            $qb->setParameter(':to', $date[1]);
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->between($alias . '.updatedAt', ':from', ':to'),
+                    $qb->expr()->between('ts.startedAt', ':from', ':to')
+                )
+            );
+            $qb->setParameter('from', $date[0]);
+            $qb->setParameter('to', $date[1]);
         } else {
-            $qb->andWhere($qb->expr()->orX($qb->expr()->like($alias . '.updatedAt', ':date'), $qb->expr()->like('t.startedAt', ':date')));
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like($alias . '.updatedAt', ':date'),
+                    $qb->expr()->like('ts.startedAt', ':date')
+                )
+            );
             $qb->setParameter('date', $date . '%');
         }
 
         return $qb;
     }
 
-    public function scopeByCustomer($id, QueryBuilder $qb = null, $alias = 'a')
+    public function scopeByCustomer($id, QueryBuilder $qb)
     {
-        return $this->scopeByField('customer', $id, $qb, $alias);
+        return $this->scopeByField('customer', $id, $qb);
     }
 
-    public function scopeByProject($id, QueryBuilder $qb = null, $alias = 'a')
+    public function scopeByProject($id, QueryBuilder $qb)
     {
-        return $this->scopeByField('project', $id, $qb, $alias);
+        return $this->scopeByField('project', $id, $qb);
     }
 
-    public function scopeByService($id, QueryBuilder $qb = null, $alias = 'a')
+    public function scopeByService($id, QueryBuilder $qb)
     {
-        return $this->scopeByField('service', $id, $qb, $alias);
+        return $this->scopeByField('service', $id, $qb);
     }
 }

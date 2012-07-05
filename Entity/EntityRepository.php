@@ -40,14 +40,14 @@ abstract class EntityRepository extends Base
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeByField($field, $value, QueryBuilder $qb = null, $alias = 'e')
+    public function scopeByField($field, $value, QueryBuilder $qb)
     {
         if ($qb == null) {
-            $qb = $this->createQueryBuilder($alias);
-        } else {
-            $alias = $qb->getRootAliases();
-            $alias = array_shift($alias);
+            throw \Exception("QueryBuilder must be set");
         }
+
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
 
         $qb->andWhere($alias . '.' . $field . ' = :' . $field);
         $qb->setParameter($field, $value);
@@ -55,7 +55,7 @@ abstract class EntityRepository extends Base
         return $qb;
     }
 
-    public function filter(array $filter, \Doctrine\ORM\QueryBuilder $qb = null)
+    public function filter(array $filter, QueryBuilder $qb)
     {
         if ($filter != null) {
             foreach ($filter as $key => $value) {

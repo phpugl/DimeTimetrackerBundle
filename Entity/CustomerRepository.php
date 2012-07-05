@@ -27,9 +27,14 @@ class CustomerRepository extends EntityRepository
             throw \Exception("QueryBuilder must be set");
         }
 
-        $alias = array_shift($qb->getRootAliases());
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
 
-        $qb->andWhere($qb->expr()->orX($qb->expr()->like($alias . '.name', '%:text%'), $qb->expr()->eq($alias . '.alias', ':text')));
+        $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->like($alias . '.name', ':text_like'),
+                $qb->expr()->eq($alias . '.alias', ':text')
+            ));
+        $qb->setParameter('text_like', '%' . $text . '%');
         $qb->setParameter('text', $text);
 
         return $qb;
@@ -38,12 +43,11 @@ class CustomerRepository extends EntityRepository
     /**
      *
      * @param                   $date
-     * @param QueryBuilder|null $qb
-     * @param string            $alias
+     * @param QueryBuilder      $qb
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeByDate($date, QueryBuilder $qb = null, $alias = 'a')
+    public function scopeByDate($date, QueryBuilder $qb)
     {
         return $qb;
     }

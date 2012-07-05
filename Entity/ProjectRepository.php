@@ -27,13 +27,15 @@ class ProjectRepository extends EntityRepository
             throw \Exception("QueryBuilder must be set");
         }
 
-        $alias = array_shift($qb->getRootAliases());
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
 
         $qb->andWhere($qb->expr()->orX(
-                $qb->expr()->like($alias . '.description', '%:text%'),
-                $qb->expr()->like($alias . '.name', '%:text%'),
+                $qb->expr()->like($alias . '.description', ':text_like'),
+                $qb->expr()->like($alias . '.name', ':text_like'),
                 $qb->expr()->eq($alias . '.alias', ':text')
             ));
+        $qb->setParameter('text_like', '%' . $text . '%');
         $qb->setParameter('text', $text);
 
         return $qb;
