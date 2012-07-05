@@ -35,12 +35,14 @@ class ProjectsController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            if (isset($filter['customer'])) {
-                $qb = $projects->scopeByCustomer($filter['customer'], $qb);
-            }
+            $qb = $projects->filter($filter, $qb);
         }
 
-        return $this->createView($qb->getQuery()->getResult());
+        // Pagination
+        return $this->paginate($qb,
+            $this->getRequest()->get('limit'),
+            $this->getRequest()->get('offset')
+        );
     }
 
     /**

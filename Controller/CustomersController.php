@@ -30,7 +30,19 @@ class CustomersController extends DimeController
     {
         $customers = $this->getCustomerRepository();
 
-        return $this->createView($customers->findBy(array(), null, 30, 0));
+        $qb = $customers->createQueryBuilder('c');
+
+        // Filter
+        $filter = $this->getRequest()->get('filter');
+        if ($filter) {
+            $qb = $customers->filter($filter, $qb);
+        }
+
+        // Pagination
+        return $this->paginate($qb,
+            $this->getRequest()->get('limit'),
+            $this->getRequest()->get('offset')
+        );
     }
 
     /**

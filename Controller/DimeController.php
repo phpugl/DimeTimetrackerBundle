@@ -5,6 +5,7 @@ namespace Dime\TimetrackerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use FOS\RestBundle\View\View;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class DimeController extends Controller
 {
@@ -13,6 +14,27 @@ class DimeController extends Controller
     protected function createView($data = null, $statuscode = 200)
     {
         $view = new View($data, $statuscode);
+
+        return $view;
+    }
+
+    protected function paginate(\Doctrine\ORM\QueryBuilder $qb, $limit = null, $offset = null)
+    {
+        if (!$limit) {
+            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
+        }
+
+        if (!$offset) {
+            $offset = $this->container->getParameter('dime_timetracker.pagination.offset');
+        }
+
+        $qb->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        $paginator = new Paginator($qb, $fetchJoinCollection = true);
+
+        $view = $this->createView($paginator);
+        $view->setHeader('X-Pagination-Total-Results', count($paginator));
 
         return $view;
     }

@@ -10,7 +10,6 @@ use Dime\TimetrackerBundle\Entity\ServiceRepository;
 use Dime\TimetrackerBundle\Form\ActivityType;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ActivitiesController extends DimeController
 {
@@ -70,39 +69,19 @@ class ActivitiesController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            // TODO Filter by date - no datetime functions at the moment
+            $qb = $activities->filter($filter, $qb);
+        }
 
-            foreach ($filter as $key => $value) {
-                if ($key == 'date') {
-                    $qb = $activities->scopeByDate($filter['date'], $qb);
-                } else {
-                    $qb = $activities->scopeByField($key, $value, $qb);
-                }
-            }
-        } else {
+        // Default date filter for today, if nothing is set
+        if (!$filter || !in_array('date', $filter)) {
             $qb = $activities->scopeByDate(date('Y-m-d'), $qb);
         }
 
-        $limit = $this->getRequest()->get('limit');
-        if (!$limit) {
-            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
-        }
-
-        $offset = $this->getRequest()->get('offset');
-        if (!$offset) {
-            $offset = $this->container->getParameter('dime_timetracker.pagination.offset');
-        }
-
-        $qb->setFirstResult($offset)
-           ->setMaxResults($limit);
-
-        $paginator = new Paginator($qb, $fetchJoinCollection = true);
-
-//        $view = $this->createView($qb->getQuery()->getResult());
-        $view = $this->createView($paginator);
-        $view->setHeader('X-Pagination-Total-Results', count($paginator));
-
-        return $view;
+        // Pagination
+        return $this->paginate($qb,
+            $this->getRequest()->get('limit'),
+            $this->getRequest()->get('offset')
+        );
     }
 
     /**

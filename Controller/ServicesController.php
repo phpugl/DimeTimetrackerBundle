@@ -30,7 +30,19 @@ class ServicesController extends DimeController
     {
         $services = $this->getServiceRepository();
 
-        return $this->createView($services->findBy(array(), null, 30, 0));
+        $qb = $services->createQueryBuilder('s');
+
+        // Filter
+        $filter = $this->getRequest()->get('filter');
+        if ($filter) {
+            $qb = $services->filter($filter, $qb);
+        }
+
+        // Pagination
+        return $this->paginate($qb,
+            $this->getRequest()->get('limit'),
+            $this->getRequest()->get('offset')
+        );
     }
 
     /**

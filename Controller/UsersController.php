@@ -30,7 +30,19 @@ class UsersController extends DimeController
     {
         $users = $this->getUserRepository();
 
-        return $this->createView($users->findBy(array(), null, 30, 0));
+        $qb = $users->createQueryBuilder('u');
+
+        // Filter
+        $filter = $this->getRequest()->get('filter');
+        if ($filter) {
+            $qb = $users->filter($filter, $qb);
+        }
+
+        // Pagination
+        return $this->paginate($qb,
+            $this->getRequest()->get('limit'),
+            $this->getRequest()->get('offset')
+        );
     }
 
     /**

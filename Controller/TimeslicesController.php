@@ -30,7 +30,19 @@ class TimeslicesController extends DimeController
     {
         $timeslices = $this->getTimesliceRepository();
 
-        return $this->createView($timeslices->findBy(array(), null, 30, 0));
+        $qb = $timeslices->createQueryBuilder('t');
+
+        // Filter
+        $filter = $this->getRequest()->get('filter');
+        if ($filter)  {
+            $qb = $timeslices->filter($filter, $qb);
+        }
+
+        // Pagination
+        return $this->paginate($qb,
+            $this->getRequest()->get('limit'),
+            $this->getRequest()->get('offset')
+        );
     }
 
     /**
