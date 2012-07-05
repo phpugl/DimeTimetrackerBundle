@@ -3,6 +3,7 @@
 namespace Dime\TimetrackerBundle\Entity;
 
 use Dime\TimetrackerBundle\Entity\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * CustomerRepository
@@ -12,4 +13,38 @@ use Dime\TimetrackerBundle\Entity\EntityRepository;
  */
 class CustomerRepository extends EntityRepository
 {
+    /**
+     * Search for name or alias
+     *
+     * @param string            $text
+     * @param QueryBuilder      $qb
+     * @throws \Exception
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function search($text, QueryBuilder $qb)
+    {
+        if ($qb == null) {
+            throw \Exception("QueryBuilder must be set");
+        }
+
+        $alias = array_shift($qb->getRootAliases());
+
+        $qb->andWhere($qb->expr()->orX($qb->expr()->like($alias . '.name', '%:text%'), $qb->expr()->eq($alias . '.alias', ':text')));
+        $qb->setParameter('text', $text);
+
+        return $qb;
+    }
+
+    /**
+     *
+     * @param                   $date
+     * @param QueryBuilder|null $qb
+     * @param string            $alias
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function scopeByDate($date, QueryBuilder $qb = null, $alias = 'a')
+    {
+        return $qb;
+    }
 }

@@ -12,39 +12,37 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ActivityRepository extends EntityRepository
 {
-    public function scopeByDate($date, QueryBuilder $qb = null, $alias = 'a')
+    public function search($text, QueryBuilder $qb)
     {
         if ($qb == null) {
-            $qb = $this->createQueryBuilder($alias);
-        } else {
-            $alias = $qb->getRootAliases();
-            $alias = array_shift($alias);
+            throw \Exception("QueryBuilder must be set");
         }
 
-        $qb->leftJoin('a.timeslices', 't');
-        if (is_array($date)) {
-            $qb->andWhere($qb->expr()->orX($qb->expr()->between('a.updatedAt', ':from', ':to'), $qb->expr()->between('t.startedAt', ':from', ':to')));
-            $qb->setParameter(':from', $date[0]);
-            $qb->setParameter(':to', $date[1]);
-        } else {
-            $qb->andWhere($qb->expr()->orX($qb->expr()->like('a.updatedAt', ':date'), $qb->expr()->like('t.startedAt', ':date')));
-            $qb->setParameter('date', $date . '%');
-        }
+        $alias = array_shift($qb->getRootAliases());
+
+        $qb->andWhere($qb->expr()->like($alias . '.description', ':text'));
+        $qb->setParameter('text', '%'  . $text . '%');
 
         return $qb;
     }
 
-    public function scopeByField($field, $value, QueryBuilder $qb = null, $alias = 'a')
+    public function scopeByDate($date, QueryBuilder $qb)
     {
         if ($qb == null) {
-            $qb = $this->createQueryBuilder($alias);
-        } else {
-            $alias = $qb->getRootAliases();
-            $alias = array_shift($alias);
+            throw \Exception("QueryBuilder must be set");
         }
 
-        $qb->andWhere($alias . '.' . $field . ' = :' . $field);
-        $qb->setParameter($field, $value);
+        $alias = array_shift($qb->getRootAliases());
+
+        $qb->leftJoin($alias . '.timeslices', 't');
+        if (is_array($date)) {
+            $qb->andWhere($qb->expr()->orX($qb->expr()->between($alias . '.updatedAt', ':from', ':to'), $qb->expr()->between('t.startedAt', ':from', ':to')));
+            $qb->setParameter(':from', $date[0]);
+            $qb->setParameter(':to', $date[1]);
+        } else {
+            $qb->andWhere($qb->expr()->orX($qb->expr()->like($alias . '.updatedAt', ':date'), $qb->expr()->like('t.startedAt', ':date')));
+            $qb->setParameter('date', $date . '%');
+        }
 
         return $qb;
     }

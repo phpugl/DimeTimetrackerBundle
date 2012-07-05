@@ -13,19 +13,41 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ProjectRepository extends EntityRepository
 {
-
-    public function scopeByCustomer($id, QueryBuilder $qb = null, $alias = 'p')
+    /**
+     * Search for name or alias
+     *
+     * @param string            $text
+     * @param QueryBuilder      $qb
+     * @throws \Exception
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function search($text, QueryBuilder $qb)
     {
         if ($qb == null) {
-            $qb = $this->createQueryBuilder($alias);
-        } else {
-            $alias = $qb->getRootAliases();
-            $alias = array_shift($alias);
+            throw \Exception("QueryBuilder must be set");
         }
 
-        $qb->andWhere($alias . '.customer = :customer');
-        $qb->setParameter('customer', $id);
+        $alias = array_shift($qb->getRootAliases());
 
+        $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->like($alias . '.description', '%:text%'),
+                $qb->expr()->like($alias . '.name', '%:text%'),
+                $qb->expr()->eq($alias . '.alias', ':text')
+            ));
+        $qb->setParameter('text', $text);
+
+        return $qb;
+    }
+
+    /**
+     *
+     * @param                   $date
+     * @param QueryBuilder      $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function scopeByDate($date, QueryBuilder $qb)
+    {
         return $qb;
     }
 }
