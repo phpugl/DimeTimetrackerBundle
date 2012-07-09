@@ -30,5 +30,6 @@
   "autoload": {
       "psr-0": { "Dime\\TimetrackerBundle": "" }
   },
+  "minimum-stability": "dev",
   "target-dir": "Dime/TimetrackerBundle"
 }
