@@ -18,7 +18,7 @@
       "doctrine/doctrine-bundle": "dev-master",
       "doctrine/doctrine-migrations-bundle": "dev-master",
       "doctrine/doctrine-fixtures-bundle": "dev-master",
-      "gedmo/doctrine-extensions": "dev-master",
+      "stof/doctrine-extensions-bundle": "dev-master",
       "friendsofsymfony/rest-bundle": "dev-master",
       "friendsofsymfony/user-bundle": "dev-master"
   },
