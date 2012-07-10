@@ -32,7 +32,7 @@ class Timeslice
      *
      * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Activity", inversedBy="timeslices", cascade="persist")
-     * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="activity_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $activity;
 

@@ -35,7 +35,7 @@ class Project
      * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $user;
 
@@ -43,7 +43,7 @@ class Project
      * @var Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="projects")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $customer;
 

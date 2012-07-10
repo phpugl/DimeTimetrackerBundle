@@ -33,7 +33,7 @@ class Activity
      * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="activities")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $user;
 
@@ -41,7 +41,7 @@ class Activity
      * @var Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="activities")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $customer;
 
@@ -49,7 +49,7 @@ class Activity
      * @var Project $project
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="activities")
-     * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $project;
 
@@ -57,7 +57,7 @@ class Activity
      * @var Service $service
      *
      * @ORM\ManyToOne(targetEntity="Service", inversedBy="activities")
-     * @ORM\JoinColumn(name="service_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="service_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $service;
 
