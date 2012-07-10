@@ -38,6 +38,8 @@ class CustomersController extends DimeController
             $qb = $customers->filter($filter, $qb);
         }
 
+        $qb->addOrderBy('c.name', 'ASC');
+
         // Pagination
         return $this->paginate($qb,
             $this->getRequest()->get('limit'),

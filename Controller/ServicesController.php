@@ -38,6 +38,8 @@ class ServicesController extends DimeController
             $qb = $services->filter($filter, $qb);
         }
 
+        $qb->addOrderBy('c.name', 'ASC');
+
         // Pagination
         return $this->paginate($qb,
             $this->getRequest()->get('limit'),

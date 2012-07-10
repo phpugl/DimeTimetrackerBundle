@@ -77,6 +77,10 @@ class ActivitiesController extends DimeController
             $qb = $activities->scopeByDate(date('Y-m-d'), $qb);
         }
 
+        $qb->addOrderBy('a.updatedAt', 'DESC');
+        $qb->addOrderBy('t.updatedAt', 'DESC');
+        $qb->addOrderBy('a.id', 'DESC');
+
         // Pagination
         return $this->paginate($qb,
             $this->getRequest()->get('limit'),
