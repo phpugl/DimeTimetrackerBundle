@@ -10,6 +10,11 @@ use FOS\RestBundle\View\View;
 class CustomersController extends DimeController
 {
     /**
+     * @var array allowed filter keys
+     */
+    protected $allowed_filter = array('search');
+
+    /**
      * get customer repository
      *
      * @return CustomerRepository
@@ -35,7 +40,7 @@ class CustomersController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $customers->filter($filter, $qb);
+            $qb = $customers->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
         $qb->addOrderBy('c.name', 'ASC');

@@ -10,6 +10,11 @@ use FOS\RestBundle\View\View;
 class ProjectsController extends DimeController
 {
     /**
+     * @var array allowed filter keys
+     */
+    protected $allowed_filter = array('customer', 'search');
+
+    /**
      * get project repository
      *
      * @return ProjectRepository
@@ -35,7 +40,7 @@ class ProjectsController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $projects->filter($filter, $qb);
+            $qb = $projects->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
         // Pagination

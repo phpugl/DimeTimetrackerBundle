@@ -10,6 +10,11 @@ use FOS\RestBundle\View\View;
 class UsersController extends DimeController
 {
     /**
+     * @var array allowed filter keys
+     */
+    protected $allowed_filter = array();
+
+    /**
      * get user repository
      *
      * @return UserRepository
@@ -35,7 +40,7 @@ class UsersController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $users->filter($filter, $qb);
+            $qb = $users->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
         // Pagination

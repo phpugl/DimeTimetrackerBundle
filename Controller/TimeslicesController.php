@@ -10,6 +10,11 @@ use FOS\RestBundle\View\View;
 class TimeslicesController extends DimeController
 {
     /**
+     * @var array allowed filter keys
+     */
+    protected $allowed_filter = array('activity');
+
+    /**
      * get activity timeslice repository
      *
      * @return TimesliceRepository
@@ -35,7 +40,7 @@ class TimeslicesController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter)  {
-            $qb = $timeslices->filter($filter, $qb);
+            $qb = $timeslices->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
         // Pagination

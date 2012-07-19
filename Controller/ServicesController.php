@@ -10,6 +10,11 @@ use FOS\RestBundle\View\View;
 class ServicesController extends DimeController
 {
     /**
+     * @var array allowed filter keys
+     */
+    protected $allowed_filter = array('search');
+
+    /**
      * get service repository
      *
      * @return ServiceRepository
@@ -35,10 +40,10 @@ class ServicesController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $services->filter($filter, $qb);
+            $qb = $services->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
-        $qb->addOrderBy('c.name', 'ASC');
+        $qb->addOrderBy('s.name', 'ASC');
 
         // Pagination
         return $this->paginate($qb,

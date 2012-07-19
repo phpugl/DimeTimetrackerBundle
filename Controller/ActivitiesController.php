@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 class ActivitiesController extends DimeController
 {
     /**
+     * @var array allowed filter keys
+     */
+    protected $allowed_filter = array('date', 'active', 'customer', 'project', 'service');
+
+    /**
      * get activity repository
      *
      * @return ActivityRepository
@@ -69,16 +74,13 @@ class ActivitiesController extends DimeController
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $activities->filter($filter, $qb);
-        }
-
-        // Default date filter for today, if nothing is set
-        if ($filter == null || !isset($filter['date'])) {
-            $qb = $activities->scopeByDate(date('Y-m-d'), $qb);
+            $qb = $activities->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
         $qb->addOrderBy('a.updatedAt', 'DESC');
-        $qb->addOrderBy('t.updatedAt', 'DESC');
+        if ($activities->existsJoinAlias($qb, 't')) {
+            $qb->addOrderBy('t.updatedAt', 'DESC');
+        }
         $qb->addOrderBy('a.id', 'DESC');
 
         // Pagination
