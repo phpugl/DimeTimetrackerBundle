@@ -11,6 +11,14 @@ class DimeController extends Controller
 {
     protected $currentUser = null;
 
+    /**
+     * Create a rest view
+     *
+     * @param null $data
+     * @param int  $statuscode
+     *
+     * @return \FOS\RestBundle\View\View
+     */
     protected function createView($data = null, $statuscode = 200)
     {
         $view = new View($data, $statuscode);
@@ -18,6 +26,15 @@ class DimeController extends Controller
         return $view;
     }
 
+    /**
+     * Generate paginated output
+     *
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     * @param null                       $limit
+     * @param null                       $offset
+     *
+     * @return \FOS\RestBundle\View\View
+     */
     protected function paginate(\Doctrine\ORM\QueryBuilder $qb, $limit = null, $offset = null)
     {
         if (!$limit) {
@@ -39,6 +56,11 @@ class DimeController extends Controller
         return $view;
     }
 
+    /**
+     * Get the current user
+     *
+     * @return \Dime\TimetrackerBundle\Entity\User
+     */
     protected function getCurrentUser()
     {
         if (!$this->currentUser) {
@@ -46,6 +68,26 @@ class DimeController extends Controller
         }
 
         return $this->currentUser;
+    }
+
+    /**
+     * Clean up filter array
+     *
+     * @param array $filter
+     * @param array $allowed
+     *
+     * @return array clean filter array
+     */
+    protected function cleanFilter(array $filter, array $allowed) {
+        $result = array();
+
+        foreach ($filter as $key => $name) {
+            if (in_array($key, $allowed)) {
+                $result[$key] = $name;
+            }
+        }
+
+        return $result;
     }
 
     /**
