@@ -12,6 +12,15 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ActivityRepository extends EntityRepository
 {
+    /**
+     * Simple search for description with like.
+     *
+     * @param string                     $text
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     * @throws \Exception when $qb is null
+     */
     public function search($text, QueryBuilder $qb)
     {
         if ($qb == null) {
@@ -27,6 +36,16 @@ class ActivityRepository extends EntityRepository
         return $qb;
     }
 
+    /**
+     * Filter by date string or with array of 2 date strings.
+     * TODO Filter by date - no datetime functions at the moment
+     *
+     * @param                            $date, date string or array with data string
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     * @throws \Exception when $qb is null
+     */
     public function scopeByDate($date, QueryBuilder $qb)
     {
         if ($qb == null) {
@@ -36,7 +55,9 @@ class ActivityRepository extends EntityRepository
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
 
-        $qb->leftJoin($alias . '.timeslices', 't');
+        if (!$this->existsJoinAlias($qb, 't')) {
+            $qb->leftJoin($alias . '.timeslices', 't');
+        }
 
         if (is_array($date)) {
             $qb->andWhere(
@@ -60,18 +81,119 @@ class ActivityRepository extends EntityRepository
         return $qb;
     }
 
+    /**
+     * Filter active or non active activities. Active activities
+     * has a timeslice where stoppedAt is null and duration is 0.
+     *
+     * @param                            $active, boolean
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     * @throws \Exception when $qb is null
+     */
+    public function scopeByActive($active, QueryBuilder $qb)
+    {
+        if ($qb == null) {
+            throw \Exception("QueryBuilder must be set");
+        }
+
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+
+        if (!$this->existsJoinAlias($qb, 't')) {
+            $qb->leftJoin($alias . '.timeslices', 't');
+        }
+
+        if ($active == 'true' || (is_bool($active) && $active)) {
+            $qb->andWhere(
+                $qb->expr()->andX(
+                    $qb->expr()->isNull('t.stoppedAt'),
+                    $qb->expr()->eq('t.duration', 0)
+                )
+            );
+        } else {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->isNotNull('t.stoppedAt'),
+                    $qb->expr()->gt('t.duration', 0)
+                )
+            );
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filter by customer id
+     *
+     * @param                            $id, integer
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function scopeByCustomer($id, QueryBuilder $qb)
     {
         return $this->scopeByField('customer', $id, $qb);
     }
 
+    /**
+     * Filter by project id
+     *
+     * @param                            $id, integer
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function scopeByProject($id, QueryBuilder $qb)
     {
         return $this->scopeByField('project', $id, $qb);
     }
 
+    /**
+     * Filter by service id
+     *
+     * @param                            $id, integer
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function scopeByService($id, QueryBuilder $qb)
     {
         return $this->scopeByField('service', $id, $qb);
+    }
+
+    /**
+     * Add different filter option to query
+     *
+     * @param array                      $filter
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     * @throws \Exception when $qb is null
+     */
+    public function filter(array $filter, QueryBuilder $qb)
+    {
+        if ($qb == null) {
+            throw \Exception("QueryBuilder must be set");
+        }
+
+        if ($filter != null) {
+            foreach ($filter as $key => $value) {
+                switch($key) {
+                    case 'active':
+                        $qb = $this->scopeByActive($value, $qb);
+                        break;
+                    case 'date':
+                        $qb = $this->scopeByDate($value, $qb);
+                        break;
+                    case 'search':
+                        $qb = $this->search($value, $qb);
+                        break;
+                    default:
+                        $qb = $this->scopeByField($key, $value, $qb);
+                }
+            }
+        }
+        return $qb;
     }
 }
