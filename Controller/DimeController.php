@@ -30,23 +30,27 @@ class DimeController extends Controller
      * Generate paginated output
      *
      * @param \Doctrine\ORM\QueryBuilder $qb
-     * @param null                       $limit
-     * @param null                       $offset
+     * @param int                        $limit
+     * @param int                        $offset
      *
      * @return \FOS\RestBundle\View\View
      */
     protected function paginate(\Doctrine\ORM\QueryBuilder $qb, $limit = null, $offset = null)
     {
-        if (!$limit) {
-            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
-        }
+//        if (!$limit) {
+//            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
+//        }
+//
+//        if (!$offset) {
+//            $offset = $this->container->getParameter('dime_timetracker.pagination.offset');
+//        }
 
-        if (!$offset) {
-            $offset = $this->container->getParameter('dime_timetracker.pagination.offset');
+        if ($offset != null && intval($offset) > 0) {
+            $qb->setFirstResult($offset);
         }
-
-        $qb->setFirstResult($offset)
-            ->setMaxResults($limit);
+        if ($limit != null && intval($limit) > 0) {
+            $qb->setMaxResults($limit);
+        }
 
         $paginator = new Paginator($qb, $fetchJoinCollection = true);
 
