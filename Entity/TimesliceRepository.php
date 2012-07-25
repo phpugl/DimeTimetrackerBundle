@@ -14,6 +14,8 @@ use Doctrine\ORM\QueryBuilder;
 class TimesliceRepository extends EntityRepository
 {
     /**
+     * Scope by search text.
+     * Search not possible.
      *
      * @param string            $text
      * @param QueryBuilder      $qb
@@ -26,6 +28,8 @@ class TimesliceRepository extends EntityRepository
     }
 
     /**
+     * Scope by date,
+     * Not implemented yet.
      *
      * @param                   $date
      * @param QueryBuilder      $qb
@@ -34,6 +38,32 @@ class TimesliceRepository extends EntityRepository
      */
     public function scopeByDate($date, QueryBuilder $qb)
     {
+        return $qb;
+    }
+
+    /**
+     * Scope by user.
+     *
+     * @param                            $user
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     * @throws
+     */
+    public function scopeByUser($user, QueryBuilder $qb)
+    {
+        if ($qb == null) {
+            throw \Exception("QueryBuilder must be set");
+        }
+
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+
+        $qb->leftJoin($alias . '.activity', 'a');
+
+        $qb->andWhere($qb->expr()->eq("a.user", ":user"));
+        $qb->setParameter(":user", $user);
+
         return $qb;
     }
 }

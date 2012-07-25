@@ -5,6 +5,7 @@ namespace Dime\TimetrackerBundle\Controller;
 use Dime\TimetrackerBundle\Entity\Activity;
 use Dime\TimetrackerBundle\Entity\ActivityRepository;
 use Dime\TimetrackerBundle\Entity\Timeslice;
+use Dime\TimetrackerBundle\Entity\CustomerRepository;
 use Dime\TimetrackerBundle\Entity\ProjectRepository;
 use Dime\TimetrackerBundle\Entity\ServiceRepository;
 use Dime\TimetrackerBundle\Form\ActivityType;
@@ -16,7 +17,7 @@ class ActivitiesController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('date', 'active', 'customer', 'project', 'service');
+    protected $allowed_filter = array('date', 'active', 'customer', 'project', 'service', 'user');
 
     /**
      * get activity repository
@@ -77,6 +78,12 @@ class ActivitiesController extends DimeController
             $qb = $activities->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
+        // Scope by current user
+        if (!isset($filter['user'])) {
+            $activities->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+        }
+
+        // Sort by updatedAt and id
         $qb->addOrderBy('a.updatedAt', 'DESC');
         if ($activities->existsJoinAlias($qb, 't')) {
             $qb->addOrderBy('t.updatedAt', 'DESC');

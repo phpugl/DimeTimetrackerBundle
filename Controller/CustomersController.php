@@ -12,7 +12,7 @@ class CustomersController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('search');
+    protected $allowed_filter = array('search', 'user');
 
     /**
      * get customer repository
@@ -43,6 +43,12 @@ class CustomersController extends DimeController
             $qb = $customers->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
+        // Scope by current user
+        if (!isset($filter['user'])) {
+            $customers->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+        }
+
+        // Sort by name
         $qb->addOrderBy('c.name', 'ASC');
 
         // Pagination

@@ -67,11 +67,13 @@ class DimeController extends Controller
      */
     protected function getCurrentUser()
     {
-        if (!$this->currentUser) {
-            $this->currentUser = $this->getDoctrine()->getRepository('DimeTimetrackerBundle:User')->findOneByEmail('johndoe@example.com');
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if (!is_object($user) || !$user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+            throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException(
+                'This user does not have access to this section.');
         }
 
-        return $this->currentUser;
+        return $user;
     }
 
     /**
@@ -120,11 +122,8 @@ class DimeController extends Controller
 
             $entity = $form->getData();
 
-            /** @todo: set user */
-            $user = $em->getRepository('DimeTimetrackerBundle:User')->findOneByEmail('johndoe@example.com');
-
             if (is_object($entity) && method_exists($entity, 'setUser')) {
-                $entity->setUser($user);
+                $entity->setUser($this->getCurrentUser());
             }
 
             // save change to database

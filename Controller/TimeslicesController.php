@@ -43,6 +43,14 @@ class TimeslicesController extends DimeController
             $qb = $timeslices->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
+        // Scope by current user
+        if (!isset($filter['user'])) {
+            $timeslices->scopeByUser($this->getCurrentUser()->getId(), $qb);
+        }
+
+        // Sort by updatedAt
+        $qb->addOrderBy('t.updatedAt', 'DESC');
+
         // Pagination
         return $this->paginate($qb,
             $this->getRequest()->get('limit'),

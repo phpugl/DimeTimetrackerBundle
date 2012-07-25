@@ -12,7 +12,7 @@ class ServicesController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('search');
+    protected $allowed_filter = array('search', 'user');
 
     /**
      * get service repository
@@ -43,6 +43,12 @@ class ServicesController extends DimeController
             $qb = $services->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
 
+        // Scope by current user
+        if (!isset($filter['user'])) {
+            $services->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+        }
+
+        // Sort by name
         $qb->addOrderBy('s.name', 'ASC');
 
         // Pagination

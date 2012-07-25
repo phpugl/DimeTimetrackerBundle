@@ -12,7 +12,7 @@ class ProjectsController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('customer', 'search');
+    protected $allowed_filter = array('customer', 'search', 'user');
 
     /**
      * get project repository
@@ -42,6 +42,14 @@ class ProjectsController extends DimeController
         if ($filter) {
             $qb = $projects->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
         }
+
+        // Scope by current user
+        if (!isset($filter['user'])) {
+            $projects->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+        }
+
+        // Sort by name
+        $qb->addOrderBy('p.name', 'ASC');
 
         // Pagination
         return $this->paginate($qb,
