@@ -4,14 +4,15 @@ namespace Dime\TimetrackerBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TimesliceType extends AbstractType
 {
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'csrf_protection' => false
-        );
+        $resolver->setDefaults(array(
+                'csrf_protection' => false
+            ));
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -4,14 +4,16 @@ namespace Dime\TimetrackerBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ActivityType extends AbstractType
 {
-    public function getDefaultOptions()
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'csrf_protection' => false
-        );
+        ));
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
