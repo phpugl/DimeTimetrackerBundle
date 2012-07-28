@@ -31,7 +31,7 @@ class LoadUsers extends AbstractFixture implements OrderedFixtureInterface
         $testUser->setUsername('test');
         $testUser->setPlainPassword('kitten');
         $testUser->setEnabled(true);
-        $testUser->addRole(User::ROLE_USER);
+        $testUser->addRole(User::ROLE_DEFAULT);
 
         $testUser->setFirstname('Test');
         $testUser->setLastname('User');
