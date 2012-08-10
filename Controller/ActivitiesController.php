@@ -158,6 +158,10 @@ class ActivitiesController extends DimeController
             if (isset($result['project'])) {
                 $project = $this->getProjectRepository()->findOneByAlias($result['project']);
                 $activity->setProject($project);
+                // Auto set customer because of direct relation to project
+                if ($activity->getCustomer()  == null) {
+                    $activity->setCustomer($project->getCustomer());
+                }
             }
 
             if (isset($result['service'])) {
