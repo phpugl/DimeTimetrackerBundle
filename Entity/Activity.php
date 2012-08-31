@@ -70,6 +70,14 @@ class Activity
     protected $timeslices;
 
     /**
+     * @var ArrayCollection $tags
+     *
+     * @SerializedName("tags")
+     * @ORM\ManyToMany(targetEntity="Tag")
+     */
+    protected $tags;
+
+    /**
      * @var string $description
      *
      * @ORM\Column(type="text", nullable=true)
@@ -312,6 +320,29 @@ class Activity
     }
 
     /**
+     * Add tag
+     *
+     * @param  Tag      $tag
+     * @return Activity
+     */
+    public function addTag(Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
      * Get created at datetime
      *
      * @return datetime
@@ -332,7 +363,7 @@ class Activity
     }
 
     /**
-     * get project as string
+     * get activity as string
      *
      * @return string
      */

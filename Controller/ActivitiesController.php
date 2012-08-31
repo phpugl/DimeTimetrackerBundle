@@ -8,6 +8,7 @@ use Dime\TimetrackerBundle\Entity\Timeslice;
 use Dime\TimetrackerBundle\Entity\CustomerRepository;
 use Dime\TimetrackerBundle\Entity\ProjectRepository;
 use Dime\TimetrackerBundle\Entity\ServiceRepository;
+use Dime\TimetrackerBundle\Entity\TagRepository;
 use Dime\TimetrackerBundle\Form\ActivityType;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +31,7 @@ class ActivitiesController extends DimeController
     }
 
     /**
-     * get activity repository
+     * get customer repository
      *
      * @return CustomerRepository
      */
@@ -40,13 +41,23 @@ class ActivitiesController extends DimeController
     }
 
     /**
-     * get activity repository
+     * get project repository
      *
      * @return ProjectRepository
      */
     protected function getProjectRepository()
     {
         return $this->getDoctrine()->getRepository('DimeTimetrackerBundle:Project');
+    }
+
+    /**
+     * get tag repository
+     *
+     * @return TagRepository
+     */
+    protected function getTagRepository()
+    {
+        return $this->getDoctrine()->getRepository('DimeTimetrackerBundle:Tag');
     }
 
     /**
@@ -135,7 +146,7 @@ class ActivitiesController extends DimeController
         $activity = new Activity();
 
         // convert json to assoc array from request content
-        $data = json_decode($this->getRequest()->getContent(), true);
+        $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
 
         if (isset($data['parse'])) {
             // Run parser
@@ -252,10 +263,12 @@ class ActivitiesController extends DimeController
 
         // check if it exists
         if ($activity) {
+            $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
+
             // create form, decode request and save it if valid
             $view = $this->saveForm(
                 $this->createForm(new ActivityType(), $activity),
-                json_decode($this->getRequest()->getContent(), true)
+                $data
             );
         } else {
             // activity does not exists send 404

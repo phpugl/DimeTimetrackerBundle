@@ -97,6 +97,32 @@ class DimeController extends Controller
     }
 
     /**
+     * handle tags in input data array, if we get them as array of text instead of array of int
+     * 
+     * @param array $data 
+     * @return array
+     */
+    protected function handleTagsInput($data)
+    {
+        $tagRepository = $this->getTagRepository();
+        $qb = $tagRepository->createQueryBuilder('t');
+
+        if (array_key_exists('tags', $data) && is_string($data['tags'])) {
+            $tags = $tagRepository->getIdsForTags($data['tags'], $qb);
+            $data['tags'] = array_values($tags);
+            $data['relation']['tags'] = array();
+            foreach ($tags as $tagId=>$tagName) {
+                $data['relation']['tags'][] = array(
+                    'id'   => $tagId,
+                    'name' => $tagName
+                );
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * save form
      *
      * @param Form  $form

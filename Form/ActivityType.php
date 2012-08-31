@@ -25,6 +25,7 @@ class ActivityType extends AbstractType
             ->add('service')
             ->add('customer')
             ->add('project')
+            ->add('tags')
         ;
     }
 
