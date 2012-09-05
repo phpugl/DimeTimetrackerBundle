@@ -2,6 +2,9 @@
 
 namespace Dime\TimetrackerBundle\Controller;
 
+use FOS\RestBundle\View\View;
+use FOS\RestBundle\Controller\Annotations\Route;
+
 use Dime\TimetrackerBundle\Entity\Activity;
 use Dime\TimetrackerBundle\Entity\ActivityRepository;
 use Dime\TimetrackerBundle\Entity\Timeslice;
@@ -9,8 +12,6 @@ use Dime\TimetrackerBundle\Entity\CustomerRepository;
 use Dime\TimetrackerBundle\Entity\ProjectRepository;
 use Dime\TimetrackerBundle\Entity\ServiceRepository;
 use Dime\TimetrackerBundle\Form\ActivityType;
-use FOS\RestBundle\View\View;
-use Symfony\Component\HttpFoundation\Response;
 
 class ActivitiesController extends DimeController
 {
@@ -64,6 +65,7 @@ class ActivitiesController extends DimeController
      *
      * [GET] /activities
      *
+     * @Route("/activities")
      * @return View
      */
     public function getActivitiesAction()
@@ -129,7 +131,7 @@ class ActivitiesController extends DimeController
      *
      * @return View
      */
-    public function postActivitiesAction()
+    public function postActivityAction()
     {
         // create new activity entity
         $activity = new Activity();
