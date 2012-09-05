@@ -10,6 +10,9 @@
           "email": "info@phpugl.de"
       }
   ],
+  "autoload": {
+      "psr-0": { "Dime\\TimetrackerBundle": "" }
+  },
   "require": {
       "php": ">=5.3.3",
       "symfony/symfony": ">=2.0",
@@ -26,9 +29,6 @@
       "phpugl/dime-timetracker-frontend-bundle": "*",
       "phpugl/dime-invoice-bundle": "*",
       "phpugl/dime-import-bundle": "*"
-  },
-  "autoload": {
-      "psr-0": { "Dime\\TimetrackerBundle": "" }
   },
   "minimum-stability": "dev",
   "target-dir": "Dime/TimetrackerBundle"
