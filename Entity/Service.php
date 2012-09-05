@@ -6,6 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
+use JMS\SerializerBundle\Annotation\Exclude;
 
 /**
  * Dime\TimetrackerBundle\Entity\Service
@@ -30,6 +31,7 @@ class Service
     /**
      * @var User $user
      *
+     * @Exclude
      * @ORM\ManyToOne(targetEntity="User", inversedBy="Services")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
