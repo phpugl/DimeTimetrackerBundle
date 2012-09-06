@@ -55,28 +55,47 @@ class ActivityRepository extends EntityRepository
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
 
-        if (!$this->existsJoinAlias($qb, 't')) {
-            $qb->leftJoin($alias . '.timeslices', 't');
-        }
+        $timesliceRepository = $this->getEntityManager()->getRepository('DimeTimetrackerBundle:Timeslice');
 
         if (is_array($date)) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->between($alias . '.updatedAt', ':from', ':to'),
-                    $qb->expr()->between('t.startedAt', ':from', ':to')
-                )
-            );
+            $ids = $timesliceRepository->fetchActivityIdsByDateRange($date[0], $date[1]);
+
+            if (!empty($ids)) {
+                $qb->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->between($alias . '.updatedAt', ':from', ':to'),
+                        $qb->expr()->in($alias . '.id', $ids)
+                    )
+                );
+            } else {
+                $qb->andWhere(
+                    $qb->expr()->between($alias . '.updatedAt', ':from', ':to')
+                );
+            }
+
             $qb->setParameter('from', $date[0]);
             $qb->setParameter('to', $date[1]);
         } else {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->like($alias . '.updatedAt', ':date'),
-                    $qb->expr()->like('t.startedAt', ':date')
-                )
-            );
+            $ids = $timesliceRepository->fetchActivityIdsByDate($date);
+
+            if (!empty($ids)) {
+                $qb->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->like($alias . '.updatedAt', ':date')
+                        , $qb->expr()->in($alias . '.id', $ids)
+                    )
+                );
+            } else {
+                $qb->andWhere(
+                    $qb->expr()->like($alias . '.updatedAt', ':date')
+                );
+            }
+
+
             $qb->setParameter('date', $date . '%');
         }
+
+        //print($qb->getQuery()->getSQL());
 
         return $qb;
     }
@@ -97,26 +116,16 @@ class ActivityRepository extends EntityRepository
             throw \Exception("QueryBuilder must be set");
         }
 
-        $aliases = $qb->getRootAliases();
-        $alias = array_shift($aliases);
-
-        if (!$this->existsJoinAlias($qb, 't')) {
-            $qb->leftJoin($alias . '.timeslices', 't');
-        }
+        $timesliceRepository = $this->getEntityManager()->getRepository('DimeTimetrackerBundle:Timeslice');
+        $ids = $timesliceRepository->fetchRunningActivityIds();
 
         if ($active == 'true' || (is_bool($active) && $active)) {
             $qb->andWhere(
-                $qb->expr()->andX(
-                    $qb->expr()->isNull('t.stoppedAt'),
-                    $qb->expr()->eq('t.duration', 0)
-                )
+                $qb->expr()->in('a.id', $ids)
             );
         } else {
             $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->isNotNull('t.stoppedAt'),
-                    $qb->expr()->gt('t.duration', 0)
-                )
+                $qb->expr()->notIn('a.id', $ids)
             );
         }
 

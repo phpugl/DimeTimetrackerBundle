@@ -4,6 +4,7 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Dime\TimetrackerBundle\Entity\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * TimesliceRepository
@@ -65,5 +66,71 @@ class TimesliceRepository extends EntityRepository
         $qb->setParameter(":user", $user);
 
         return $qb;
+    }
+
+    /**
+     * Fetch all activities id where a timeslice has stoppedAt is NULL and duration is '0'.
+     * This query is a native one, because Doctrine DQL can not fetch only the activity_id.
+     *
+     * @param $date, Date
+     * @return array, list of activity ids
+     */
+    public function fetchActivityIdsByDate($date)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('activity_id', 'activity');
+
+        $sql = 'SELECT DISTINCT t.activity_id FROM timeslices t WHERE t.started_at LIKE :date';
+
+        $query = $this
+            ->getEntityManager()
+            ->createNativeQuery($sql, $rsm)
+            ->setParameter('date', $date . '%');
+
+        return array_map("array_pop", $query->getResult());
+    }
+
+    /**
+     * Fetch all activities id where a timeslice has stoppedAt is NULL and duration is '0'.
+     * This query is a native one, because Doctrine DQL can not fetch only the activity_id.
+     *
+     * @param $from
+     * @param $to
+     * @return array, list of activity ids
+     */
+    public function fetchActivityIdsByDateRange($from, $to)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('activity_id', 'activity');
+
+        $sql = 'SELECT DISTINCT t.activity_id FROM timeslices t WHERE t.started_at BETWEEN ? AND ?';
+
+        $query = $this
+            ->getEntityManager()
+            ->createNativeQuery($sql, $rsm)
+            ->setParameter(1, $from)
+            ->setParameter(2, $to);
+
+        return array_map("array_pop", $query->getResult());
+    }
+
+    /**
+     * Fetch all activities id where a timeslice has stoppedAt is NULL and duration is '0'.
+     * This query is a native one, because Doctrine DQL can not fetch only the activity_id.
+     *
+     * @return array, list of activity ids
+     */
+    public function fetchRunningActivityIds()
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('activity_id', 'activity');
+
+        $sql = 'SELECT DISTINCT t.activity_id FROM timeslices t WHERE t.stopped_at IS NULL AND t.duration = 0';
+
+        $query = $this
+            ->getEntityManager()
+            ->createNativeQuery($sql, $rsm);
+
+        return array_map("array_pop", $query->getResult());
     }
 }
