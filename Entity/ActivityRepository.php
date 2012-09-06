@@ -120,13 +120,19 @@ class ActivityRepository extends EntityRepository
         $ids = $timesliceRepository->fetchRunningActivityIds();
 
         if ($active == 'true' || (is_bool($active) && $active)) {
+            // empty id list, should produce no output on query
+            if (empty($ids)) {
+                $ids[] = 0;
+            }
             $qb->andWhere(
                 $qb->expr()->in('a.id', $ids)
             );
         } else {
-            $qb->andWhere(
-                $qb->expr()->notIn('a.id', $ids)
-            );
+            if (!empty($ids)) {
+                $qb->andWhere(
+                    $qb->expr()->notIn('a.id', $ids)
+                );
+            }
         }
 
         return $qb;
