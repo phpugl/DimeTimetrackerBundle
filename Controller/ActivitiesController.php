@@ -87,9 +87,6 @@ class ActivitiesController extends DimeController
 
         // Sort by updatedAt and id
         $qb->addOrderBy('a.updatedAt', 'DESC');
-        if ($activities->existsJoinAlias($qb, 't')) {
-            $qb->addOrderBy('t.updatedAt', 'DESC');
-        }
         $qb->addOrderBy('a.id', 'DESC');
 
         // Pagination
