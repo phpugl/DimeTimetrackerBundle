@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation\SerializedName;
+use JMS\SerializerBundle\Annotation\Exclude;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
@@ -34,6 +35,7 @@ class Project
     /**
      * @var User $user
      *
+     * @Exclude
      * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */

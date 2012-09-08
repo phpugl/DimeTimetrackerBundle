@@ -2,7 +2,6 @@
   "name": "phpugl/dime-timetracker-bundle",
   "type": "symfony-bundle",
   "description": "Timetracker entities and REST API",
-  "keywords": ["timetracker", "rest", "api"],
   "homepage": "https://github.com/phpugl/DimeTimetrackerBundle",
   "license": "MIT",
   "authors": [
@@ -11,25 +10,25 @@
           "email": "info@phpugl.de"
       }
   ],
+  "autoload": {
+      "psr-0": { "Dime\\TimetrackerBundle": "" }
+  },
   "require": {
       "php": ">=5.3.3",
       "symfony/symfony": ">=2.0",
       "doctrine/orm": "2.2.*",
-      "doctrine/doctrine-bundle": "dev-master",
-      "doctrine/doctrine-migrations-bundle": "dev-master",
-      "doctrine/doctrine-fixtures-bundle": "dev-master",
-      "stof/doctrine-extensions-bundle": "dev-master",
+      "doctrine/doctrine-bundle": "1.0.*",
+      "doctrine/doctrine-migrations-bundle": "2.*",
+      "doctrine/doctrine-fixtures-bundle": "2.*",
+      "stof/doctrine-extensions-bundle": "1.0.*",
       "gedmo/doctrine-extensions": "2.3.*",
-      "friendsofsymfony/rest-bundle": "dev-master",
-      "friendsofsymfony/user-bundle": "dev-master"
+      "friendsofsymfony/rest-bundle": "*",
+      "friendsofsymfony/user-bundle": "*"
   },
   "suggest": {
-      "phpugl/dime-timetracker-frontend-bundle": "dev-master",
-      "phpugl/dime-invoice-bundle": "dev-master",
-      "phpugl/dime-import-bundle": "dev-master"
-  },
-  "autoload": {
-      "psr-0": { "Dime\\TimetrackerBundle": "" }
+      "phpugl/dime-timetracker-frontend-bundle": "*",
+      "phpugl/dime-invoice-bundle": "*",
+      "phpugl/dime-import-bundle": "*"
   },
   "minimum-stability": "dev",
   "target-dir": "Dime/TimetrackerBundle"

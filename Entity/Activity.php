@@ -10,6 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\SerializerBundle\Annotation\SerializedName;
+use JMS\SerializerBundle\Annotation\Exclude;
 
 /**
  * Dime\TimetrackerBundle\Entity\Activity
@@ -32,6 +33,7 @@ class Activity
     /**
      * @var User $user
      *
+     * @Exclude
      * @ORM\ManyToOne(targetEntity="User", inversedBy="activities")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */

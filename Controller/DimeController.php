@@ -37,14 +37,6 @@ class DimeController extends Controller
      */
     protected function paginate(\Doctrine\ORM\QueryBuilder $qb, $limit = null, $offset = null)
     {
-//        if (!$limit) {
-//            $limit = $this->container->getParameter('dime_timetracker.pagination.limit');
-//        }
-//
-//        if (!$offset) {
-//            $offset = $this->container->getParameter('dime_timetracker.pagination.offset');
-//        }
-
         if ($offset != null && intval($offset) > 0) {
             $qb->setFirstResult($offset);
         }
