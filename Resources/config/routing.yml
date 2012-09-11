@@ -28,6 +28,12 @@ timeslices:
     prefix:   /api
     defaults: { _format: json }
 
+tags:
+    type:     rest
+    resource: Dime\TimetrackerBundle\Controller\TagsController
+    prefix:   /api
+    defaults: { _format: json }
+
 users:
     type:     rest
     resource: Dime\TimetrackerBundle\Controller\UsersController

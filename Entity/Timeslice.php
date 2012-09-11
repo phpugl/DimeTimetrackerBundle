@@ -37,6 +37,14 @@ class Timeslice
     protected $activity;
 
     /**
+     * @var ArrayCollection $tags
+     *
+     * @SerializedName("tags")
+     * @ORM\ManyToMany(targetEntity="Tag")
+     */
+    protected $tags;
+
+    /**
      * @var integer $duration (in seconds)
      *
      * @ORM\Column(type="integer", nullable=false)

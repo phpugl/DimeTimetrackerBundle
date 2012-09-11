@@ -19,7 +19,7 @@ class ActivitiesController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('date', 'active', 'customer', 'project', 'service', 'user');
+    protected $allowed_filter = array('date', 'active', 'customer', 'project', 'service', 'user', 'tags');
 
     /**
      * get activity repository

@@ -99,7 +99,7 @@ class DimeController extends Controller
         $tagRepository = $this->getTagRepository();
         $qb = $tagRepository->createQueryBuilder('t');
 
-        if (array_key_exists('tags', $data) && is_string($data['tags'])) {
+        if (array_key_exists('tags', $data)) {
             $tags = $tagRepository->getIdsForTags($data['tags'], $qb);
             $data['tags'] = array_values($tags);
             $data['relation']['tags'] = array();

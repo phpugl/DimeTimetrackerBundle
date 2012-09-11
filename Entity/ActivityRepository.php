@@ -178,6 +178,35 @@ class ActivityRepository extends EntityRepository
     }
 
     /**
+     * Filter by tag
+     *
+     * @param integer|string             $tagIdOrName
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function scopeByTag($tagIdOrName, QueryBuilder $qb)
+    {
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+
+        if (!$this->existsJoinAlias($qb, 'x')) {
+            $qb->leftJoin($alias . '.tags', 'x');
+        }
+        if (is_string($tagIdOrName)) {
+            $qb->andWhere(
+                $qb->expr()->eq('x.name', ':tag')
+            );
+        } else {
+            $qb->andWhere(
+                $qb->expr()->eq('x.id', ':tag')
+            );
+        }
+        $qb->setParameter('tag', $tagIdOrName);
+        return $qb;
+    }
+
+    /**
      * Add different filter option to query
      *
      * @param array                      $filter
@@ -197,6 +226,9 @@ class ActivityRepository extends EntityRepository
                 switch($key) {
                     case 'active':
                         $qb = $this->scopeByActive($value, $qb);
+                        break;
+                    case 'tags':
+                        $qb = $this->scopeByTags($value, $qb);
                         break;
                     case 'date':
                         $qb = $this->scopeByDate($value, $qb);

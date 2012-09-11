@@ -118,4 +118,15 @@ abstract class EntityRepository extends Base
 
         return $result;
     }
+
+    protected function scopeByTags($tags, $qb)
+    {
+        if (false == is_array($tags)) {
+            $tags = array($tags);
+        }
+        foreach ($tags as $tag) {
+            $qb = $this->scopeByTag($tag, $qb);
+        }
+        return $qb;
+    }
 }
