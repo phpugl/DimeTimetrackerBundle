@@ -191,15 +191,11 @@ class ActivityRepository extends EntityRepository
         $alias = array_shift($aliases);
 
         if (!$this->existsJoinAlias($qb, 'x')) {
-            $qb->leftJoin($alias . '.tags', 'x');
-        }
-        if (is_string($tagIdOrName)) {
-            $qb->andWhere(
-                $qb->expr()->eq('x.name', ':tag')
-            );
-        } else {
-            $qb->andWhere(
-                $qb->expr()->eq('x.id', ':tag')
+            $qb->innerJoin(
+                $alias . '.tags',
+                'x',
+                'WITH',
+                is_numeric($tagIdOrName) ? 'x.id = :tag' : 'x.name = :tag'
             );
         }
         $qb->setParameter('tag', $tagIdOrName);
