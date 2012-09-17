@@ -178,14 +178,14 @@ class ActivityRepository extends EntityRepository
     }
 
     /**
-     * Filter by tag
+     * Filter by assigned tag
      *
      * @param integer|string             $tagIdOrName
      * @param \Doctrine\ORM\QueryBuilder $qb
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeByTag($tagIdOrName, QueryBuilder $qb)
+    public function scopeWithTag($tagIdOrName, QueryBuilder $qb)
     {
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
@@ -199,6 +199,36 @@ class ActivityRepository extends EntityRepository
             );
         }
         $qb->setParameter('tag', $tagIdOrName);
+        return $qb;
+    }
+
+    /**
+     * Filter by not-assigned tag
+     *
+     * @param integer|string             $tagIdOrName
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function scopeWithoutTag($tagIdOrName, QueryBuilder $qb)
+    {
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+        $qb2 = clone $qb;
+        $qb2->resetDqlParts();
+
+        $qb->andWhere(
+            $qb->expr()->notIn(
+                $alias . '.id',
+                $qb2->select('a2.id')
+                    ->from('Dime\TimetrackerBundle\Entity\Activity', 'a2')
+                    ->join('a2.tags', 'x2')
+                    ->where(is_numeric($tagIdOrName) ? 'x2.id = :tag' : 'x2.name = :tag')
+                    ->getDQL()
+            )
+        );
+        $qb->setParameter('tag', $tagIdOrName);
+
         return $qb;
     }
 
@@ -223,8 +253,11 @@ class ActivityRepository extends EntityRepository
                     case 'active':
                         $qb = $this->scopeByActive($value, $qb);
                         break;
-                    case 'tags':
-                        $qb = $this->scopeByTags($value, $qb);
+                    case 'withTags':
+                        $qb = $this->scopeWithTags($value, $qb);
+                        break;
+                    case 'withoutTags':
+                        $qb = $this->scopeWithoutTags($value, $qb);
                         break;
                     case 'date':
                         $qb = $this->scopeByDate($value, $qb);
