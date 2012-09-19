@@ -25,6 +25,16 @@ class TimeslicesController extends DimeController
     }
 
     /**
+     * get tag repository
+     *
+     * @return TagRepository
+     */
+    protected function getTagRepository()
+    {
+        return $this->getDoctrine()->getRepository('DimeTimetrackerBundle:Tag');
+    }
+
+    /**
      * get a list of all timeslices
      *
      * [GET] /timeslices
@@ -99,7 +109,7 @@ class TimeslicesController extends DimeController
         $form = $this->createForm(new TimesliceType(), $timeslice);
 
         // convert json to assoc array from request content
-        $data = json_decode($this->getRequest()->getContent(), true);
+        $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
 
         // parse duration
         $data = $this->process($data);
@@ -123,7 +133,7 @@ class TimeslicesController extends DimeController
         // check if it exists
         if ($timeslice) {
             // convert json to assoc array from request content
-            $data = json_decode($this->getRequest()->getContent(), true);
+            $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
 
             // parse duration
             $data = $this->process($data);

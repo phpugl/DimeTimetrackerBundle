@@ -216,6 +216,29 @@ class Timeslice
     }
 
     /**
+     * Add tag
+     *
+     * @param  Tag      $tag
+     * @return Timeslice
+     */
+    public function addTag(Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
      * Auto generate duration if empty
      *
      * @ORM\PrePersist
