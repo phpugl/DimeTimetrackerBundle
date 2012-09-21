@@ -23,7 +23,7 @@
       "stof/doctrine-extensions-bundle": "dev-master",
       "gedmo/doctrine-extensions": "2.3.*",
       "friendsofsymfony/rest-bundle": "dev-master",
-      "friendsofsymfony/user-bundle": "1.2.*"
+      "friendsofsymfony/user-bundle": "dev-master"
   },
   "suggest": {
       "phpugl/dime-timetracker-frontend-bundle": "*",
