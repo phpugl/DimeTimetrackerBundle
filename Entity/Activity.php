@@ -1,25 +1,17 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
-use Dime\TimetrackerBundle\Entity\User;
-use Dime\TimetrackerBundle\Entity\Customer;
-use Dime\TimetrackerBundle\Entity\Project;
-use Dime\TimetrackerBundle\Entity\Service;
-use Dime\TimetrackerBundle\Entity\Timeslice;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\SerializerBundle\Annotation as JMS;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\SerializerBundle\Annotation\SerializedName;
-use JMS\SerializerBundle\Annotation\Exclude;
 
 /**
  * Dime\TimetrackerBundle\Entity\Activity
  *
  * @ORM\Table(name="activities")
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ActivityRepository")
- * @ORM\HasLifecycleCallbacks()
  */
-class Activity
+class Activity extends Entity
 {
     /**
      * @var integer $id
@@ -29,15 +21,6 @@ class Activity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @var User $user
-     *
-     * @Exclude
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="activities")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
-    protected $user;
 
     /**
      * @var Customer $customer
@@ -66,7 +49,7 @@ class Activity
     /**
      * @var ArrayCollection $timeslices
      *
-     * @SerializedName("timeslices")
+     * @JMS\SerializedName("timeslices")
      * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="all")
      */
     protected $timeslices;
@@ -88,28 +71,10 @@ class Activity
     /**
      * @var string $rateReference (considered as enum: customer|project|service)
      *
-     * @SerializedName("rateReference")
+     * @JMS\SerializedName("rateReference")
      * @ORM\Column(name="rate_reference", type="string", length=255, nullable=true)
      */
     protected $rateReference;
-
-    /**
-     * @var datetime $createdAt
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @SerializedName("createdAt")
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @var datetime $updatedAt
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @SerializedName("updatedAt")
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
 
     /**
      * Entity constructor
@@ -196,29 +161,6 @@ class Activity
     public function getRateReference()
     {
         return $this->rateReference;
-    }
-
-    /**
-     * Set user
-     *
-     * @param  User     $user
-     * @return Activity
-     */
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -311,26 +253,6 @@ class Activity
     public function getTimeslices()
     {
         return $this->timeslices;
-    }
-
-    /**
-     * Get created at datetime
-     *
-     * @return datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Get updated at datetime
-     *
-     * @return datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

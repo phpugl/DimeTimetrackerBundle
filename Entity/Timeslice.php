@@ -7,7 +7,7 @@ use Dime\TimetrackerBundle\Entity\Activity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\SerializerBundle\Annotation\SerializedName;
+use JMS\SerializerBundle\Annotation as JMS;
 
 /**
  * Dime\TimetrackerBundle\Entity\Timeslice
@@ -47,7 +47,7 @@ class Timeslice
      * @var datetime $startedAt
      *
      * @Assert\DateTime()
-     * @SerializedName("startedAt")
+     * @JMS\SerializedName("startedAt")
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     private $startedAt;
@@ -56,7 +56,7 @@ class Timeslice
      * @var datetime $stoppedAt
      *
      * @Assert\DateTime()
-     * @SerializedName("stoppedAt")
+     * @JMS\SerializedName("stoppedAt")
      * @ORM\Column(name="stopped_at", type="datetime", nullable=true)
      */
     private $stoppedAt;
@@ -65,7 +65,7 @@ class Timeslice
      * @var datetime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @SerializedName("createdAt")
+     * @JMS\SerializedName("createdAt")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
@@ -74,7 +74,7 @@ class Timeslice
      * @var datetime $updatedAt
      *
      * @Gedmo\Timestampable(on="update")
-     * @SerializedName("updatedAt")
+     * @JMS\SerializedName("updatedAt")
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;

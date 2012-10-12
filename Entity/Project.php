@@ -2,14 +2,11 @@
 namespace Dime\TimetrackerBundle\Entity;
 
 use DateTime;
-use Dime\TimetrackerBundle\Entity\User;
-use Dime\TimetrackerBundle\Entity\Customer;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\SerializerBundle\Annotation\SerializedName;
-use JMS\SerializerBundle\Annotation\Exclude;
+use JMS\SerializerBundle\Annotation as JMS;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
@@ -21,7 +18,7 @@ use JMS\SerializerBundle\Annotation\Exclude;
  * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\ProjectRepository")
  */
-class Project
+class Project extends Entity
 {
     /**
      * @var integer $id
@@ -31,15 +28,6 @@ class Project
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @var User $user
-     *
-     * @Exclude
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
-    protected $user;
 
     /**
      * @var Customer $customer
@@ -70,7 +58,7 @@ class Project
      * @var DateTime $startedAt
      *
      * @Assert\Date()
-     * @SerializedName("startedAt")
+     * @JMS\SerializedName("startedAt")
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     protected $startedAt;
@@ -79,7 +67,7 @@ class Project
      * @var DateTime $stoppedAt
      *
      * @Assert\Date()
-     * @SerializedName("stoppedAt")
+     * @JMS\SerializedName("stoppedAt")
      * @ORM\Column(name="stopped_at", type="datetime", nullable=true)
      */
     protected $stoppedAt;
@@ -102,7 +90,7 @@ class Project
     /**
      * @var integer $budgetPrice
      *
-     * @SerializedName("budgetPrice")
+     * @JMS\SerializedName("budgetPrice")
      * @ORM\Column(name="budget_price", type="integer", nullable=true)
      */
     protected $budgetPrice;
@@ -110,7 +98,7 @@ class Project
     /**
      * @var integer $fixedPrice
      *
-     * @SerializedName("fixedPrice")
+     * @JMS\SerializedName("fixedPrice")
      * @ORM\Column(name="fixed_price", type="integer", length=255, nullable=true)
      */
     protected $fixedPrice;
@@ -118,7 +106,7 @@ class Project
     /**
      * @var integer $budgetTime
      *
-     * @SerializedName("budgetTime")
+     * @JMS\SerializedName("budgetTime")
      * @ORM\Column(name="budget_time", type="integer", length=255, nullable=true)
      */
     protected $budgetTime;
@@ -131,24 +119,6 @@ class Project
     protected $rate;
 
     /**
-     * @var datetime $createdAt
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @SerializedName("createdAt")
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @var datetime $updatedAt
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @SerializedName("updatedAt")
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
-
-    /**
      * Get id
      *
      * @return integer
@@ -156,29 +126,6 @@ class Project
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set user
-     *
-     * @param  User    $user
-     * @return Project
-     */
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -432,26 +379,6 @@ class Project
     public function getRate()
     {
         return $this->rate;
-    }
-
-    /**
-     * Get created at datetime
-     *
-     * @return datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Get updated at datetime
-     *
-     * @return datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

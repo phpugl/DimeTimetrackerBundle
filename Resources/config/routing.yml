@@ -22,6 +22,12 @@ services:
     prefix:   /api
     defaults: { _format: json }
 
+settings:
+    type:     rest
+    resource: Dime\TimetrackerBundle\Controller\SettingsController
+    prefix:   /api
+    defaults: { _format: json }
+
 timeslices:
     type:     rest
     resource: Dime\TimetrackerBundle\Controller\TimeslicesController
