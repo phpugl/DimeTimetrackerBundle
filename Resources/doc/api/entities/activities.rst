@@ -6,15 +6,40 @@ GET /api/activities
 
 Returns a list with activities.
 
-+------------+------------------------------------------+
-| Parameters                                            |
-+============+==========================================+
-| count      | Specify the limit of the activity list.  |
-+------------+------------------------------------------+
-| page       | Specify the offset of the activity list. |
-+------------+------------------------------------------+
-| filter     | Not defined yet.                         |
-+------------+------------------------------------------+
++------------+------------------------------------------------------+
+| Parameters                                                        |
++============+======================================================+
+| count      | count=30  | Specify the limit of the activity list.  |
++------------+------------------------------------------------------+
+| page       | page=1    | Specify the offset of the activity list. |
++------------+------------------------------------------------------+
+| filter     | filter[]= | Filter the activity list.                |
++------------+------------------------------------------------------+
+
+
+Filter
+^^^^^^
+
+Filter the list of activities by following parameters.
+
++------------+----------------------------------------------------------------------+
+| Parameters                                                                        |
++============+======================================================================+
+| user       | filter[user]=ID              | Filter by user id.                    |
++------------+----------------------------------------------------------------------+
+| customer   | filter[customer]=ID          | Filter by customer id                 |
++------------+----------------------------------------------------------------------+
+| project    | filter[project]=ID           | Filter by project id                  |
++------------+----------------------------------------------------------------------+
+| service    | filter[service]=ID           | Filter by service id                  |
++------------+----------------------------------------------------------------------+
+| active     | filter[active]=true|false    | Filter by active / running timeslice  |
++------------+----------------------------------------------------------------------+
+| date       | filter[date]=YYYY-MM-DD      | Filter by date                        |
+|            |                              | * single date with YYYY-MM-DD format  |
+|            | filter[date][]=YYYY-MM-DD    | * array with to entry for range       |
+|            |                              |                                       |
++------------+----------------------------------------------------------------------+
 
 Response
 ^^^^^^^^
