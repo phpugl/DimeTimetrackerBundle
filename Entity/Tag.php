@@ -36,7 +36,7 @@ class Tag
      *
      * @SerializedName("activities")
      * @ORM\ManyToMany(targetEntity="Activity")
-     * @ORM\JoinTable(name="activity_tag",
+     * @ORM\JoinTable(
      *      joinColumns={@ORM\joincolumn(name="tag_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="activity_id", referencedColumnName="id")}
      * )
@@ -48,7 +48,7 @@ class Tag
      *
      * @SerializedName("timeslices")
      * @ORM\ManyToMany(targetEntity="Timeslice")
-     * @ORM\JoinTable(name="timeslice_tag",
+     * @ORM\JoinTable(
      *      joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="timeslice_id", referencedColumnName="id")}
      * )
