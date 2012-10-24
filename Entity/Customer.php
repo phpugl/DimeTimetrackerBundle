@@ -1,16 +1,13 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
-use Dime\TimetrackerBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\SerializerBundle\Annotation\SerializedName;
-use JMS\SerializerBundle\Annotation\Exclude;
 
 /**
- * Dime\TimetrackerBundle\Entity\Project
+ * Dime\TimetrackerBundle\Entity\Customer
  *
  * @UniqueEntity(fields={"alias", "user"})
  * @ORM\Table(
@@ -19,7 +16,7 @@ use JMS\SerializerBundle\Annotation\Exclude;
  * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\CustomerRepository")
  */
-class Customer
+class Customer extends Entity
 {
     /**
      * @var integer $id
@@ -29,15 +26,6 @@ class Customer
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @var User $user
-     *
-     * @Exclude
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="customers")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
-    protected $user;
 
     /**
      * @var string $name
@@ -56,50 +44,9 @@ class Customer
      */
     protected $alias;
 
-    /**
-     * @var datetime $createdAt
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @SerializedName("createdAt")
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @var datetime $updatedAt
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @SerializedName("updatedAt")
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
-
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set user
-     *
-     * @param  User     $user
-     * @return Customer
-     */
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -146,26 +93,6 @@ class Customer
     public function getAlias()
     {
         return $this->alias;
-    }
-
-    /**
-     * Get created at datetime
-     *
-     * @return datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Get updated at datetime
-     *
-     * @return datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

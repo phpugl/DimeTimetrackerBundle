@@ -20,17 +20,22 @@ class RebuildCommand extends ContainerAwareCommand
         $this
             ->setName('dime:rebuild')
             ->setDescription('Rebuild database')
-            ->addOption('without-data', null, InputOption::VALUE_NONE, 'Rebuild database without load fixtures');
+            ->addOption('drop', null, InputOption::VALUE_NONE, 'Drop database before create schema');
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $returnCode = $this->runExternalCommand('doctrine:schema:drop', $output, array('--force' => true));
-        $returnCode = $this->runExternalCommand('doctrine:schema:create', $output);
+        if ($input->getOption("drop")) {
+            $returnCode = $this->runExternalCommand('doctrine:database:drop', $output, array('--force' => true));
+            $returnCode = $this->runExternalCommand('doctrine:database:create', $output);
+        } else {
+            $returnCode = $this->runExternalCommand('doctrine:schema:drop', $output, array('--force' => true));
+            $returnCode = $this->runExternalCommand('doctrine:schema:create', $output);
 
-        if (!$input->getOption("without-data")) {
-            $returnCode = $this->runExternalCommand('doctrine:fixtures:load', $output);
+            if ($input->getOption("env") === 'dev' || $input->getOption("env") === 'test') {
+                $returnCode = $this->runExternalCommand('doctrine:fixtures:load', $output);
+            }
         }
     }
 

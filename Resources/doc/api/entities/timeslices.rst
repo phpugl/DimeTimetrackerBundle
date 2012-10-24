@@ -6,6 +6,33 @@ GET /api/timeslices
 
 Returns a list with timeslices.
 
++------------+-------------------------------------------------------+
+| Parameters                                                         |
++============+=======================================================+
+| count      | count=30  | Specify the limit of the timeslice list.  |
++------------+-------------------------------------------------------+
+| page       | page=1    | Specify the offset of the timeslice list. |
++------------+-------------------------------------------------------+
+| filter     | filter[]= | Filter the timeslice list.                |
++------------+-------------------------------------------------------+
+
+
+Filter
+^^^^^^
+
+Filter the list of timeslices by following parameters.
+
++------------+----------------------------------------------------------------------+
+| Parameters                                                                        |
++============+======================================================================+
+| activity   | filter[activity]=ID          | Filter by activity id                 |
++------------+----------------------------------------------------------------------+
+| date       | filter[date]=YYYY-MM-DD      | Filter by date                        |
+|            |                              | * single date with YYYY-MM-DD format  |
+|            | filter[date][]=YYYY-MM-DD    | * array with to entry for range       |
+|            |                              |                                       |
++------------+----------------------------------------------------------------------+
+
 Response
 ^^^^^^^^
 
