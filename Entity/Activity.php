@@ -57,7 +57,7 @@ class Activity extends Entity
     /**
      * @var ArrayCollection $tags
      *
-     * @SerializedName("tags")
+     * @JMS\SerializedName("tags")
      * @ORM\ManyToMany(targetEntity="Tag")
      */
     protected $tags;
