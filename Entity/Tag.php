@@ -32,30 +32,6 @@ class Tag
     protected $name;
 
     /**
-     * @var ArrayCollection $activities
-     *
-     * @SerializedName("activities")
-     * @ORM\ManyToMany(targetEntity="Activity")
-     * @ORM\JoinTable(
-     *      joinColumns={@ORM\joincolumn(name="tag_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="activity_id", referencedColumnName="id")}
-     * )
-     */
-    protected $activities;
-
-    /**
-     * @var ArrayCollection $timeslices
-     *
-     * @SerializedName("timeslices")
-     * @ORM\ManyToMany(targetEntity="Timeslice")
-     * @ORM\JoinTable(
-     *      joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="timeslice_id", referencedColumnName="id")}
-     * )
-     */
-    protected $timeslices;
-
-    /**
      * Entity constructor
      */
     public function __construct()
@@ -94,52 +70,6 @@ class Tag
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Add activity
-     *
-     * @param  Activity $activity
-     * @return Tag
-     */
-    public function addActivity(Activity $activity)
-    {
-        $this->activities[] = $activity;
-
-        return $this;
-    }
-
-    /**
-     * Get activities
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getActivities()
-    {
-        return $this->activities;
-    }
-
-    /**
-     * Add time slice
-     *
-     * @param  Timeslice $timeslice
-     * @return Tag
-     */
-    public function addTimeslice(Timeslice $timeslice)
-    {
-        $this->timeslices[] = $timeslice;
-
-        return $this;
-    }
-
-    /**
-     * Get time slices
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTimeslices()
-    {
-        return $this->timeslices;
     }
 
     /**
