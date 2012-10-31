@@ -1,10 +1,7 @@
 <?php
 namespace Dime\TimetrackerBundle\Entity;
 
-use Dime\TimetrackerBundle\Entity\Timeslice;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Dime\TimetrackerBundle\Entity\Tag
@@ -36,7 +33,6 @@ class Tag
      */
     public function __construct()
     {
-        $this->timeslices = new ArrayCollection();
     }
 
     /**
