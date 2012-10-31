@@ -8,7 +8,6 @@ use JMS\SerializerBundle\Annotation as JMS;
 
 use Dime\TimetrackerBundle\Entity\User;
 
-
 /**
  * Dime\TimetrackerBundle\Entity\Entity
  *

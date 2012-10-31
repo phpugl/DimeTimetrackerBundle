@@ -2,15 +2,19 @@
 namespace Dime\TimetrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Dime\TimetrackerBundle\Entity\Tag
  *
- * @ORM\Table(name="tags")
+ * @UniqueEntity(fields={"name", "user"})
+ * @ORM\Table(
+ *      name="tags",
+ *      uniqueConstraints={ @ORM\UniqueConstraint(name="unique_tag_name_user", columns={"name", "user_id"}) }
+ * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\TagRepository")
- * @ORM\HasLifecycleCallbacks()
  */
-class Tag
+class Tag extends Entity
 {
     /**
      * @var integer $id
@@ -24,16 +28,9 @@ class Tag
     /**
      * @var string $name
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", nullable=false, length=255)
      */
     protected $name;
-
-    /**
-     * Entity constructor
-     */
-    public function __construct()
-    {
-    }
 
     /**
      * Get id
