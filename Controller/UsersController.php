@@ -139,7 +139,7 @@ class UsersController extends DimeController
         // check if it exists
         if ($user) {
             // remove service
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
 

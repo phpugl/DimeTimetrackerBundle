@@ -232,7 +232,7 @@ class ActivitiesController extends DimeController
             }
 
             // save change to database
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($activity);
             $em->flush();
             $em->refresh($activity);
@@ -292,7 +292,7 @@ class ActivitiesController extends DimeController
         // check if it exists
         if ($activity) {
             // remove service
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->remove($activity);
             $em->flush();
 

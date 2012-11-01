@@ -145,7 +145,7 @@ class CustomersController extends DimeController
         // check if exists
         if ($customer) {
             // remove customer
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->remove($customer);
             $em->flush();
 

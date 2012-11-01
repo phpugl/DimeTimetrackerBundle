@@ -146,7 +146,7 @@ class ProjectsController extends DimeController
         // check if exists
         if ($project) {
             // remove project
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->remove($project);
             $em->flush();
 

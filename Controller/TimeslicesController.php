@@ -165,7 +165,7 @@ class TimeslicesController extends DimeController
         // check if it exists
         if ($timeslice) {
             // remove service
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->remove($timeslice);
             $em->flush();
 

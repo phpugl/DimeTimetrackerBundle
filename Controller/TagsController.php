@@ -78,7 +78,7 @@ class TagsController extends DimeController
         // check if it exists
         if ($tag) {
             // remove service
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->remove($tag);
             $em->flush();
 

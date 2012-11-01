@@ -144,7 +144,7 @@ class ServicesController extends DimeController
         // check if it exists
         if ($service) {
             // remove service
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->remove($service);
             $em->flush();
 
