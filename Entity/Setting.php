@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"key", "namespace", "user"})
  * @ORM\Table(
  *      name="settings",
- *      uniqueConstraints={ @ORM\UniqueConstraint(name="unique_setting_key_user", columns={"key", "namespace", "user_id"}) }
+ *      uniqueConstraints={ @ORM\UniqueConstraint(name="unique_setting_key_namespace_user", columns={"`key`", "namespace", "user_id"}) }
  * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\SettingRepository")
  */
