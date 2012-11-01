@@ -25,7 +25,7 @@ class Activity extends Entity
     /**
      * @var Customer $customer
      *
-     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="activities")
+     * @ORM\ManyToOne(targetEntity="Customer")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $customer;
@@ -33,7 +33,7 @@ class Activity extends Entity
     /**
      * @var Project $project
      *
-     * @ORM\ManyToOne(targetEntity="Project", inversedBy="activities")
+     * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $project;
@@ -41,7 +41,7 @@ class Activity extends Entity
     /**
      * @var Service $service
      *
-     * @ORM\ManyToOne(targetEntity="Service", inversedBy="activities")
+     * @ORM\ManyToOne(targetEntity="Service")
      * @ORM\JoinColumn(name="service_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $service;
@@ -59,6 +59,7 @@ class Activity extends Entity
      *
      * @JMS\SerializedName("tags")
      * @ORM\ManyToMany(targetEntity="Tag")
+     * @ORM\JoinTable(name="activity_tags")
      */
     protected $tags;
 
@@ -90,6 +91,7 @@ class Activity extends Entity
     public function __construct()
     {
         $this->timeslices = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -274,6 +276,16 @@ class Activity extends Entity
         $this->tags[] = $tag;
 
         return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param Tag $tags
+     */
+    public function removeTag(Tag $tags)
+    {
+        $this->tags->removeElement($tags);
     }
 
     /**

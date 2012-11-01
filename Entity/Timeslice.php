@@ -6,6 +6,7 @@ use DateTime;
 use Dime\TimetrackerBundle\Entity\Activity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation as JMS;
 
@@ -41,6 +42,7 @@ class Timeslice
      *
      * @JMS\SerializedName("tags")
      * @ORM\ManyToMany(targetEntity="Tag")
+     * @ORM\JoinTable(name="timeslice_tags")
      */
     protected $tags;
 
@@ -86,6 +88,14 @@ class Timeslice
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * Entity constructor
+     */
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -226,6 +236,16 @@ class Timeslice
         $this->tags[] = $tag;
 
         return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param Tag $tags
+     */
+    public function removeTag(Tag $tags)
+    {
+        $this->tags->removeElement($tags);
     }
 
     /**
