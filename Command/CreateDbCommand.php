@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RebuildCommand extends ContainerAwareCommand
+class CreateDbCommand extends ContainerAwareCommand
 {
     public function __construct($name = null)
     {
@@ -18,9 +18,9 @@ class RebuildCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('dime:rebuild')
-            ->setDescription('Rebuild database')
-            ->addOption('drop', null, InputOption::VALUE_NONE, 'Drop database before create schema');
+            ->setName('dime:create-db')
+            ->setDescription('Drop and create database schema and load fixtures in dev/test environment')
+            ->addOption('drop', null, InputOption::VALUE_NONE, 'Drop and create database');
         ;
     }
 
@@ -44,12 +44,12 @@ class RebuildCommand extends ContainerAwareCommand
         $command = $this->getApplication()->find($name);
 
         if ($command) {
-          $args = array_merge(array('command' => $name), $input);
-          $input = new ArrayInput($args);
+            $args = array_merge(array('command' => $name), $input);
+            $input = new ArrayInput($args);
 
-          return $command->run($input, $output);
+            return $command->run($input, $output);
         } else {
-          return false;
+            return false;
         }
     }
 }
