@@ -90,8 +90,8 @@ class DimeController extends Controller
 
     /**
      * handle tags in input data array, if we get them as array of text instead of array of int
-     * 
-     * @param array $data 
+     *
+     * @param array $data
      * @return array
      */
     protected function handleTagsInput($data)
@@ -100,7 +100,7 @@ class DimeController extends Controller
         $qb = $tagRepository->createQueryBuilder('t');
 
         if (array_key_exists('tags', $data)) {
-            $tags = $tagRepository->getIdsForTags($data['tags'], $qb);
+            $tags = $tagRepository->getIdsForTags($data['tags'], $this->getCurrentUser(), $qb);
             $data['tags'] = array_values($tags);
             $data['relation']['tags'] = array();
             foreach ($tags as $tagId=>$tagName) {
@@ -136,7 +136,7 @@ class DimeController extends Controller
 
         if ($form->isValid()) {
 
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
 
             $entity = $form->getData();
 

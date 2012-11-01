@@ -3,6 +3,7 @@
 namespace Dime\TimetrackerBundle\Entity;
 
 use Dime\TimetrackerBundle\Entity\Tag;
+use Dime\TimetrackerBundle\Entity\User;
 use Doctrine\ORM\EntityRepository as Base;
 use Doctrine\ORM\QueryBuilder;
 /**
@@ -15,16 +16,22 @@ class TagRepository extends Base
 {
     /**
      * get ids for tags and create non-existing ones
-     * 
+     *
      * @param array        $tags Array of strings
      * @param QueryBuilder $qb   Query builder instance
      * @return array (name => id)
      */
-    public function getIdsForTags($tags, QueryBuilder $qb)
+    public function getIdsForTags($tags, User $user, QueryBuilder $qb)
     {
         $qb->add('select', 't.name, t.id')
-            ->add('where', $qb->expr()->in('t.name', ':tags'))
-            ->setParameter('tags', $tags);
+           ->andWhere(
+                $qb->expr()->andX(
+                    $qb->expr()->in('t.name', ':tags'),
+                    $qb->expr()->eq('t.user', ':user')
+                )
+            )
+            ->setParameters(array('tags' =>  $tags, 'user' => $user->getId()));
+
         $existingTags = $qb->getQuery()->getResult();
         $ids = array();
         foreach ($existingTags as $tag) {
@@ -35,10 +42,11 @@ class TagRepository extends Base
             foreach ($missingTags as $tagName) {
                 $newTag = new Tag();
                 $newTag->setName($tagName);
+                $newTag->setUser($user);
                 $this->getEntityManager()->persist($newTag);
             }
             $this->getEntityManager()->flush();
-            $ids = array_merge($ids, $this->getIdsForTags(array_values($missingTags), $qb));
+            $ids = array_merge($ids, $this->getIdsForTags(array_values($missingTags), $user, $qb));
         }
         return array_values($ids);
     }
