@@ -96,10 +96,10 @@ class DimeController extends Controller
      */
     protected function handleTagsInput($data)
     {
-        $tagRepository = $this->getTagRepository();
-        $qb = $tagRepository->createQueryBuilder('t');
+        if (isset($data['tags'])) {
+            $tagRepository = $this->getTagRepository();
+            $qb = $tagRepository->createQueryBuilder('t');
 
-        if (array_key_exists('tags', $data)) {
             $tags = $tagRepository->getIdsForTags($data['tags'], $this->getCurrentUser(), $qb);
             $data['tags'] = array_values($tags);
             $data['relation']['tags'] = array();

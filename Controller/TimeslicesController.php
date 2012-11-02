@@ -109,7 +109,10 @@ class TimeslicesController extends DimeController
         $form = $this->createForm(new TimesliceType(), $timeslice);
 
         // convert json to assoc array from request content
-        $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
+        $data = json_decode($this->getRequest()->getContent(), true);
+
+        // handle tags TODO improve this
+        $data = $this->handleTagsInput($data);
 
         // parse duration
         $data = $this->process($data);
@@ -133,7 +136,10 @@ class TimeslicesController extends DimeController
         // check if it exists
         if ($timeslice) {
             // convert json to assoc array from request content
-            $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
+            $data = json_decode($this->getRequest()->getContent(), true);
+
+            // handle tags TODO improve this
+            $data = $this->handleTagsInput($data);
 
             // parse duration
             $data = $this->process($data);

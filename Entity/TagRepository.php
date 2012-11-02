@@ -21,33 +21,37 @@ class TagRepository extends Base
      * @param QueryBuilder $qb   Query builder instance
      * @return array (name => id)
      */
-    public function getIdsForTags($tags, User $user, QueryBuilder $qb)
+    public function getIdsForTags(array $tags, User $user, QueryBuilder $qb)
     {
-        $qb->add('select', 't.name, t.id')
-           ->andWhere(
-                $qb->expr()->andX(
-                    $qb->expr()->in('t.name', ':tags'),
-                    $qb->expr()->eq('t.user', ':user')
+        if (!empty($tags)) {
+            $qb->add('select', 't.name, t.id')
+               ->andWhere(
+                    $qb->expr()->andX(
+                        $qb->expr()->in('t.name', ':tags'),
+                        $qb->expr()->eq('t.user', ':user')
+                    )
                 )
-            )
-            ->setParameters(array('tags' =>  $tags, 'user' => $user->getId()));
+                ->setParameters(array('tags' =>  $tags, 'user' => $user->getId()));
 
-        $existingTags = $qb->getQuery()->getResult();
-        $ids = array();
-        foreach ($existingTags as $tag) {
-            $ids[$tag['name']] = $tag['id'];
-        }
-        $missingTags = array_diff($tags, array_keys($ids));
-        if (0 < count($missingTags)) {
-            foreach ($missingTags as $tagName) {
-                $newTag = new Tag();
-                $newTag->setName($tagName);
-                $newTag->setUser($user);
-                $this->getEntityManager()->persist($newTag);
+            $existingTags = $qb->getQuery()->getResult();
+            $ids = array();
+            foreach ($existingTags as $tag) {
+                $ids[$tag['name']] = $tag['id'];
             }
-            $this->getEntityManager()->flush();
-            $ids = array_merge($ids, $this->getIdsForTags(array_values($missingTags), $user, $qb));
+            $missingTags = array_diff($tags, array_keys($ids));
+            if (0 < count($missingTags)) {
+                foreach ($missingTags as $tagName) {
+                    $newTag = new Tag();
+                    $newTag->setName($tagName);
+                    $newTag->setUser($user);
+                    $this->getEntityManager()->persist($newTag);
+                }
+                $this->getEntityManager()->flush();
+                $ids = array_merge($ids, $this->getIdsForTags(array_values($missingTags), $user, $qb));
+            }
+            return array_values($ids);
+        } else {
+            return array();
         }
-        return array_values($ids);
     }
 }

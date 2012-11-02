@@ -145,7 +145,10 @@ class ActivitiesController extends DimeController
         $activity = new Activity();
 
         // convert json to assoc array from request content
-        $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
+        $data = json_decode($this->getRequest()->getContent(), true);
+
+        // handle tags - TODO improve this
+        $data = $this->handleTagsInput($data);
 
         if (isset($data['parse'])) {
             // Run parser
@@ -262,7 +265,10 @@ class ActivitiesController extends DimeController
 
         // check if it exists
         if ($activity) {
-            $data = $this->handleTagsInput(json_decode($this->getRequest()->getContent(), true));
+            $data = json_decode($this->getRequest()->getContent(), true);
+
+            // handle tags - TODO improve this
+            $data = $this->handleTagsInput($data);
 
             // create form, decode request and save it if valid
             $view = $this->saveForm(
