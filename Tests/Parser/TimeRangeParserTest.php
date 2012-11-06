@@ -2,13 +2,13 @@
 
 namespace Dime\TimetrackerBundle\Tests\Parser;
 
-use Dime\TimetrackerBundle\Parser\TimeRangeParser;
+use Dime\TimetrackerBundle\Parser\TimerangeParser;
 
 class TimeRangeParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testRun()
     {
-        $parser = new TimeRangeParser();
+        $parser = new TimerangeParser();
 
         // 10:00-12:00
         $parser->setResult(array());
@@ -53,11 +53,16 @@ class TimeRangeParserTest extends \PHPUnit_Framework_TestCase
         $parser->setResult(array());
         $result = $parser->run('');
         $this->assertEmpty($result);
+
+        // ab-ab
+        $parser->setResult(array());
+        $result = $parser->run('ab-ab');
+        $this->assertEmpty($result);
     }
 
     public function testClean()
     {
-        $parser = new TimeRangeParser();
+        $parser = new TimerangeParser();
         $input = '10:00-12:00';
 
         $parser->run($input);

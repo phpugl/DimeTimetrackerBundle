@@ -15,6 +15,7 @@ class TimerangeParser extends AbstractParser
 {
   protected $regex = '/((?P<start>\d+(:\d+)?)?(\s+)?-(\s+)?(?P<stop>\d+(:\d+)?)?)/';
   protected $matches = array();
+  protected $matched = false;
 
   protected function appendMissingZeros($input)
   {
@@ -27,7 +28,7 @@ class TimerangeParser extends AbstractParser
 
   public function clean($input)
   {
-    if (isset($this->matches[1])) {
+    if ($this->matched && isset($this->matches[1])) {
       $input = trim(str_replace($this->matches[1], '', $input));
     }
 
@@ -40,10 +41,13 @@ class TimerangeParser extends AbstractParser
       $start = isset($this->matches['start']) ? $this->matches['start'] : '';
       $stop = isset($this->matches['stop']) ? $this->matches['stop'] : '';
 
-      $this->result['range'] = array(
-        'start' => $this->appendMissingZeros($start),
-        'stop' => $this->appendMissingZeros($stop)
-      );
+      if (!empty($start) || !empty($stop)) {
+          $this->matched = true;
+          $this->result['range'] = array(
+            'start' => $this->appendMissingZeros($start),
+            'stop' => $this->appendMissingZeros($stop)
+          );
+      }
     }
 
     return $this->result;
