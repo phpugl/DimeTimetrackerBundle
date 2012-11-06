@@ -188,7 +188,7 @@ class TimeslicesController extends DimeController
     protected function process(array $data)
     {
       if (isset($data['formatDuration'])) {
-        $parser = new \Dime\TimetrackerBundle\Parser\Duration();
+        $parser = new \Dime\TimetrackerBundle\Parser\DurationParser();
 
         $result = $parser->run($data['formatDuration']);
 
