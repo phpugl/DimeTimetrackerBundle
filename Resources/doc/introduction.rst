@@ -41,12 +41,12 @@ Data structure
 
 The DimeTimetrackerBundle provides the following entities:
 
-* User
-* Service
+* Activity
 * Customer
 * Project
-* Activity
-* TimeSlice
+* Service
+* Timeslice
+* User
 
 A user is the person logging in into the application. The user provides
 services (such as development, testing, support or consulting) and works in

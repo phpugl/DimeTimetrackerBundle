@@ -6,15 +6,15 @@ GET /api/services
 
 Returns a list with services.
 
-+------------+------------------------------------------------------+
-| Parameters                                                        |
-+============+======================================================+
++------------+-----------+------------------------------------------+
+| Parameters | Example   | Description                              |
++============+===========+==========================================+
 | count      | count=30  | Specify the limit of the service list.   |
-+------------+------------------------------------------------------+
++------------+-----------+------------------------------------------+
 | page       | page=1    | Specify the offset of the service list.  |
-+------------+------------------------------------------------------+
++------------+-----------+------------------------------------------+
 | filter     | filter[]= | Filter the service list.                 |
-+------------+------------------------------------------------------+
++------------+-----------+------------------------------------------+
 
 
 Filter
@@ -22,13 +22,13 @@ Filter
 
 Filter the list of services by following parameters.
 
-+------------+----------------------------------------------------------------------+
-| Parameters                                                                        |
-+============+======================================================================+
-| user       | filter[user]=ID              | Filter by user id.                    |
-+------------+----------------------------------------------------------------------+
-| search     | filter[search]=TEXT          | Search for name and alias             |
-+------------+----------------------------------------------------------------------+
++------------+------------------------------+-----------------------------------------+
+| Parameters | Definition                   | Description                             |
++============+==============================+=========================================+
+| user       | filter[user]=ID              | Filter by user id.                      |
++------------+------------------------------+-----------------------------------------+
+| search     | filter[search]=TEXT          | Search for name and alias               |
++------------+------------------------------+-----------------------------------------+
 
 
 Response
@@ -36,26 +36,28 @@ Response
 
 An array with services.
 
-::
-  [
-  {
-    "id": 1,
-    "user": {},
-    "name": "service name",
-    "alias": "alias-for-service",
-    "description": "Service description",
-    "rate": decimal,
-    "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
-    "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
-  }
-  ]
+.. code-block:: js
+    :linenos:
+
+    [
+        {
+            "id": 1,
+            "user": {},
+            "name": "service name",
+            "alias": "alias-for-service",
+            "description": "Service description",
+            "rate": decimal,
+            "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
+            "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
+        }
+    ]
 
 
 GET /api/services/:id
 ---------------------
 
 +------------+------------------------------------------+
-| Parameters                                            |
+| Parameters | Description                              |
 +============+==========================================+
 | id         | Identifier of service                    |
 +------------+------------------------------------------+
@@ -65,31 +67,35 @@ Response
 
 A single service.
 
-::
-  {
-    "id": 1,
-    "user": {},
-    "name": "service name",
-    "alias": "alias-for-service",
-    "description": "Service description",
-    "rate": decimal,
-    "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
-    "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
-  }
+.. code-block:: js
+    :linenos:
+
+    {
+        "id": 1,
+        "user": {},
+        "name": "service name",
+        "alias": "alias-for-service",
+        "description": "Service description",
+        "rate": decimal,
+        "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
+        "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
+    }
 
 POST /api/services
 ------------------
 
-::
-  {
-    "name": "services name",
-    "alias": "alias-for-service",
-    "description": "Service description",
-    "rate": decimal
-  }
+.. code-block:: js
+    :linenos:
+
+    {
+        "name": "services name",
+        "alias": "alias-for-service",
+        "description": "Service description",
+        "rate": decimal
+    }
 
 +------------+------------------------------------------+
-| Parameters                                            |
+| Parameters | Description                              |
 +============+==========================================+
 | name       | Name of service                          |
 +------------+------------------------------------------+
@@ -104,31 +110,35 @@ Response
 
 The new created service.
 
-::
-  {
-    "id": 1,
-    "user": {},
-    "name": "services name",
-    "alias": "alias-for-service",
-    "description": "Service description",
-    "rate": decimal
-    "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
-    "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
-  }
+.. code-block:: js
+    :linenos:
+
+    {
+        "id": 1,
+        "user": {},
+        "name": "services name",
+        "alias": "alias-for-service",
+        "description": "Service description",
+        "rate": decimal
+        "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
+        "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
+    }
 
 PUT /api/services/:id
 ---------------------
 
-::
-  {
-    "name": "services name",
-    "alias": "alias-for-service",
-    "description": "Service description",
-    "rate": decimal
-  }
+.. code-block:: js
+    :linenos:
+
+    {
+        "name": "services name",
+        "alias": "alias-for-service",
+        "description": "Service description",
+        "rate": decimal
+    }
 
 +------------+------------------------------------------+
-| Parameters                                            |
+| Parameters | Description                              |
 +============+==========================================+
 | id         | Identifier of service                    |
 +------------+------------------------------------------+
@@ -138,17 +148,19 @@ Response
 
 The modified service.
 
-::
-  {
-    "id": 1,
-    "user": {},
-    "name": "services name",
-    "alias": "alias-for-service",
-    "description": "Service description",
-    "rate": decimal
-    "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
-    "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
-  }
+.. code-block:: js
+    :linenos:
+
+    {
+        "id": 1,
+        "user": {},
+        "name": "services name",
+        "alias": "alias-for-service",
+        "description": "Service description",
+        "rate": decimal
+        "createdAt": "DATETIME (YYYY-MM-DD HH:mm:ss)",
+        "updatedAt": "DATETIME (YYYY-MM-DD HH:mm:ss)"
+    }
 
 DELETE /api/services/:id
 ------------------------
@@ -156,7 +168,7 @@ DELETE /api/services/:id
 Delete a service by the given ID.
 
 +------------+------------------------------------------+
-| Parameters                                            |
+| Parameters | Description                              |
 +============+==========================================+
 | id         | Identifier of service                    |
 +------------+------------------------------------------+
