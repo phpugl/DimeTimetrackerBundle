@@ -12,8 +12,11 @@ Welcome to DimeTimetrackerBundle's documentation!
    introduction
 
    api/authentification
-   api/entities/services
+
+   api/entities/activities
    api/entities/customers
    api/entities/projects
-   api/entities/activities
+   api/entities/services
+   api/entities/settings
+   api/entities/tags
    api/entities/timeslices
