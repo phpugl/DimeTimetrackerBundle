@@ -4,10 +4,16 @@ namespace Dime\TimetrackerBundle\Controller;
 
 use Dime\TimetrackerBundle\Entity\Tag;
 use Dime\TimetrackerBundle\Entity\TagRepository;
+use Dime\TimetrackerBundle\Form\TagType;
 use FOS\RestBundle\View\View;
 
 class TagsController extends DimeController
 {
+    /**
+     * @var array allowed filter keys
+     */
+    protected $allowed_filter = array('search');
+
     /**
      * get tag repository
      *
@@ -29,7 +35,20 @@ class TagsController extends DimeController
     {
         $tags = $this->getTagRepository();
 
-        $qb = $tags->createQueryBuilder('x');
+        $qb = $tags->createQueryBuilder('t');
+
+        // Filter
+        $filter = $this->getRequest()->get('filter');
+        if ($filter) {
+            $qb = $tags->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
+        }
+
+        // Scope by current user
+        if (!isset($filter['user'])) {
+            $tags->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+        }
+
+        $qb->addOrderBy('a.name', 'ASC');
 
         // Pagination
         return $this->paginate($qb,
@@ -58,6 +77,53 @@ class TagsController extends DimeController
         } else {
             // send 404, if tag does not exist
             $view = $this->createView("Tag does not exist.", 404);
+        }
+
+        return $view;
+    }
+
+    /**
+     * create a new tag
+     * [POST] /tags
+     *
+     * @return View
+     */
+    public function postTagsAction()
+    {
+        // create new service
+        $tag = new Tag();
+
+        // create service form
+        $form = $this->createForm(new TagType(), $tag);
+
+        // convert json to assoc array from request content
+        $data = json_decode($this->getRequest()->getContent(), true);
+
+        return $this->saveForm($form, $data);
+    }
+
+    /**
+     * modify tag by its id
+     * [PUT] /tags/{id}
+     *
+     * @param  int  $id
+     * @return View
+     */
+    public function putTagsAction($id)
+    {
+        // find service
+        $tag = $this->getTagRepository()->find($id);
+
+        // check if it exists
+        if ($service) {
+            // create form, decode request and save it if valid
+            $view = $this->saveForm(
+                $this->createForm(new TagType(), $tag),
+                json_decode($this->getRequest()->getContent(), true)
+            );
+        } else {
+            // service does not exists send 404
+            $view = $this->createView("Tag does not exists.", 404);
         }
 
         return $view;
