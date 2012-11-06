@@ -11,7 +11,7 @@ namespace Dime\TimetrackerBundle\Parser;
  * [+-]2,5h        => [sign: [+-], number: 9000]
  * [+-]2.5h        => [sign: [+-], number: 9000]
  */
-class Duration extends Parser
+class DurationParser extends AbstractParser
 {
     protected $regex = '/(?P<sign>[+-])?(?P<duration>(\d+((:\d+)?(:\d+)?)?[hms]?([,\.]\d+[h])?(\s+)?(\d+[ms])?(\s+)?(\d+[s])?)?)/';
     protected $matches = array();

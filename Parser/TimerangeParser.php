@@ -11,7 +11,7 @@ namespace Dime\TimetrackerBundle\Parser;
  * 10:00-      => [start: "10:00", stop: ""]
  * -12:00      => [start: "", stop: "12:00"]
  */
-class TimeRange extends Parser
+class TimerangeParser extends AbstractParser
 {
   protected $regex = '/((?P<start>\d+(:\d+)?)?(\s+)?-(\s+)?(?P<stop>\d+(:\d+)?)?)/';
   protected $matches = array();

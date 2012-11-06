@@ -2,13 +2,13 @@
 
 namespace Dime\TimetrackerBundle\Tests\Parser;
 
-use Dime\TimetrackerBundle\Parser\Duration;
+use Dime\TimetrackerBundle\Parser\DurationParser;
 
 class DurationTest extends \PHPUnit_Framework_TestCase
 {
     public function testRun()
     {
-        $parser = new Duration();
+        $parser = new DurationParser();
 
         // 02:30:00
         $parser->setResult(array());
@@ -68,7 +68,7 @@ class DurationTest extends \PHPUnit_Framework_TestCase
 
     public function testClean()
     {
-        $parser = new Duration();
+        $parser = new DurationParser();
         $input = '02:30:00';
 
         $parser->run($input);

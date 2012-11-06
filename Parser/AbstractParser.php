@@ -2,7 +2,7 @@
 
 namespace Dime\TimetrackerBundle\Parser;
 
-abstract class Parser
+abstract class AbstractParser
 {
   protected $result = array();
 

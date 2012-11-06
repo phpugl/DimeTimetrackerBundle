@@ -321,10 +321,10 @@ class ActivitiesController extends DimeController
     {
       $result = array();
       $parsers = array(
-          '\Dime\TimetrackerBundle\Parser\TimeRange',
-          '\Dime\TimetrackerBundle\Parser\Duration',
-          '\Dime\TimetrackerBundle\Parser\ActivityRelation',
-          '\Dime\TimetrackerBundle\Parser\ActivityDescription'
+          '\Dime\TimetrackerBundle\Parser\TimerangeParser',
+          '\Dime\TimetrackerBundle\Parser\DurationParser',
+          '\Dime\TimetrackerBundle\Parser\ActivityRelationParser',
+          '\Dime\TimetrackerBundle\Parser\ActivityDescriptionParser'
       );
 
       foreach ($parsers as $parser) {

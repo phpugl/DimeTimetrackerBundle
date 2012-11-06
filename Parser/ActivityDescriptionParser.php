@@ -2,7 +2,7 @@
 
 namespace Dime\TimetrackerBundle\Parser;
 
-class ActivityDescription extends Parser
+class ActivityDescriptionParser extends AbstractParser
 {
   protected $regex = '/([@:\/])(\w+)/';
   protected $matches = array();

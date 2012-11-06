@@ -2,13 +2,13 @@
 
 namespace Dime\TimetrackerBundle\Tests\Parser;
 
-use Dime\TimetrackerBundle\Parser\ActivityDescription;
+use Dime\TimetrackerBundle\Parser\ActivityDescriptionParser;
 
-class ActivityDescriptionTest extends \PHPUnit_Framework_TestCase
+class ActivityDescriptionParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testRun()
     {
-        $parser = new ActivityDescription();
+        $parser = new ActivityDescriptionParser();
 
         $result = $parser->run('do something');
         $this->assertArrayHasKey('description', $result);
@@ -17,7 +17,7 @@ class ActivityDescriptionTest extends \PHPUnit_Framework_TestCase
 
     public function testClean()
     {
-        $parser = new ActivityDescription();
+        $parser = new ActivityDescriptionParser();
         $input = 'do something';
 
         $parser->run($input);

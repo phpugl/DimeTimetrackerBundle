@@ -2,13 +2,13 @@
 
 namespace Dime\TimetrackerBundle\Tests\Parser;
 
-use Dime\TimetrackerBundle\Parser\ActivityRelation;
+use Dime\TimetrackerBundle\Parser\ActivityRelationParser;
 
-class ActivityRelationTest extends \PHPUnit_Framework_TestCase
+class ActivityRelationParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testRun()
     {
-        $parser = new ActivityRelation();
+        $parser = new ActivityRelationParser();
 
         // Customer
         $result = $parser->run('@customer do something');
@@ -84,7 +84,7 @@ class ActivityRelationTest extends \PHPUnit_Framework_TestCase
 
     public function testClean()
     {
-        $parser = new ActivityRelation();
+        $parser = new ActivityRelationParser();
         $input = '@customer do something';
 
         $parser->run($input);
