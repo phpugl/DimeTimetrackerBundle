@@ -139,16 +139,13 @@ class ActivitiesController extends DimeController
      *
      * @return View
      */
-    public function postActivityAction()
+    public function postActivitiesAction()
     {
         // create new activity entity
         $activity = new Activity();
 
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
-
-        // handle tags - TODO improve this
-        $data = $this->handleTagsInput($data);
 
         if (isset($data['parse'])) {
             // Run parser
@@ -242,6 +239,9 @@ class ActivitiesController extends DimeController
 
             $view = $this->createView($activity);
         } else {
+            // handle tags - TODO improve this
+            $data = $this->handleTagsInput($data);
+
             // create activity form
             $form = $this->createForm(new ActivityType(), $activity);
             $view = $this->saveForm($form, $data);
@@ -258,7 +258,7 @@ class ActivitiesController extends DimeController
      * @param  string $id
      * @return View
      */
-    public function putActivityAction($id)
+    public function putActivitiesAction($id)
     {
         // find activity
         $activity = $this->getActivityRepository()->find($id);
@@ -290,7 +290,7 @@ class ActivitiesController extends DimeController
      * @param  int  $id
      * @return View
      */
-    public function deleteActivityAction($id)
+    public function deleteActivitiesAction($id)
     {
         // find activity
         $activity = $this->getActivityRepository()->find($id);
