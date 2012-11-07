@@ -20,11 +20,11 @@ class SettingRepository extends EntityRepository
      * @param string            $text
      * @param QueryBuilder      $qb
      *
-     * @return QueryBuilder
+     * @return SettingRepository
      */
-    public function search($text, QueryBuilder $qb)
+    public function search($text, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 
     /**
@@ -34,11 +34,11 @@ class SettingRepository extends EntityRepository
      * @param                   $date
      * @param QueryBuilder      $qb
      *
-     * @return QueryBuilder
+     * @return SettingRepository
      */
-    public function scopeByDate($date, QueryBuilder $qb)
+    public function scopeByDate($date, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 
     /**
@@ -47,9 +47,9 @@ class SettingRepository extends EntityRepository
      * @param                            $namespace
      * @param QueryBuilder $qb
      *
-     * @return QueryBuilder
+     * @return SettingRepository
      */
-    public function scopeByNamespace($namespace, QueryBuilder $qb)
+    public function scopeByNamespace($namespace, QueryBuilder $qb = null)
     {
         return $this->scopeByField('namespace', $namespace, $qb);
     }

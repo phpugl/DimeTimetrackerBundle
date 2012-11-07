@@ -18,11 +18,11 @@ class UserRepository extends EntityRepository
      * @param string            $text
      * @param QueryBuilder      $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return UserRepository
      */
-    public function search($text, QueryBuilder $qb)
+    public function search($text, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 
     /**
@@ -30,11 +30,11 @@ class UserRepository extends EntityRepository
      * @param                   $date
      * @param QueryBuilder      $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return UserRepository
      */
-    public function scopeByDate($date, QueryBuilder $qb)
+    public function scopeByDate($date, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 
 }

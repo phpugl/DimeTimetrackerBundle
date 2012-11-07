@@ -18,13 +18,12 @@ class ServiceRepository extends EntityRepository
      *
      * @param string            $text
      * @param QueryBuilder      $qb
-     * @throws \Exception
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return ServiceRepository
      */
-    public function search($text, QueryBuilder $qb)
+    public function search($text, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         $aliases = $qb->getRootAliases();
@@ -38,7 +37,7 @@ class ServiceRepository extends EntityRepository
         $qb->setParameter('text_like', '%' . $text . '%');
         $qb->setParameter('text', $text);
 
-        return $qb;
+        return $this;
     }
 
     /**
@@ -46,10 +45,10 @@ class ServiceRepository extends EntityRepository
      * @param                   $date
      * @param QueryBuilder      $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return ServiceRepository
      */
-    public function scopeByDate($date, QueryBuilder $qb)
+    public function scopeByDate($date, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 }

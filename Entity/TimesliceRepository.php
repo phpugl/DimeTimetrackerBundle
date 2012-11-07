@@ -21,11 +21,11 @@ class TimesliceRepository extends EntityRepository
      * @param string            $text
      * @param QueryBuilder      $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return TimesliceRepository
      */
-    public function search($text, QueryBuilder $qb)
+    public function search($text, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 
     /**
@@ -35,11 +35,11 @@ class TimesliceRepository extends EntityRepository
      * @param                   $date
      * @param QueryBuilder      $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return TimesliceRepository
      */
-    public function scopeByDate($date, QueryBuilder $qb)
+    public function scopeByDate($date, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 
     /**
@@ -48,13 +48,12 @@ class TimesliceRepository extends EntityRepository
      * @param                            $user
      * @param \Doctrine\ORM\QueryBuilder $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
-     * @throws
+     * @return TimesliceRepository
      */
-    public function scopeByUser($user, QueryBuilder $qb)
+    public function scopeByUser($user, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         $aliases = $qb->getRootAliases();
@@ -65,7 +64,7 @@ class TimesliceRepository extends EntityRepository
         $qb->andWhere($qb->expr()->eq("a.user", ":user"));
         $qb->setParameter(":user", $user);
 
-        return $qb;
+        return $this;
     }
 
     /**

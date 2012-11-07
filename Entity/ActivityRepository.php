@@ -21,10 +21,10 @@ class ActivityRepository extends EntityRepository
      * @return \Doctrine\ORM\QueryBuilder
      * @throws \Exception when $qb is null
      */
-    public function search($text, QueryBuilder $qb)
+    public function search($text, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         $aliases = $qb->getRootAliases();
@@ -33,7 +33,7 @@ class ActivityRepository extends EntityRepository
         $qb->andWhere($qb->expr()->like($alias . '.description', ':text'));
         $qb->setParameter('text', '%'  . $text . '%');
 
-        return $qb;
+        return $this;
     }
 
     /**
@@ -46,10 +46,10 @@ class ActivityRepository extends EntityRepository
      * @return \Doctrine\ORM\QueryBuilder
      * @throws \Exception when $qb is null
      */
-    public function scopeByDate($date, QueryBuilder $qb)
+    public function scopeByDate($date, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         $aliases = $qb->getRootAliases();
@@ -97,7 +97,7 @@ class ActivityRepository extends EntityRepository
 
         //print($qb->getQuery()->getSQL());
 
-        return $qb;
+        return $this;
     }
 
     /**
@@ -110,10 +110,10 @@ class ActivityRepository extends EntityRepository
      * @return \Doctrine\ORM\QueryBuilder
      * @throws \Exception when $qb is null
      */
-    public function scopeByActive($active, QueryBuilder $qb)
+    public function scopeByActive($active, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         $timesliceRepository = $this->getEntityManager()->getRepository('DimeTimetrackerBundle:Timeslice');
@@ -135,7 +135,7 @@ class ActivityRepository extends EntityRepository
             }
         }
 
-        return $qb;
+        return $this;
     }
 
     /**
@@ -146,7 +146,7 @@ class ActivityRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeByCustomer($id, QueryBuilder $qb)
+    public function scopeByCustomer($id, QueryBuilder $qb = null)
     {
         return $this->scopeByField('customer', $id, $qb);
     }
@@ -159,7 +159,7 @@ class ActivityRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeByProject($id, QueryBuilder $qb)
+    public function scopeByProject($id, QueryBuilder $qb = null)
     {
         return $this->scopeByField('project', $id, $qb);
     }
@@ -172,7 +172,7 @@ class ActivityRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeByService($id, QueryBuilder $qb)
+    public function scopeByService($id, QueryBuilder $qb = null)
     {
         return $this->scopeByField('service', $id, $qb);
     }
@@ -185,8 +185,12 @@ class ActivityRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeWithTag($tagIdOrName, QueryBuilder $qb)
+    public function scopeWithTag($tagIdOrName, QueryBuilder $qb = null)
     {
+        if ($qb == null) {
+            $qb = $this->builder;
+        }
+
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
 
@@ -199,7 +203,7 @@ class ActivityRepository extends EntityRepository
             );
         }
         $qb->setParameter('tag', $tagIdOrName);
-        return $qb;
+        return $this;
     }
 
     /**
@@ -210,8 +214,12 @@ class ActivityRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function scopeWithoutTag($tagIdOrName, QueryBuilder $qb)
+    public function scopeWithoutTag($tagIdOrName, QueryBuilder $qb = null)
     {
+        if ($qb == null) {
+            $qb = $this->builder;
+        }
+
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
         $qb2 = clone $qb;
@@ -229,7 +237,7 @@ class ActivityRepository extends EntityRepository
         );
         $qb->setParameter('tag', $tagIdOrName);
 
-        return $qb;
+        return $this;
     }
 
     /**
@@ -238,38 +246,37 @@ class ActivityRepository extends EntityRepository
      * @param array                      $filter
      * @param \Doctrine\ORM\QueryBuilder $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
-     * @throws \Exception when $qb is null
+     * @return ActivityRepository
      */
-    public function filter(array $filter, QueryBuilder $qb)
+    public function filter(array $filter, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         if ($filter != null) {
             foreach ($filter as $key => $value) {
                 switch($key) {
                     case 'active':
-                        $qb = $this->scopeByActive($value, $qb);
+                        $this->scopeByActive($value, $qb);
                         break;
                     case 'withTags':
-                        $qb = $this->scopeWithTags($value, $qb);
+                         $this->scopeWithTags($value, $qb);
                         break;
                     case 'withoutTags':
-                        $qb = $this->scopeWithoutTags($value, $qb);
+                        $this->scopeWithoutTags($value, $qb);
                         break;
                     case 'date':
-                        $qb = $this->scopeByDate($value, $qb);
+                        $this->scopeByDate($value, $qb);
                         break;
                     case 'search':
-                        $qb = $this->search($value, $qb);
+                        $this->search($value, $qb);
                         break;
                     default:
-                        $qb = $this->scopeByField($key, $value, $qb);
+                        $this->scopeByField($key, $value, $qb);
                 }
             }
         }
-        return $qb;
+        return $this;
     }
 }

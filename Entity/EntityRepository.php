@@ -13,14 +13,19 @@ use Doctrine\ORM\QueryBuilder;
 abstract class EntityRepository extends Base
 {
     /**
+     * @var QueryBuilder
+     */
+    protected $builder;
+
+    /**
      * @abstract
      *
      * @param string            $text
      * @param QueryBuilder      $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    abstract public function search($text, QueryBuilder $qb);
+    abstract public function search($text, QueryBuilder $qb = null);
 
     /**
      * @abstract
@@ -28,24 +33,56 @@ abstract class EntityRepository extends Base
      * @param                   $date
      * @param QueryBuilder      $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    abstract public function scopeByDate($date, QueryBuilder $qb);
+    abstract public function scopeByDate($date, QueryBuilder $qb = null);
+
+    /**
+     * Create a new current query builder
+     *
+     * @param $alias
+     * @return EntityRepository
+     */
+    public function createCurrentQueryBuilder($alias)
+    {
+        $this->builder = $this->createQueryBuilder($alias);
+        return $this;
+    }
+
+    /**
+     * Return the current query builder
+     *
+     * @return QueryBuilder
+     */
+    public function getCurrentQueryBuilder()
+    {
+        return $this->builder;
+    }
+
+    /**
+     * Set the current query builder
+     *
+     * @param QueryBuilder $qb
+     * @return EntityRepository
+     */
+    public function setCurrentQueryBuilder(QueryBuilder $qb)
+    {
+        $this->builder = $qb;
+        return $this;
+    }
 
     /**
      * Scope by any field with value
      *
-     * @param string                     $field
-     * @param string                     $value
-     * @param \Doctrine\ORM\QueryBuilder $qb
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     * @throws \Exception when $qb is null
+     * @param $field
+     * @param $value
+     * @param QueryBuilder $qb
+     * @return EntityRepository
      */
-    public function scopeByField($field, $value, QueryBuilder $qb)
+    public function scopeByField($field, $value, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         $aliases = $qb->getRootAliases();
@@ -56,39 +93,38 @@ abstract class EntityRepository extends Base
         );
         $qb->setParameter($field, $value);
 
-        return $qb;
+        return $this;
     }
 
     /**
      * Add different filter option to query
      *
-     * @param array                      $filter
-     * @param \Doctrine\ORM\QueryBuilder $qb
+     * @param array        $filter
+     * @param QueryBuilder $qb
      *
-     * @return \Doctrine\ORM\QueryBuilder
-     * @throws \Exception when $qb is null
+     * @return EntityRepository
      */
-    public function filter(array $filter, QueryBuilder $qb)
+    public function filter(array $filter, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         if ($filter != null) {
             foreach ($filter as $key => $value) {
                 switch($key) {
                     case 'date':
-                        $qb = $this->scopeByDate($value, $qb);
+                        $this->scopeByDate($value, $qb);
                         break;
                     case 'search':
-                        $qb = $this->search($value, $qb);
+                        $this->search($value, $qb);
                         break;
                     default:
-                        $qb = $this->scopeByField($key, $value, $qb);
+                        $this->scopeByField($key, $value, $qb);
                 }
             }
         }
-        return $qb;
+        return $this;
     }
 
     /**
@@ -119,7 +155,7 @@ abstract class EntityRepository extends Base
         return $result;
     }
 
-    protected function scopeWithTags($tags, $qb)
+    protected function scopeWithTags($tags, QueryBuilder $qb = null)
     {
         if (false == is_array($tags)) {
             $tags = array($tags);
@@ -127,10 +163,10 @@ abstract class EntityRepository extends Base
         foreach ($tags as $tag) {
             $qb = $this->scopeWithTag($tag, $qb);
         }
-        return $qb;
+        return $this;
     }
 
-    protected function scopeWithoutTags($tags, $qb)
+    protected function scopeWithoutTags($tags, QueryBuilder $qb = null)
     {
         if (false == is_array($tags)) {
             $tags = array($tags);
@@ -138,6 +174,6 @@ abstract class EntityRepository extends Base
         foreach ($tags as $tag) {
             $qb = $this->scopeWithoutTag($tag, $qb);
         }
-        return $qb;
+        return $this;
     }
 }

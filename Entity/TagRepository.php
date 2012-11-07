@@ -20,12 +20,12 @@ class TagRepository extends EntityRepository
      * @param string            $text
      * @param QueryBuilder      $qb
      *
-     * @return QueryBuilder
+     * @return TagRepository
      */
-    public function search($text, QueryBuilder $qb)
+    public function search($text, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         $aliases = $qb->getRootAliases();
@@ -36,7 +36,7 @@ class TagRepository extends EntityRepository
         );
         $qb->setParameter('text_like', '%' . $text . '%');
 
-        return $qb;
+        return $this;
     }
 
     /**
@@ -46,11 +46,11 @@ class TagRepository extends EntityRepository
      * @param                   $date
      * @param QueryBuilder      $qb
      *
-     * @return QueryBuilder
+     * @return TagRepository
      */
-    public function scopeByDate($date, QueryBuilder $qb)
+    public function scopeByDate($date, QueryBuilder $qb = null)
     {
-        return $qb;
+        return $this;
     }
 
 
@@ -61,10 +61,10 @@ class TagRepository extends EntityRepository
      * @param QueryBuilder $qb   Query builder instance
      * @return array (name => id)
      */
-    public function getIdsForTags(array $tags, User $user, QueryBuilder $qb)
+    public function getIdsForTags(array $tags, User $user, QueryBuilder $qb = null)
     {
         if ($qb == null) {
-            throw \Exception("QueryBuilder must be set");
+            $qb = $this->builder;
         }
 
         if (!empty($tags)) {
