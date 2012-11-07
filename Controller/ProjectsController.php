@@ -35,24 +35,24 @@ class ProjectsController extends DimeController
     {
         $projects = $this->getProjectRepository();
 
-        $qb = $projects->createQueryBuilder('p');
+        $projects->createCurrentQueryBuilder('p');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $projects->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
+            $qb = $projects->filter($this->cleanFilter($filter, $this->allowed_filter));
         }
 
         // Scope by current user
         if (!isset($filter['user'])) {
-            $projects->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+            $projects->scopeByField('user', $this->getCurrentUser()->getId());
         }
 
         // Sort by name
-        $qb->addOrderBy('p.name', 'ASC');
+        $projects->getCurrentQueryBuilder()->addOrderBy('p.name', 'ASC');
 
         // Pagination
-        return $this->paginate($qb,
+        return $this->paginate($projects->getCurrentQueryBuilder(),
             $this->getRequest()->get('limit'),
             $this->getRequest()->get('offset')
         );

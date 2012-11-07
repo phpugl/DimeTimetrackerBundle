@@ -35,24 +35,24 @@ class SettingsController extends DimeController
     {
         $settings = $this->getSettingRepository();
 
-        $qb = $settings->createQueryBuilder('set');
+        $settings->createCurrentQueryBuilder('set');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $settings->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
+            $settings->filter($this->cleanFilter($filter, $this->allowed_filter));
         }
 
         // Scope by current user
         if (!isset($filter['user'])) {
-            $settings->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+            $settings->scopeByField('user', $this->getCurrentUser()->getId());
         }
 
         // Sort by name
-        $qb->addOrderBy('set.name', 'ASC');
+        $settings->getCurrentQueryBuilder()->addOrderBy('set.name', 'ASC');
 
         // Pagination
-        return $this->paginate($qb,
+        return $this->paginate($settings->getCurrentQueryBuilder(),
             $this->getRequest()->get('limit'),
             $this->getRequest()->get('offset')
         );

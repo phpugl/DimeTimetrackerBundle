@@ -35,24 +35,24 @@ class CustomersController extends DimeController
     {
         $customers = $this->getCustomerRepository();
 
-        $qb = $customers->createQueryBuilder('c');
+        $customers->createCurrentQueryBuilder('c');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $customers->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
+            $customers->filter($this->cleanFilter($filter, $this->allowed_filter));
         }
 
         // Scope by current user
         if (!isset($filter['user'])) {
-            $customers->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+            $customers->scopeByField('user', $this->getCurrentUser()->getId());
         }
 
         // Sort by name
-        $qb->addOrderBy('c.name', 'ASC');
+        $customers->getCurrentQueryBuilder()->addOrderBy('c.name', 'ASC');
 
         // Pagination
-        return $this->paginate($qb,
+        return $this->paginate($customers->getCurrentQueryBuilder(),
             $this->getRequest()->get('limit'),
             $this->getRequest()->get('offset')
         );

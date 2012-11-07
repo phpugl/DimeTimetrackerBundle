@@ -35,24 +35,24 @@ class ServicesController extends DimeController
     {
         $services = $this->getServiceRepository();
 
-        $qb = $services->createQueryBuilder('s');
+        $services->createCurrentQueryBuilder('s');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $services->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
+            $services->filter($this->cleanFilter($filter, $this->allowed_filter));
         }
 
         // Scope by current user
         if (!isset($filter['user'])) {
-            $services->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+            $services->scopeByField('user', $this->getCurrentUser()->getId());
         }
 
         // Sort by name
-        $qb->addOrderBy('s.name', 'ASC');
+        $services->getCurrentQueryBuilder()->addOrderBy('s.name', 'ASC');
 
         // Pagination
-        return $this->paginate($qb,
+        return $this->paginate($services->getCurrentQueryBuilder(),
             $this->getRequest()->get('limit'),
             $this->getRequest()->get('offset')
         );
