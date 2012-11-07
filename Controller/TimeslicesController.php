@@ -45,7 +45,7 @@ class TimeslicesController extends DimeController
     {
         $timeslices = $this->getTimesliceRepository();
 
-        $timeslices->createCurrerntQueryBuilder('t');
+        $timeslices->createCurrentQueryBuilder('ts');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
@@ -59,7 +59,7 @@ class TimeslicesController extends DimeController
         }
 
         // Sort by updatedAt
-        $timeslices->getCurrentQueryBuilder()->addOrderBy('t.updatedAt', 'DESC');
+        $timeslices->getCurrentQueryBuilder()->addOrderBy('ts.updatedAt', 'DESC');
 
         // Pagination
         return $this->paginate($timeslices->getCurrentQueryBuilder(),

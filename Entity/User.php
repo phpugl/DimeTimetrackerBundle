@@ -47,7 +47,7 @@ class User extends BaseUser
      * @SerializedName("createdAt")
      * @ORM\Column(name="created_at", type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var datetime $updatedAt
@@ -56,7 +56,7 @@ class User extends BaseUser
      * @SerializedName("updatedAt")
      * @ORM\Column(name="updated_at", type="datetime")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * Get id

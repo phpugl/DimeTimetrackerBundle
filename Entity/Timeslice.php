@@ -26,7 +26,7 @@ class Timeslice
      * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Activity $activity
@@ -60,7 +60,7 @@ class Timeslice
      * @JMS\SerializedName("startedAt")
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
-    private $startedAt;
+    protected $startedAt;
 
     /**
      * @var datetime $stoppedAt
@@ -69,7 +69,7 @@ class Timeslice
      * @JMS\SerializedName("stoppedAt")
      * @ORM\Column(name="stopped_at", type="datetime", nullable=true)
      */
-    private $stoppedAt;
+    protected $stoppedAt;
 
     /**
      * @var datetime $createdAt
@@ -78,7 +78,7 @@ class Timeslice
      * @JMS\SerializedName("createdAt")
      * @ORM\Column(name="created_at", type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var datetime $updatedAt
@@ -87,7 +87,7 @@ class Timeslice
      * @JMS\SerializedName("updatedAt")
      * @ORM\Column(name="updated_at", type="datetime")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * Entity constructor
