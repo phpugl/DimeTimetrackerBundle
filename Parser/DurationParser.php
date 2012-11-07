@@ -30,7 +30,12 @@ class DurationParser extends AbstractParser
         if (!empty($input) && preg_match($this->regex, $input, $this->matches)) {
             if (!empty($this->matches[0])) {
                 $duration = 0;
-                if (preg_match_all('/(?P<number>(\d+([,\.]\d+)?(:\d+)?))(?P<unit>[hms])/', $this->matches['duration'], $items)) {
+                if (preg_match_all(
+                    '/(?P<number>(\d+([,\.]\d+)?(:\d+)?))(?P<unit>[hms])/',
+                    $this->matches['duration'],
+                    $items
+                )
+                ) {
                     // 02:30h or 02:30m
                     if (count($items['unit']) == 1 && strstr($items['number'][0], ':') !== false) {
                         $time = explode(':', $items['number'][0]);
@@ -80,7 +85,7 @@ class DurationParser extends AbstractParser
                 }
 
                 $this->result['duration'] = array(
-                    'sign'   => $this->matches['sign'],
+                    'sign' => $this->matches['sign'],
                     'number' => $duration
                 );
             }
