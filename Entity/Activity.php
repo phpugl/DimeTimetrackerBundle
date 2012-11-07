@@ -50,7 +50,7 @@ class Activity extends Entity
      * @var ArrayCollection $timeslices
      *
      * @JMS\SerializedName("timeslices")
-     * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="all")
+     * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="persist")
      */
     protected $timeslices;
 
@@ -58,7 +58,7 @@ class Activity extends Entity
      * @var ArrayCollection $tags
      *
      * @JMS\SerializedName("tags")
-     * @ORM\ManyToMany(targetEntity="Tag")
+     * @ORM\ManyToMany(targetEntity="Tag", cascade="all")
      * @ORM\JoinTable(name="activity_tags")
      */
     protected $tags;

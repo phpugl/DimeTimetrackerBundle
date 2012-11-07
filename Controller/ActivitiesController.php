@@ -11,6 +11,7 @@ use Dime\TimetrackerBundle\Entity\Timeslice;
 use Dime\TimetrackerBundle\Entity\CustomerRepository;
 use Dime\TimetrackerBundle\Entity\ProjectRepository;
 use Dime\TimetrackerBundle\Entity\ServiceRepository;
+use Dime\TimetrackerBundle\Entity\Tag;
 use Dime\TimetrackerBundle\Entity\TagRepository;
 use Dime\TimetrackerBundle\Form\ActivityType;
 
@@ -19,7 +20,16 @@ class ActivitiesController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('date', 'active', 'customer', 'project', 'service', 'user', 'withTags', 'withoutTags');
+    protected $allowed_filter = array(
+        'date',
+        'active',
+        'customer',
+        'project',
+        'service',
+        'user',
+        'withTags',
+        'withoutTags'
+    );
 
     /**
      * get activity repository
@@ -83,25 +93,26 @@ class ActivitiesController extends DimeController
     {
         $activities = $this->getActivityRepository();
 
-        $qb = $activities->createQueryBuilder('a');
+        $activities->createCurrentQueryBuilder('a');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
         if ($filter) {
-            $qb = $activities->filter($this->cleanFilter($filter, $this->allowed_filter), $qb);
+            $activities->filter($this->cleanFilter($filter, $this->allowed_filter));
         }
 
         // Scope by current user
         if (!isset($filter['user'])) {
-            $activities->scopeByField('user', $this->getCurrentUser()->getId(), $qb);
+            $activities->scopeByField('user', $this->getCurrentUser()->getId());
         }
 
         // Sort by updatedAt and id
-        $qb->addOrderBy('a.updatedAt', 'DESC');
-        $qb->addOrderBy('a.id', 'DESC');
+        $activities->getCurrentQueryBuilder()->addOrderBy('a.updatedAt', 'DESC');
+        $activities->getCurrentQueryBuilder()->addOrderBy('a.id', 'DESC');
 
         // Pagination
-        return $this->paginate($qb,
+        return $this->paginate(
+            $activities->getCurrentQueryBuilder(),
             $this->getRequest()->get('limit'),
             $this->getRequest()->get('offset')
         );
@@ -161,22 +172,65 @@ class ActivitiesController extends DimeController
             $activity->setUser($this->getCurrentUser());
 
             if (isset($result['customer'])) {
-                $customer = $this->getCustomerRepository()->findOneByAlias($result['customer']);
+                $customer = $this->getCustomerRepository()
+                    ->createCurrentQueryBuilder('c')
+                    ->scopeByField('user', $this->getCurrentUser()->getId())
+                    ->scopeByField('alias', $result['customer'])
+                    ->getCurrentQueryBuilder()
+                    ->setMaxResults(1)
+                    ->getQuery()->getSingleResult();
+
                 $activity->setCustomer($customer);
             }
 
             if (isset($result['project'])) {
-                $project = $this->getProjectRepository()->findOneByAlias($result['project']);
+                $project = $this->getProjectRepository()
+                    ->createCurrentQueryBuilder('p')
+                    ->scopeByField('user', $this->getCurrentUser()->getId())
+                    ->scopeByField('alias', $result['project'])
+                    ->getCurrentQueryBuilder()
+                    ->setMaxResults(1)
+                    ->getQuery()->getSingleResult();
                 $activity->setProject($project);
                 // Auto set customer because of direct relation to project
-                if ($activity->getCustomer()  == null) {
+                if ($activity->getCustomer() == null) {
                     $activity->setCustomer($project->getCustomer());
                 }
             }
 
             if (isset($result['service'])) {
-                $service = $this->getServiceRepository()->findOneByAlias($result['service']);
+                $service = $this->getServiceRepository()
+                    ->createCurrentQueryBuilder('p')
+                    ->scopeByField('user', $this->getCurrentUser()->getId())
+                    ->scopeByField('alias', $result['service'])
+                    ->getCurrentQueryBuilder()
+                    ->setMaxResults(1)
+                    ->getQuery()->getSingleResult();
                 $activity->setService($service);
+            }
+
+            if (isset($result['tags']) && !empty($result['tags'])) {
+                foreach ($result['tags'] as $tagname) {
+
+                    try {
+                        $tag = $this->getTagRepository()
+                            ->createCurrentQueryBuilder('t')
+                            ->scopeByField('user', $this->getCurrentUser()->getId())
+                            ->scopeByField('name', $tagname)
+                            ->getCurrentQueryBuilder()
+                            ->setMaxResults(1)
+                            ->getQuery()->getSingleResult();
+                    } catch (\Doctrine\ORM\NoResultException $e) {
+                        $tag = null;
+                    }
+
+                    if ($tag == null) {
+                        $tag = new Tag();
+                        $tag->setName($tagname);
+                        $tag->setUser($this->getCurrentUser());
+                    }
+                    $activity->addTag($tag);
+                }
             }
 
             if (isset($result['description'])) {
@@ -209,22 +263,22 @@ class ActivitiesController extends DimeController
                     $timeslice->setStoppedAt($stop);
                 } else {
                     // track date for duration
-                    $date->setTime(0,0,0);
+                    $date->setTime(0, 0, 0);
                     $timeslice->setStartedAt($date);
                     $timeslice->setStoppedAt($date);
                 }
 
                 // process duration
                 if (isset($result['duration'])) {
-                  if (empty($result['duration']['sign'])) {
-                      $timeslice->setDuration($result['duration']['number']);
-                  } else {
-                      if ($result['duration']['sign'] == '-') {
-                          $timeslice->setDuration($timeslice->getCurrentDuration() - $result['duration']['number']);
-                      } else {
-                          $timeslice->setDuration($timeslice->getCurrentDuration() + $result['duration']['number']);
-                      }
-                  }
+                    if (empty($result['duration']['sign'])) {
+                        $timeslice->setDuration($result['duration']['number']);
+                    } else {
+                        if ($result['duration']['sign'] == '-') {
+                            $timeslice->setDuration($timeslice->getCurrentDuration() - $result['duration']['number']);
+                        } else {
+                            $timeslice->setDuration($timeslice->getCurrentDuration() + $result['duration']['number']);
+                        }
+                    }
                 }
             } else {
                 // start a new timeslice with date 'now'
@@ -319,21 +373,21 @@ class ActivitiesController extends DimeController
      */
     protected function parse($data)
     {
-      $result = array();
-      $parsers = array(
-          '\Dime\TimetrackerBundle\Parser\TimerangeParser',
-          '\Dime\TimetrackerBundle\Parser\DurationParser',
-          '\Dime\TimetrackerBundle\Parser\ActivityRelationParser',
-          '\Dime\TimetrackerBundle\Parser\ActivityDescriptionParser'
-      );
+        $result = array();
+        $parsers = array(
+            '\Dime\TimetrackerBundle\Parser\TimerangeParser',
+            '\Dime\TimetrackerBundle\Parser\DurationParser',
+            '\Dime\TimetrackerBundle\Parser\ActivityRelationParser',
+            '\Dime\TimetrackerBundle\Parser\ActivityDescriptionParser'
+        );
 
-      foreach ($parsers as $parser) {
-        $p = new $parser();
-        $result = $p->setResult($result)->run($data);
-        $data = $p->clean($data);
-        unset($p);
-      }
+        foreach ($parsers as $parser) {
+            $p = new $parser();
+            $result = $p->setResult($result)->run($data);
+            $data = $p->clean($data);
+            unset($p);
+        }
 
-      return $result;
+        return $result;
     }
 }
