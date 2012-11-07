@@ -299,6 +299,18 @@ class Activity extends Entity
     }
 
     /**
+     * Set tags
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $tags
+     * @return Activity
+     */
+    public function setTags(ArrayCollection $tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    /**
      * Get created at datetime
      *
      * @return datetime

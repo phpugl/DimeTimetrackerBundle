@@ -259,6 +259,18 @@ class Timeslice
     }
 
     /**
+     * Set tags
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $tags
+     * @return Timeslice
+     */
+    public function setTags(ArrayCollection $tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    /**
      * Auto generate duration if empty
      *
      * @ORM\PrePersist
