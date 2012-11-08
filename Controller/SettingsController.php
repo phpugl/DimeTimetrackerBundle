@@ -35,7 +35,7 @@ class SettingsController extends DimeController
     {
         $settings = $this->getSettingRepository();
 
-        $settings->createCurrentQueryBuilder('set');
+        $settings->createCurrentQueryBuilder('sg');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
@@ -49,7 +49,7 @@ class SettingsController extends DimeController
         }
 
         // Sort by name
-        $settings->getCurrentQueryBuilder()->addOrderBy('set.name', 'ASC');
+        $settings->getCurrentQueryBuilder()->addOrderBy('sg.key', 'ASC');
 
         // Pagination
         return $this->paginate($settings->getCurrentQueryBuilder(),
