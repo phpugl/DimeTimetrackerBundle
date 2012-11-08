@@ -40,6 +40,7 @@ class Timeslice
     /**
      * @var ArrayCollection $tags
      *
+     * @JMS\Type("array")
      * @JMS\SerializedName("tags")
      * @ORM\ManyToMany(targetEntity="Tag", cascade="persist")
      * @ORM\JoinTable(name="timeslice_tags")

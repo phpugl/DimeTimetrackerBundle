@@ -49,6 +49,7 @@ class Activity extends Entity
     /**
      * @var ArrayCollection $timeslices
      *
+     * @JMS\Type("array")
      * @JMS\SerializedName("timeslices")
      * @ORM\OneToMany(targetEntity="Timeslice", mappedBy="activity", cascade="persist")
      */
@@ -57,6 +58,7 @@ class Activity extends Entity
     /**
      * @var ArrayCollection $tags
      *
+     * @JMS\Type("array")
      * @JMS\SerializedName("tags")
      * @ORM\ManyToMany(targetEntity="Tag", cascade="all")
      * @ORM\JoinTable(name="activity_tags")
