@@ -46,7 +46,7 @@ class DimeController extends Controller
 
         $paginator = new Paginator($qb, $fetchJoinCollection = true);
 
-        $view = $this->createView($paginator);
+        $view = $this->createView($paginator->getQuery()->getResult());
         $view->setHeader('X-Pagination-Total-Results', count($paginator));
 
         return $view;
