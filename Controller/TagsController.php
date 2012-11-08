@@ -35,7 +35,7 @@ class TagsController extends DimeController
     {
         $tags = $this->getTagRepository();
 
-        $tags->createCurrentQueryBuilder('t');
+        $tags->createCurrentQueryBuilder('tag');
 
         // Filter
         $filter = $this->getRequest()->get('filter');
@@ -48,7 +48,7 @@ class TagsController extends DimeController
             $tags->scopeByField('user', $this->getCurrentUser()->getId());
         }
 
-        $tags->getCurrentQueryBuilder()->addOrderBy('a.name', 'ASC');
+        $tags->getCurrentQueryBuilder()->addOrderBy('tag.name', 'ASC');
 
         // Pagination
         return $this->paginate($tags->getCurrentQueryBuilder(),
