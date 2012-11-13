@@ -3,7 +3,8 @@
 namespace Dime\TimetrackerBundle\Controller;
 
 use FOS\RestBundle\View\View;
-use FOS\RestBundle\Controller\Annotations\Route;
+use FOS\RestBundle\Controller\Annotations as FOS;
+use Doctrine\ORM\NoResultException;
 
 use Dime\TimetrackerBundle\Entity\Activity;
 use Dime\TimetrackerBundle\Entity\ActivityRepository;
@@ -86,7 +87,7 @@ class ActivitiesController extends DimeController
      *
      * [GET] /activities
      *
-     * @Route("/activities")
+     * @FOS\Route("/activities")
      * @return View
      */
     public function getActivitiesAction()
@@ -172,41 +173,50 @@ class ActivitiesController extends DimeController
             $activity->setUser($this->getCurrentUser());
 
             if (isset($result['customer'])) {
-                $customer = $this->getCustomerRepository()
-                    ->createCurrentQueryBuilder('c')
-                    ->scopeByField('user', $this->getCurrentUser()->getId())
-                    ->scopeByField('alias', $result['customer'])
-                    ->getCurrentQueryBuilder()
-                    ->setMaxResults(1)
-                    ->getQuery()->getSingleResult();
+                try {
+                    $customer = $this->getCustomerRepository()
+                        ->createCurrentQueryBuilder('c')
+                        ->scopeByField('user', $this->getCurrentUser()->getId())
+                        ->scopeByField('alias', $result['customer'])
+                        ->getCurrentQueryBuilder()
+                        ->setMaxResults(1)
+                        ->getQuery()->getSingleResult();
 
-                $activity->setCustomer($customer);
+                    $activity->setCustomer($customer);
+                } catch (NoResultException $e) {
+                }
             }
 
             if (isset($result['project'])) {
-                $project = $this->getProjectRepository()
-                    ->createCurrentQueryBuilder('p')
-                    ->scopeByField('user', $this->getCurrentUser()->getId())
-                    ->scopeByField('alias', $result['project'])
-                    ->getCurrentQueryBuilder()
-                    ->setMaxResults(1)
-                    ->getQuery()->getSingleResult();
-                $activity->setProject($project);
-                // Auto set customer because of direct relation to project
-                if ($activity->getCustomer() == null) {
-                    $activity->setCustomer($project->getCustomer());
+                try {
+                    $project = $this->getProjectRepository()
+                        ->createCurrentQueryBuilder('p')
+                        ->scopeByField('user', $this->getCurrentUser()->getId())
+                        ->scopeByField('alias', $result['project'])
+                        ->getCurrentQueryBuilder()
+                        ->setMaxResults(1)
+                        ->getQuery()->getSingleResult();
+                    $activity->setProject($project);
+                    // Auto set customer because of direct relation to project
+                    if ($activity->getCustomer() == null) {
+                        $activity->setCustomer($project->getCustomer());
+                    }
+                } catch (NoResultException $e) {
                 }
             }
 
             if (isset($result['service'])) {
-                $service = $this->getServiceRepository()
-                    ->createCurrentQueryBuilder('p')
-                    ->scopeByField('user', $this->getCurrentUser()->getId())
-                    ->scopeByField('alias', $result['service'])
-                    ->getCurrentQueryBuilder()
-                    ->setMaxResults(1)
-                    ->getQuery()->getSingleResult();
-                $activity->setService($service);
+                try {
+                    $service = $this->getServiceRepository()
+                        ->createCurrentQueryBuilder('p')
+                        ->scopeByField('user', $this->getCurrentUser()->getId())
+                        ->scopeByField('alias', $result['service'])
+                        ->getCurrentQueryBuilder()
+                        ->setMaxResults(1)
+                        ->getQuery()->getSingleResult();
+                    $activity->setService($service);
+                } catch (NoResultException $e) {
+                }
             }
 
             if (isset($result['tags']) && !empty($result['tags'])) {
@@ -220,7 +230,7 @@ class ActivitiesController extends DimeController
                             ->getCurrentQueryBuilder()
                             ->setMaxResults(1)
                             ->getQuery()->getSingleResult();
-                    } catch (\Doctrine\ORM\NoResultException $e) {
+                    } catch (NoResultException $e) {
                         $tag = null;
                     }
 
