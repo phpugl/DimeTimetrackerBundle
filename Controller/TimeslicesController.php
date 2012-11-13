@@ -12,7 +12,16 @@ class TimeslicesController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('activity');
+    protected $allowed_filter = array(
+        'date',
+        'activity',
+        'customer',
+        'project',
+        'service',
+        'user',
+        'withTags',
+        'withoutTags'
+    );
 
     /**
      * get activity timeslice repository

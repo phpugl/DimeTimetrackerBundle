@@ -39,6 +39,38 @@ class TimesliceRepository extends EntityRepository
      */
     public function scopeByDate($date, QueryBuilder $qb = null)
     {
+        if ($qb == null) {
+            $qb = $this->builder;
+        }
+
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+
+        if (is_array($date)) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->between($alias . '.startedAt', ':from', ':to'),
+                    $qb->expr()->andX(
+                        $qb->expr()->isNull($alias . '.startedAt'),
+                        $qb->expr()->between($alias . '.createdAt', ':from', ':to')
+                    )
+                )
+            );
+            $qb->setParameter('from', $date[0]);
+            $qb->setParameter('to', $date[1]);
+        } else {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like($alias . '.startedAt', ':date'),
+                    $qb->expr()->andX(
+                        $qb->expr()->isNull($alias . '.startedAt'),
+                        $qb->expr()->like($alias . '.createdAt', ':date')
+                    )
+                )
+            );
+            $qb->setParameter('date', $date . '%');
+        }
+
         return $this;
     }
 
@@ -59,11 +91,152 @@ class TimesliceRepository extends EntityRepository
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
 
-        $qb->leftJoin($alias . '.activity', 'a');
+        if (!$this->existsJoinAlias($qb, 'a')) {
+            $qb->leftJoin($alias . '.activity', 'a');
+        }
 
         $qb->andWhere($qb->expr()->eq("a.user", ":user"));
         $qb->setParameter(":user", $user);
 
+        return $this;
+    }
+
+    public function scopeByActivityData(array $data, QueryBuilder $qb = null)
+    {
+        if ($qb == null) {
+            $qb = $this->builder;
+        }
+
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+
+        if (!empty($data)) {
+            if (!$this->existsJoinAlias($qb, 'a')) {
+                $qb->leftJoin($alias . '.activity', 'a');
+            }
+
+            $allowed = $this->getEntityManager()->getRepository('DimeTimetrackerBundle:Activity')->allowedFields();
+
+            foreach ($data as $field => $value) {
+                if (in_array($field, $allowed)) {
+                    $qb->andWhere($qb->expr()->eq("a." . $field, ":" . $field));
+                    $qb->setParameter(":" . $field, $value);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Filter by assigned tag
+     *
+     * @param integer|string             $tagIdOrName
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function scopeWithTag($tagIdOrName, QueryBuilder $qb = null)
+    {
+        if ($qb == null) {
+            $qb = $this->builder;
+        }
+
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+
+        if (!$this->existsJoinAlias($qb, 'x')) {
+            $qb->innerJoin(
+                $alias . '.tags',
+                'x',
+                'WITH',
+                is_numeric($tagIdOrName) ? 'x.id = :tag' : 'x.name = :tag'
+            );
+        }
+        $qb->setParameter('tag', $tagIdOrName);
+        return $this;
+    }
+
+    /**
+     * Filter by not-assigned tag
+     *
+     * @param integer|string             $tagIdOrName
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function scopeWithoutTag($tagIdOrName, QueryBuilder $qb = null)
+    {
+        if ($qb == null) {
+            $qb = $this->builder;
+        }
+
+        $aliases = $qb->getRootAliases();
+        $alias = array_shift($aliases);
+        $qb2 = clone $qb;
+        $qb2->resetDqlParts();
+
+        $qb->andWhere(
+            $qb->expr()->notIn(
+                $alias . '.id',
+                $qb2->select('t2.id')
+                    ->from('Dime\TimetrackerBundle\Entity\Timeslice', 't2')
+                    ->join('t2.tags', 'x2')
+                    ->where(is_numeric($tagIdOrName) ? 'x2.id = :tag' : 'x2.name = :tag')
+                    ->getDQL()
+            )
+        );
+        $qb->setParameter('tag', $tagIdOrName);
+
+        return $this;
+    }
+
+    /**
+     * Add different filter option to query
+     *
+     * @param array                      $filter
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     *
+     * @return TimesliceRepository
+     */
+    public function filter(array $filter, QueryBuilder $qb = null)
+    {
+        if ($qb == null) {
+            $qb = $this->builder;
+        }
+
+        if ($filter != null) {
+            $activity_data = array();
+
+            foreach ($filter as $key => $value) {
+                switch($key) {
+                    case 'date':
+                        $this->scopeByDate($value, $qb);
+                        break;
+                    case 'customer':
+                        $activity_data[$key] = $value;
+                        break;
+                    case 'project':
+                        $activity_data[$key] = $value;
+                        break;
+                    case 'service':
+                        $activity_data[$key] = $value;
+                        break;
+                    case 'withTags':
+                        $this->scopeWithTags($value, $qb);
+                        break;
+                    case 'withoutTags':
+                        $this->scopeWithoutTags($value, $qb);
+                        break;
+                    default:
+                        $this->scopeByField($key, $value, $qb);
+                }
+            }
+
+            if (!empty($activity_data)) {
+                $this->scopeByActivityData($activity_data, $qb);
+            }
+        }
         return $this;
     }
 

@@ -12,6 +12,12 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ActivityRepository extends EntityRepository
 {
+    protected $allowed_fields = array('customer', 'project', 'service', 'user');
+
+    public function allowedFields() {
+        return $this->allowed_fields;
+    }
+
     /**
      * Simple search for description with like.
      *
