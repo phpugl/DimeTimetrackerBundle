@@ -6,12 +6,14 @@ class ProjectsControllerTest extends DimeTestCase
 {
     public function testAuthentification()
     {
-        $this->assertEquals(401, $this->request('GET', '/api/projects', null, array(), array(), array())->getStatusCode());
+        $this->assertEquals(500, $this->request('GET', '/api/projects', null, array(), array(), array())->getStatusCode());
+        $this->loginAs('admin');
         $this->assertEquals(200, $this->request('GET', '/api/projects')->getStatusCode());
     }
 
     public function testGetProjectsAction()
     {
+        $this->loginAs('admin');
         $response = $this->request('GET', '/api/projects');
 
         // convert json to array
@@ -19,11 +21,12 @@ class ProjectsControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find projects');
-        $this->assertEquals($data[0]['name'], 'CWE2011', 'expected to find "CWE2011" first');
+        $this->assertEquals('CWE2011', $data[0]['name'], 'expected to find "CWE2011" first');
     }
 
     public function testGetProjectAction()
     {
+        $this->loginAs('admin');
         /* expect to get 404 on non-existing project */
         $this->assertEquals(404, $this->request('GET', '/api/projects/11111')->getStatusCode());
 
@@ -35,11 +38,12 @@ class ProjectsControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find projects');
-        $this->assertEquals($data['name'], 'CWE2011', 'expected to find "CWE2011"');
+        $this->assertEquals('CWE2011', $data['name'], 'expected to find "CWE2011"');
     }
 
     public function testPostPutDeleteProjectActions()
     {
+        $this->loginAs('admin');
         /* create new project */
         $response = $this->request('POST', '/api/projects', json_encode(array(
             'name'          => 'Test',
@@ -64,8 +68,8 @@ class ProjectsControllerTest extends DimeTestCase
         $data = json_decode($response->getContent(), true);
 
         // assert that data has content
-        $this->assertEquals($data['name'], 'Test', 'expected to find "Test"');
-        $this->assertEquals($data['rate'], 555, 'expected to find rate "555"');
+        $this->assertEquals('Test', $data['name'], 'expected to find "Test"');
+        $this->assertEquals(555, $data['rate'], 'expected to find rate "555"');
 
         /* modify project */
         $response = $this->request('PUT', '/api/projects/' . $id, json_encode(array(
@@ -95,8 +99,8 @@ class ProjectsControllerTest extends DimeTestCase
         $data = json_decode($response->getContent(), true);
 
         // assert that data has content
-        $this->assertEquals($data['name'], 'Modified Test', 'expected to find "Modified Test"');
-        $this->assertEquals($data['rate'], 111, 'expected to find rate "111"');
+        $this->assertEquals('Modified Test', $data['name'], 'expected to find "Modified Test"');
+        $this->assertEquals(111, $data['rate'], 'expected to find rate "111"');
 
         /* delete project */
         $response = $this->request('DELETE', '/api/projects/' . $id);

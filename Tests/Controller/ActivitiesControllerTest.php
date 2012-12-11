@@ -6,12 +6,16 @@ class ActivitiesControllerTest extends DimeTestCase
 {
     public function testAuthentification()
     {
-        $this->assertEquals(401, $this->request('GET', '/api/activities', null, array(), array(), array())->getStatusCode());
+        $request = $this->request('GET', '/api/activities');
+        $this->assertEquals(500, $request->getStatusCode());
+
+        $this->loginas('admin');
         $this->assertEquals(200, $this->request('GET', '/api/activities')->getStatusCode());
     }
 
     public function testGetActivitiesAction()
     {
+        $this->loginas('admin');
         $response = $this->request('GET', '/api/activities');
 
         // convert json to array
@@ -19,11 +23,12 @@ class ActivitiesControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find activities');
-        $this->assertEquals($data[0]['description'], 'cwe: initial requirements meeting with customer', 'expected to find "cwe: initial project setup (Symfony2, bundles etc.)');
+        $this->assertEquals('cwe: initial project setup (Symfony2, bundles etc.)', $data[0]['description']);
     }
 
     public function testGetActivityAction()
     {
+        $this->loginas('admin');
         // expect to get 404 on non-existing activity
         $this->assertEquals(404, $this->request('GET', '/api/activities/11111')->getStatusCode());
 
@@ -35,11 +40,12 @@ class ActivitiesControllerTest extends DimeTestCase
 
         // assert that data has content
         $this->assertTrue(count($data) > 0, 'expected to find activities');
-        $this->assertEquals($data['description'], 'cwe: initial requirements meeting with customer', 'expected to find "consulting"');
+        $this->assertEquals('cwe: initial requirements meeting with customer', $data['description'], 'expected to find "consulting"');
     }
 
     public function testPostPutDeleteActivityActions()
     {
+        $this->loginas('admin');
         // create new activity
         $response = $this->request('POST', '/api/activities', json_encode(array(
             'description'   => 'Test',
@@ -64,8 +70,8 @@ class ActivitiesControllerTest extends DimeTestCase
         $data = json_decode($response->getContent(), true);
 
         // assert that data has content
-        $this->assertEquals($data['description'], 'Test', 'expected to find "Test"');
-        $this->assertEquals($data['rate'], 65.13, 'expected to find rate "65.13"');
+        $this->assertEquals('Test', $data['description'], 'expected to find "Test"');
+        $this->assertEquals(65.13, $data['rate'], 'expected to find rate "65.13"');
 
         // modify activity
         $response = $this->request('PUT', '/api/activities/' . $id, json_encode(array(
@@ -95,8 +101,8 @@ class ActivitiesControllerTest extends DimeTestCase
         $data = json_decode($response->getContent(), true);
 
         // assert that data has content
-        $this->assertEquals($data['description'], 'Modified Test', 'expected to find "Modified Test"');
-        $this->assertEquals($data['rate'], 111, 'expected to find rate "111"');
+        $this->assertEquals('Modified Test', $data['description'], 'expected to find "Modified Test"');
+        $this->assertEquals(111, $data['rate'], 'expected to find rate "111"');
 
         // delete activity
         $response = $this->request('DELETE', '/api/activities/' . $id);
@@ -109,15 +115,16 @@ class ActivitiesControllerTest extends DimeTestCase
 
     public function testPostActivityParsingAction()
     {
+        $this->loginas('admin');
         $response = $this->request('POST', '/api/activities', '{"parse": "10:00-12:00 @cc/CWE2011:testing new magic oneline input"}');
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
         $content = json_decode($response->getContent(), true);
 
-        $this->assertEquals($content['description'], 'new magic oneline input');
-        $this->assertEquals($content['customer']['alias'], 'cc');
-        $this->assertEquals($content['project']['name'], 'CWE2011');
-        $this->assertEquals($content['service']['name'], 'Testing');
-        $this->assertEquals($content['timeslices'][0]['duration'], 7200);
+        $this->assertEquals('new magic oneline input', $content['description']);
+        $this->assertEquals('cc', $content['customer']['alias']);
+        $this->assertEquals('CWE2011', $content['project']['name']);
+        $this->assertEquals('Testing', $content['service']['name']);
+        $this->assertEquals(7200, $content['timeslices'][0]['duration']);
 
         // delete activity
         $response = $this->request('DELETE', '/api/activities/' . $content['id']);
@@ -127,11 +134,11 @@ class ActivitiesControllerTest extends DimeTestCase
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
         $content = json_decode($response->getContent(), true);
 
-        $this->assertEquals($content['description'], 'new magic oneline input');
-        $this->assertEquals($content['customer']['alias'], 'cc');
-        $this->assertEquals($content['project']['name'], 'CWE2011');
-        $this->assertEquals($content['service']['name'], 'Testing');
-        $this->assertEquals(count($content['timeslices']), 1);
+        $this->assertEquals('new magic oneline input', $content['description']);
+        $this->assertEquals('cc', $content['customer']['alias']);
+        $this->assertEquals('CWE2011', $content['project']['name']);
+        $this->assertEquals('Testing', $content['service']['name']);
+        $this->assertEquals(1, count($content['timeslices']));
 
         // delete activity
         $response = $this->request('DELETE', '/api/activities/' . $content['id']);

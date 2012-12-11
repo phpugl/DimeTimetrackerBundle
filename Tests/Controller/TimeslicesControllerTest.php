@@ -6,12 +6,14 @@ class TimeslicesControllerTest extends DimeTestCase
 {
     public function testAuthentification()
     {
-        $this->assertEquals(401, $this->request('GET', '/api/timeslices', null, array(), array(), array())->getStatusCode());
+        $this->assertEquals(500, $this->request('GET', '/api/timeslices', null, array(), array(), array())->getStatusCode());
+        $this->loginAs('admin');
         $this->assertEquals(200, $this->request('GET', '/api/timeslices')->getStatusCode());
     }
 
     public function testGetActivitiesTimeSlicesAction()
     {
+        $this->loginAs('admin');
         $response = $this->request('GET', '/api/timeslices');
 
         // convert json to array
@@ -24,6 +26,7 @@ class TimeslicesControllerTest extends DimeTestCase
 
     public function testGetTimesliceAction()
     {
+        $this->loginAs('admin');
         // expect to get 404 on non-existing activity
         $this->assertEquals(404, $this->request('GET', '/api/timeslices/11111')->getStatusCode());
 
@@ -40,6 +43,7 @@ class TimeslicesControllerTest extends DimeTestCase
 
     public function testPostPutDeleteTimeslicesActions()
     {
+        $this->loginAs('admin');
         // create new activity
         $response = $this->request('POST', '/api/timeslices', json_encode(array(
             'activity'    => '1',
@@ -73,7 +77,7 @@ class TimeslicesControllerTest extends DimeTestCase
         )));
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
 
-        $response = $this->request('PUT', '/api/timeslices/' . $id+2, json_encode(array(
+        $response = $this->request('PUT', '/api/timeslices/' . $id+200, json_encode(array(
             'activity'    => '1',
             'startedAt'   => '2012-02-10 19:00:00',
             'stoppedAt'   => '2012-02-10 19:30:00',

@@ -6,12 +6,14 @@ class UsersControllerTest extends DimeTestCase
 {
     public function testAuthentification()
     {
-        $this->assertEquals(401, $this->request('GET', '/api/users', null, array(), array(), array())->getStatusCode());
+        $this->assertEquals(500, $this->request('GET', '/api/users', null, array(), array(), array())->getStatusCode());
+        $this->loginAs('admin');
         $this->assertEquals(200, $this->request('GET', '/api/users')->getStatusCode());
     }
 
     public function testGetUsersAction()
     {
+        $this->loginAs('admin');
         $response = $this->request('GET', '/api/users');
 
         // convert json to array
@@ -24,6 +26,7 @@ class UsersControllerTest extends DimeTestCase
 
     public function testGetUserAction()
     {
+        $this->loginAs('admin');
         /* expect to get 404 on non-existing service */
         $this->assertEquals(404, $this->request('GET', '/api/users/11111')->getStatusCode());
 
@@ -40,6 +43,7 @@ class UsersControllerTest extends DimeTestCase
 
     public function testPostPutDeleteUserActions()
     {
+        $this->loginAs('admin');
         /* create new service */
         $response = $this->request('POST', '/api/users', '{"username": "test-user", "password": "test", "firstname": "Test", "lastname": "User", "email": "test@user.com"}');
         $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
