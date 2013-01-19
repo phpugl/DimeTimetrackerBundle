@@ -29,6 +29,7 @@ class ProjectType extends AbstractType
             ->add('fixedPrice')
             ->add('budgetTime')
             ->add('rate')
+            ->add('tags')
         ;
     }
 

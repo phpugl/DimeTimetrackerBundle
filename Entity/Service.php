@@ -5,6 +5,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\SerializerBundle\Annotation as JMS;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Dime\TimetrackerBundle\Entity\Service
@@ -43,6 +45,16 @@ class Service extends Entity
      * @ORM\Column(type="string", length=30)
      */
     protected $alias;
+
+    /**
+     * @var ArrayCollection $tags
+     *
+     * @JMS\Type("array")
+     * @JMS\SerializedName("tags")
+     * @ORM\ManyToMany(targetEntity="Tag", cascade="all")
+     * @ORM\JoinTable(name="service_tags")
+     */
+    protected $tags;
 
     /**
      * @var string $description
@@ -173,5 +185,50 @@ class Service extends Entity
         }
 
         return $service;
+    }
+
+    /**
+     * Add tag
+     *
+     * @param  Tag $tag
+     * @return Service
+     */
+    public function addTag(Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param Tag $tags
+     */
+    public function removeTag(Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * Set tags
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $tags
+     * @return Service
+     */
+    public function setTags(ArrayCollection $tags)
+    {
+        $this->tags = $tags;
+        return $this;
     }
 }

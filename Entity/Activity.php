@@ -285,9 +285,9 @@ class Activity extends Entity
      *
      * @param Tag $tags
      */
-    public function removeTag(Tag $tags)
+    public function removeTag(Tag $tag)
     {
-        $this->tags->removeElement($tags);
+        $this->tags->removeElement($tag);
     }
 
     /**

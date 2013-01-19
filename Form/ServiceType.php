@@ -22,6 +22,7 @@ class ServiceType extends AbstractType
             ->add('alias')
             ->add('description')
             ->add('rate')
+            ->add('tags')
         ;
     }
 

@@ -19,7 +19,9 @@ class CustomerType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('alias');
+            ->add('alias')
+            ->add('tags')
+        ;
     }
 
     public function getName()

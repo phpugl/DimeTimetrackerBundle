@@ -99,6 +99,8 @@ class CustomersController extends DimeController
 
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
+        $data = $this->handleTagsInput($data);
+
 
         return $this->saveForm($form, $data);
     }
@@ -118,9 +120,11 @@ class CustomersController extends DimeController
         // check if exists
         if ($customer) {
             // create form, decode request and save it if valid
+            $data = json_decode($this->getRequest()->getContent(), true);
+            $data = $this->handleTagsInput($data);
             $view = $this->saveForm(
                 $this->createForm(new CustomerType(), $customer),
-                json_decode($this->getRequest()->getContent(), true)
+                $data
             );
         } else {
             // customer does not exists send 404

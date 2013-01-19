@@ -115,6 +115,16 @@ class DimeController extends Controller
     }
 
     /**
+     * get tag repository
+     *
+     * @return TagRepository
+     */
+    protected function getTagRepository()
+    {
+        return $this->getDoctrine()->getRepository('DimeTimetrackerBundle:Tag');
+    }
+
+    /**
      * save form
      *
      * @param Form  $form

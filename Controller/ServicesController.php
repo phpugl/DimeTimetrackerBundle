@@ -98,6 +98,7 @@ class ServicesController extends DimeController
 
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
+        $data = $this->handleTagsInput($data);
 
         return $this->saveForm($form, $data);
     }
@@ -117,9 +118,11 @@ class ServicesController extends DimeController
         // check if it exists
         if ($service) {
             // create form, decode request and save it if valid
+            $data = json_decode($this->getRequest()->getContent(), true);
+            $data = $this->handleTagsInput($data);
             $view = $this->saveForm(
                 $this->createForm(new ServiceType(), $service),
-                json_decode($this->getRequest()->getContent(), true)
+                $data
             );
         } else {
             // service does not exists send 404
