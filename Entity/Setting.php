@@ -10,10 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Dime\TimetrackerBundle\Entity\Setting
  *
- * @UniqueEntity(fields={"key", "namespace", "user"})
+ * @UniqueEntity(fields={"name", "namespace", "user"})
  * @ORM\Table(
  *      name="settings",
- *      uniqueConstraints={ @ORM\UniqueConstraint(name="unique_setting_key_namespace_user", columns={"`key`", "namespace", "user_id"}) }
+ *      uniqueConstraints={ @ORM\UniqueConstraint(name="unique_setting_name_namespace_user", columns={"`name`", "namespace", "user_id"}) }
  * )
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\SettingRepository")
  */
@@ -29,12 +29,12 @@ class Setting extends Entity
     protected $id;
 
     /**
-     * @var string $key
+     * @var string $name
      *
      * @Assert\NotNull()
      * @ORM\Column(type="string", nullable=false, length=255)
      */
-    protected $key;
+    protected $name;
 
     /**
      * @var string $namespace
@@ -62,26 +62,26 @@ class Setting extends Entity
     }
 
     /**
-     * Set key
+     * Set name
      *
-     * @param  string   $key
+     * @param  string   $name
      * @return Setting
      */
-    public function setKey($key)
+    public function setName($name)
     {
-        $this->key = $key;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get key
+     * Get name
      *
      * @return string
      */
-    public function getKey()
+    public function getName()
     {
-        return $this->key;
+        return $this->name;
     }
 
     /**

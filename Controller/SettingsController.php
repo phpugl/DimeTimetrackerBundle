@@ -12,7 +12,7 @@ class SettingsController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('namespace', 'user');
+    protected $allowed_filter = array('namespace', 'name', 'user');
 
     /**
      * get service repository
@@ -49,7 +49,7 @@ class SettingsController extends DimeController
         }
 
         // Sort by name
-        $settings->getCurrentQueryBuilder()->addOrderBy('sg.key', 'ASC');
+        $settings->getCurrentQueryBuilder()->addOrderBy('sg.name', 'ASC');
 
         // Pagination
         return $this->paginate($settings->getCurrentQueryBuilder(),
