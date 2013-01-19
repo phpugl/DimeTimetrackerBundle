@@ -49,6 +49,7 @@ class SettingsController extends DimeController
         }
 
         // Sort by name
+        $settings->getCurrentQueryBuilder()->addOrderBy('sg.namespace', 'ASC');
         $settings->getCurrentQueryBuilder()->addOrderBy('sg.name', 'ASC');
 
         // Pagination

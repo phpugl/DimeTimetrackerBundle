@@ -20,6 +20,7 @@ class SettingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('namespace')
             ->add('name')
             ->add('value');
     }
