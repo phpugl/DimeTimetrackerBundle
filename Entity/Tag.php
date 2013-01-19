@@ -33,6 +33,15 @@ class Tag extends Entity
     protected $name;
 
     /**
+     * is tag for intern system purposes
+     *
+     * @var boolean $system
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $system = false;
+
+    /**
      * Get id
      *
      * @return integer
@@ -74,5 +83,23 @@ class Tag extends Entity
     {
         return $this->getName();
     }
+
+    /**
+     * @param boolean $system
+     */
+    public function setSystem($system)
+    {
+        $this->system = $system;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSystem()
+    {
+        return $this->system;
+    }
+
+
 }
 

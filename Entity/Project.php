@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation as JMS;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
@@ -117,6 +118,16 @@ class Project extends Entity
      * @ORM\Column(type="decimal", scale=2, precision=10, nullable=true)
      */
     protected $rate;
+
+    /**
+     * @var ArrayCollection $tags
+     *
+     * @JMS\Type("array")
+     * @JMS\SerializedName("tags")
+     * @ORM\ManyToMany(targetEntity="Tag", cascade="all")
+     * @ORM\JoinTable(name="project_tags")
+     */
+    protected $tags;
 
     /**
      * Get id
@@ -389,5 +400,50 @@ class Project extends Entity
     public function __toString()
     {
         return (empty($this->name)) ? $this->getId() : $this->getName();
+    }
+
+    /**
+     * Add tag
+     *
+     * @param  Tag $tag
+     * @return Project
+     */
+    public function addTag(Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param Tag $tags
+     */
+    public function removeTag(Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * Set tags
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $tags
+     * @return Project
+     */
+    public function setTags(ArrayCollection $tags)
+    {
+        $this->tags = $tags;
+        return $this;
     }
 }

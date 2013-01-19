@@ -62,15 +62,7 @@ class ActivitiesController extends DimeController
         return $this->getDoctrine()->getRepository('DimeTimetrackerBundle:Project');
     }
 
-    /**
-     * get tag repository
-     *
-     * @return TagRepository
-     */
-    protected function getTagRepository()
-    {
-        return $this->getDoctrine()->getRepository('DimeTimetrackerBundle:Tag');
-    }
+
 
     /**
      * get activity repository

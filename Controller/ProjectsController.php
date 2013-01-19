@@ -98,6 +98,7 @@ class ProjectsController extends DimeController
 
         // decode json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
+        $data = $this->handleTagsInput($data);
 
         // save form and send response
         return $this->saveForm($form, $data);
@@ -118,9 +119,11 @@ class ProjectsController extends DimeController
         // check if exists
         if ($project) {
             // create form, decode request and save it if valid
+            $data = json_decode($this->getRequest()->getContent(), true);
+            $data = $this->handleTagsInput($data);
             $view = $this->saveForm(
                 $this->createForm(new ProjectType(), $project),
-                json_decode($this->getRequest()->getContent(), true)
+                $data
             );
 
         } else {
