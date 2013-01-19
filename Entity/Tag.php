@@ -39,7 +39,7 @@ class Tag extends Entity
      *
      * @ORM\Column(type="boolean")
      */
-    protected $system;
+    protected $system = false;
 
     /**
      * Get id
