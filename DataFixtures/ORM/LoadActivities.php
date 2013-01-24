@@ -40,28 +40,6 @@ class LoadActivities extends AbstractFixture implements OrderedFixtureInterface
             'rateReference' => 'service',
         ),
     );
-    protected $slices = array(
-        'requirements-initial' => array(
-            'duration'      => 7200, // 60 * 120
-            'startedAt'     => '2011-11-13 10:02:34',
-            'stoppedAt'     => null,
-        ),
-        'requirements-documentation' => array(
-            'duration'      => 5400, // 60 * 90
-            'startedAt'     => '2011-11-13 13:19:01',
-            'stoppedAt'     => null,
-        ),
-        'environment-setup' => array(
-            'duration'      => 2520, // 60 * 42
-            'startedAt'     => null,
-            'stoppedAt'     => null,
-        ),
-        'project-setup' => array(
-            'duration'      => 4980, // 60 * 83
-            'startedAt'     => '2011-11-14 08:24:09',
-            'stoppedAt'     => null,
-        ),
-    );
 
     /**
      * loads fixtures to database

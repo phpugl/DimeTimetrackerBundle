@@ -16,18 +16,11 @@ class LoadSettings extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $dayFilterSetting = new Setting();
-        $dayFilterSetting->setNamespace('defaultActivityFilter');
+        $dayFilterSetting->setNamespace('activity-filter');
         $dayFilterSetting->setName('date-period');
-        $dayFilterSetting->setValue('D');
+        $dayFilterSetting->setValue('this-week');
         $dayFilterSetting->setUser($manager->merge($this->getReference('default-user')));
         $manager->persist($dayFilterSetting);
-
-        $withoutTagsFilterSetting = new Setting();
-        $withoutTagsFilterSetting->setNamespace('defaultActivityFilter');
-        $withoutTagsFilterSetting->setName('withoutTags');
-        $withoutTagsFilterSetting->setValue('invoiced');
-        $withoutTagsFilterSetting->setUser($manager->merge($this->getReference('default-user')));
-        $manager->persist($withoutTagsFilterSetting);
 
         $manager->flush();
     }

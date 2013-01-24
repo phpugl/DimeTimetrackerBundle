@@ -41,6 +41,7 @@ class LoadTimeslices extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $baseSlice = new Timeslice();
+        $baseSlice->setUser($manager->merge($this->getReference('default-user')));
 
         foreach ($this->data as $key => $data) {
             $slice = clone $baseSlice;
