@@ -20,15 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Setting extends Entity
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var string $name
      *
      * @Assert\NotNull()
@@ -50,16 +41,6 @@ class Setting extends Entity
      * @ORM\Column(type="text")
      */
     protected $value;
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set name

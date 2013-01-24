@@ -16,6 +16,15 @@ use Dime\TimetrackerBundle\Entity\User;
 abstract class Entity
 {
     /**
+     * @var integer $id
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
      * @var User $user
      *
      * @JMS\Exclude
@@ -41,6 +50,16 @@ abstract class Entity
      * @ORM\Column(name="updated_at", type="datetime")
      */
     protected $updatedAt;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set user
@@ -83,5 +102,15 @@ abstract class Entity
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * get activity as string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getId();
     }
 }

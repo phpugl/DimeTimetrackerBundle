@@ -17,15 +17,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Tag extends Entity
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var string $name
      *
      * @ORM\Column(type="string", nullable=false, length=255)
@@ -40,16 +31,6 @@ class Tag extends Entity
      * @ORM\Column(type="boolean")
      */
     protected $system = false;
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set name
@@ -81,25 +62,30 @@ class Tag extends Entity
      */
     public function __toString()
     {
-        return $this->getName();
+        return (empty($this->name)) ? $this->getId() : $this->getName();
     }
 
     /**
+     * Set system flag
+     *
      * @param boolean $system
      */
     public function setSystem($system)
     {
         $this->system = $system;
+
+        return $this;
     }
 
     /**
+     * Get system flag
+     *
      * @return boolean
      */
     public function getSystem()
     {
         return $this->system;
     }
-
 
 }
 

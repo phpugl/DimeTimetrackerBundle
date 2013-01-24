@@ -14,15 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Activity extends Entity
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer")
@@ -94,16 +85,6 @@ class Activity extends Entity
     {
         $this->timeslices = new ArrayCollection();
         $this->tags = new ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -284,10 +265,13 @@ class Activity extends Entity
      * Remove tags
      *
      * @param Tag $tags
+     * @return Activity
      */
     public function removeTag(Tag $tag)
     {
         $this->tags->removeElement($tag);
+
+        return $this;
     }
 
     /**
@@ -309,36 +293,7 @@ class Activity extends Entity
     public function setTags(ArrayCollection $tags)
     {
         $this->tags = $tags;
+
         return $this;
-    }
-
-    /**
-     * Get created at datetime
-     *
-     * @return datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Get updated at datetime
-     *
-     * @return datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * get activity as string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getId();
     }
 }

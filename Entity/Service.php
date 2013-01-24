@@ -21,15 +21,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Service extends Entity
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var string $name
      *
      * @Assert\NotBlank()
@@ -47,16 +38,6 @@ class Service extends Entity
     protected $alias;
 
     /**
-     * @var ArrayCollection $tags
-     *
-     * @JMS\Type("array")
-     * @JMS\SerializedName("tags")
-     * @ORM\ManyToMany(targetEntity="Tag", cascade="all")
-     * @ORM\JoinTable(name="service_tags")
-     */
-    protected $tags;
-
-    /**
      * @var string $description
      *
      * @ORM\Column(type="text", nullable=true)
@@ -69,6 +50,24 @@ class Service extends Entity
      * @ORM\Column(type="decimal", scale=2, precision=10, nullable=true)
      */
     protected $rate;
+
+    /**
+     * @var ArrayCollection $tags
+     *
+     * @JMS\Type("array")
+     * @JMS\SerializedName("tags")
+     * @ORM\ManyToMany(targetEntity="Tag", cascade="all")
+     * @ORM\JoinTable(name="service_tags")
+     */
+    protected $tags;
+
+    /**
+     * Entity constructor
+     */
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * Get id

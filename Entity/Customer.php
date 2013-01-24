@@ -21,15 +21,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Customer extends Entity
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var string $name
      *
      * @Assert\NotBlank()
@@ -56,9 +47,12 @@ class Customer extends Entity
      */
     protected $tags;
 
-    public function getId()
+    /**
+     * Entity constructor
+     */
+    public function __construct()
     {
-        return $this->id;
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -139,10 +133,13 @@ class Customer extends Entity
      * Remove tags
      *
      * @param Tag $tags
+     * @return Activity
      */
     public function removeTag(Tag $tag)
     {
         $this->tags->removeElement($tag);
+
+        return $this;
     }
 
     /**
@@ -164,6 +161,7 @@ class Customer extends Entity
     public function setTags(ArrayCollection $tags)
     {
         $this->tags = $tags;
+
         return $this;
     }
 }

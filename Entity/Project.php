@@ -22,15 +22,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Project extends Entity
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="projects")
@@ -130,13 +121,11 @@ class Project extends Entity
     protected $tags;
 
     /**
-     * Get id
-     *
-     * @return integer
+     * Entity constructor
      */
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -419,10 +408,13 @@ class Project extends Entity
      * Remove tags
      *
      * @param Tag $tags
+     * @return Project
      */
     public function removeTag(Tag $tag)
     {
         $this->tags->removeElement($tag);
+
+        return $this;
     }
 
     /**
@@ -444,6 +436,7 @@ class Project extends Entity
     public function setTags(ArrayCollection $tags)
     {
         $this->tags = $tags;
+
         return $this;
     }
 }
