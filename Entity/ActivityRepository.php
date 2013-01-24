@@ -61,43 +61,16 @@ class ActivityRepository extends EntityRepository
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
 
-        $timesliceRepository = $this->getEntityManager()->getRepository('DimeTimetrackerBundle:Timeslice');
-
         if (is_array($date)) {
-            $ids = $timesliceRepository->fetchActivityIdsByDateRange($date[0], $date[1]);
-
-            if (!empty($ids)) {
-                $qb->andWhere(
-                    $qb->expr()->orX(
-                        $qb->expr()->between($alias . '.updatedAt', ':from', ':to'),
-                        $qb->expr()->in($alias . '.id', $ids)
-                    )
-                );
-            } else {
-                $qb->andWhere(
-                    $qb->expr()->between($alias . '.updatedAt', ':from', ':to')
-                );
-            }
-
+            $qb->andWhere(
+                $qb->expr()->between($alias . '.updatedAt', ':from', ':to')
+            );
             $qb->setParameter('from', $date[0]);
             $qb->setParameter('to', $date[1]);
         } else {
-            $ids = $timesliceRepository->fetchActivityIdsByDate($date);
-
-            if (!empty($ids)) {
-                $qb->andWhere(
-                    $qb->expr()->orX(
-                        $qb->expr()->like($alias . '.updatedAt', ':date')
-                        , $qb->expr()->in($alias . '.id', $ids)
-                    )
-                );
-            } else {
-                $qb->andWhere(
-                    $qb->expr()->like($alias . '.updatedAt', ':date')
-                );
-            }
-
-
+            $qb->andWhere(
+                $qb->expr()->like($alias . '.updatedAt', ':date')
+            );
             $qb->setParameter('date', $date . '%');
         }
 
