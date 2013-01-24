@@ -19,6 +19,7 @@ class TagType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('system')
         ;
     }
 
