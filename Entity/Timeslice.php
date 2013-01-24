@@ -17,17 +17,8 @@ use JMS\SerializerBundle\Annotation as JMS;
  * @ORM\Entity(repositoryClass="Dime\TimetrackerBundle\Entity\TimesliceRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Timeslice
+class Timeslice extends Entity
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
     /**
      * @var Activity $activity
      *
@@ -72,23 +63,6 @@ class Timeslice
      */
     protected $stoppedAt;
 
-    /**
-     * @var datetime $createdAt
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @JMS\SerializedName("createdAt")
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
-
-    /**
-     * @var datetime $updatedAt
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @JMS\SerializedName("updatedAt")
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    protected $updatedAt;
 
     /**
      * Entity constructor
@@ -96,16 +70,6 @@ class Timeslice
     public function __construct()
     {
         $this->tags = new ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -207,26 +171,6 @@ class Timeslice
     }
 
     /**
-     * Get created at datetime
-     *
-     * @return datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Get updated at datetime
-     *
-     * @return datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * Add tag
      *
      * @param  Tag      $tag
@@ -243,10 +187,13 @@ class Timeslice
      * Remove tags
      *
      * @param Tag $tags
+     * @return Timeslice
      */
     public function removeTag(Tag $tags)
     {
         $this->tags->removeElement($tags);
+
+        return $this;
     }
 
     /**
@@ -268,6 +215,7 @@ class Timeslice
     public function setTags(ArrayCollection $tags)
     {
         $this->tags = $tags;
+
         return $this;
     }
 
