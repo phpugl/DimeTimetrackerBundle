@@ -115,7 +115,7 @@ class TagsController extends DimeController
         $tag = $this->getTagRepository()->find($id);
 
         // check if it exists
-        if ($service) {
+        if ($tag) {
             // create form, decode request and save it if valid
             $view = $this->saveForm(
                 $this->createForm(new TagType(), $tag),
