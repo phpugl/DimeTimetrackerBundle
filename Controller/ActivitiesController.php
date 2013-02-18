@@ -242,6 +242,7 @@ class ActivitiesController extends DimeController
             // create timeslice
             $timeslice = new Timeslice();
             $timeslice->setActivity($activity);
+            $timeslice->setUser($this->getCurrentUser());
             $activity->addTimeslice($timeslice);
             if (isset($result['range']) || isset($result['duration'])) {
                 // process time range
