@@ -61,6 +61,10 @@ class ActivityRepository extends EntityRepository
         $aliases = $qb->getRootAliases();
         $alias = array_shift($aliases);
 
+        if (is_array($date) && count($date) == 1) {
+            $date = array_shift($date);
+        }
+
         if (is_array($date)) {
             $qb->andWhere(
                 $qb->expr()->between($alias . '.updatedAt', ':from', ':to')
