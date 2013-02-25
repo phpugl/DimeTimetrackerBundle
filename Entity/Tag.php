@@ -3,6 +3,7 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Dime\TimetrackerBundle\Entity\Tag
@@ -19,6 +20,7 @@ class Tag extends Entity
     /**
      * @var string $name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=false, length=255)
      */
     protected $name;
