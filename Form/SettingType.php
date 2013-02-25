@@ -12,6 +12,7 @@ class SettingType extends AbstractType
     {
         $resolver->setDefaults(
             array(
+                'data_class' => 'Dime\TimetrackerBundle\Entity\Setting',
                 'csrf_protection' => false
             )
         );

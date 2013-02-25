@@ -10,9 +10,12 @@ class TagType extends AbstractType
 {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Dime\TimetrackerBundle\Entity\Tag',
                 'csrf_protection' => false
-            ));
+            )
+        );
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -25,6 +28,6 @@ class TagType extends AbstractType
 
     public function getName()
     {
-        return 'dime_timetrackerbundle_servicetype';
+        return 'dime_timetrackerbundle_tagtype';
     }
 }
