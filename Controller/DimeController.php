@@ -98,17 +98,8 @@ class DimeController extends Controller
     {
         if (isset($data['tags'])) {
             $tagRepository = $this->getTagRepository();
-            $qb = $tagRepository->createQueryBuilder('t');
-
-            $tags = $tagRepository->getIdsForTags($data['tags'], $this->getCurrentUser(), $qb);
-            $data['tags'] = array_values($tags);
-            $data['relation']['tags'] = array();
-            foreach ($tags as $tagId=>$tagName) {
-                $data['relation']['tags'][] = array(
-                    'id'   => $tagId,
-                    'name' => $tagName
-                );
-            }
+            $tagRepository->createQueryBuilder('t');
+            $data['tags'] = $tagRepository->getTagIds($data['tags'], $this->getCurrentUser());
         }
 
         return $data;

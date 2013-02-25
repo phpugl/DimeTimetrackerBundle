@@ -94,11 +94,10 @@ class ServicesController extends DimeController
         $service = new Service();
 
         // create service form
-        $form = $this->createForm(new ServiceType(), $service);
+        $form = $this->createForm(new ServiceType($this->getDoctrine()->getManager(), $this->getCurrentUser()), $service);
 
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
-        $data = $this->handleTagsInput($data);
 
         return $this->saveForm($form, $data);
     }
@@ -119,9 +118,9 @@ class ServicesController extends DimeController
         if ($service) {
             // create form, decode request and save it if valid
             $data = json_decode($this->getRequest()->getContent(), true);
-            $data = $this->handleTagsInput($data);
+
             $view = $this->saveForm(
-                $this->createForm(new ServiceType(), $service),
+                $this->createForm(new ServiceType($this->getDoctrine()->getManager(), $this->getCurrentUser()), $service),
                 $data
             );
         } else {

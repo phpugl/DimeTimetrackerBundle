@@ -296,11 +296,8 @@ class ActivitiesController extends DimeController
 
             $view = $this->createView($activity);
         } else {
-            // handle tags - TODO improve this
-            $data = $this->handleTagsInput($data);
-
             // create activity form
-            $form = $this->createForm(new ActivityType(), $activity);
+            $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager(), $this->getCurrentUser()), $activity);
             $view = $this->saveForm($form, $data);
         }
 
@@ -324,12 +321,9 @@ class ActivitiesController extends DimeController
         if ($activity) {
             $data = json_decode($this->getRequest()->getContent(), true);
 
-            // handle tags - TODO improve this
-            $data = $this->handleTagsInput($data);
-
             // create form, decode request and save it if valid
             $view = $this->saveForm(
-                $this->createForm(new ActivityType(), $activity),
+                $this->createForm(new ActivityType($this->getDoctrine()->getManager(), $this->getCurrentUser()), $activity),
                 $data
             );
         } else {

@@ -68,7 +68,7 @@ class CustomersControllerTest extends DimeTestCase
         $this->assertEquals(200, $response->getStatusCode());
 
         $response = $this->request('PUT', '/api/customers/' . ($id+1) . '', '{"name": "Modified Test", "alias": "Modified"}');
-       $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
 
         /* check created service */
         $response = $this->request('GET', '/api/customers/' . $id . '');

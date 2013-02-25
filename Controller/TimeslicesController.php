@@ -115,13 +115,10 @@ class TimeslicesController extends DimeController
         $timeslice = new Timeslice();
 
         // create activity form
-        $form = $this->createForm(new TimesliceType(), $timeslice);
+        $form = $this->createForm(new TimesliceType($this->getDoctrine()->getManager(), $this->getCurrentUser()), $timeslice);
 
         // convert json to assoc array from request content
         $data = json_decode($this->getRequest()->getContent(), true);
-
-        // handle tags TODO improve this
-        $data = $this->handleTagsInput($data);
 
         // parse duration
         $data = $this->process($data);
@@ -147,15 +144,12 @@ class TimeslicesController extends DimeController
             // convert json to assoc array from request content
             $data = json_decode($this->getRequest()->getContent(), true);
 
-            // handle tags TODO improve this
-            $data = $this->handleTagsInput($data);
-
             // parse duration
             $data = $this->process($data);
 
             // create form, decode request and save it if valid
             $view = $this->saveForm(
-                $this->createForm(new TimesliceType(), $timeslice), $data
+                $this->createForm(new TimesliceType($this->getDoctrine()->getManager(), $this->getCurrentUser()), $timeslice), $data
             );
         } else {
             // activity does not exists send 404
