@@ -12,7 +12,13 @@ class ProjectsController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('customer', 'search', 'user');
+    protected $allowed_filter = array(
+        'customer',
+        'withTags',
+        'withoutTags',
+        'search',
+        'user'
+    );
 
     /**
      * get project repository

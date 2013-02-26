@@ -12,7 +12,12 @@ class CustomersController extends DimeController
     /**
      * @var array allowed filter keys
      */
-    protected $allowed_filter = array('search', 'user');
+    protected $allowed_filter = array(
+        'withTags',
+        'withoutTags',
+        'search',
+        'user'
+    );
 
     /**
      * get customer repository
