@@ -13,7 +13,7 @@ fos_user:
 jms_serializer:
     handlers:
         datetime:
-            format: "Y-m-d H:i:s"
+            default_format: "Y-m-d H:i:s"
             default_timezone: "UTC"
 
     property_naming:

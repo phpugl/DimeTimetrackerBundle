@@ -4,9 +4,7 @@ namespace Dime\TimetrackerBundle\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\SerializerBundle\Annotation as JMS;
-
-use Dime\TimetrackerBundle\Entity\User;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Dime\TimetrackerBundle\Entity\Entity

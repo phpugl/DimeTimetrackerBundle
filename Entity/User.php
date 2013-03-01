@@ -3,10 +3,10 @@ namespace Dime\TimetrackerBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Entity\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\SerializerBundle\Annotation\SerializedName;
+use JMS\Serializer\Annotation as JMS;
+use FOS\UserBundle\Entity\User as BaseUser;
 
 /**
  * Dime\TimetrackerBundle\Entity\Project
@@ -44,7 +44,7 @@ class User extends BaseUser
      * @var datetime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @SerializedName("createdAt")
+     * @JMS\SerializedName("createdAt")
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
@@ -53,7 +53,7 @@ class User extends BaseUser
      * @var datetime $updatedAt
      *
      * @Gedmo\Timestampable(on="update")
-     * @SerializedName("updatedAt")
+     * @JMS\SerializedName("updatedAt")
      * @ORM\Column(name="updated_at", type="datetime")
      */
     protected $updatedAt;

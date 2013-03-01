@@ -3,12 +3,11 @@
 namespace Dime\TimetrackerBundle\Entity;
 
 use DateTime;
-use Dime\TimetrackerBundle\Entity\Activity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\SerializerBundle\Annotation as JMS;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Dime\TimetrackerBundle\Entity\Timeslice
