@@ -69,8 +69,8 @@ class ActivityRepository extends EntityRepository
             $qb->andWhere(
                 $qb->expr()->between($alias . '.updatedAt', ':from', ':to')
             );
-            $qb->setParameter('from', $date[0]);
-            $qb->setParameter('to', $date[1]);
+            $qb->setParameter('from', $date[0]. ' 00:00:00');
+            $qb->setParameter('to', $date[1] . ' 23:59:59');
         } else {
             $qb->andWhere(
                 $qb->expr()->like($alias . '.updatedAt', ':date')
