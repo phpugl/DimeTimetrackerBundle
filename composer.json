@@ -32,7 +32,7 @@
 
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "doctrine/migrations": "1.0.*@dev",
-        "doctrine/doctrine-migrations-bundle": "2.1.*@dev",
+        "doctrine/doctrine-migrations-bundle": "dev-master",
         "stof/doctrine-extensions-bundle": "1.1.*",
         "jms/serializer-bundle": "1.*",
         "friendsofsymfony/rest-bundle": "1.7.*",
